@@ -1,6 +1,6 @@
 ### Syllabus
 
-Please find the syllabus (updated frequently) [at this link]()
+Please find the syllabus (updated frequently) [at this link](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/DS-1000-Syllabus.html)
 
 ### Code for Each Topic 
 
@@ -26,7 +26,16 @@ Please find the syllabus (updated frequently) [at this link]()
 
 
 
+### Assignments
 
+[Assignment 1, Due Sunday September 19 Midnight ]()
 
+[Assignment 2, Due Sunday October 10 Midnight]()
+
+[Assignment 3, Due Sunday November 1 Midnight]()
+
+[Assignment 4, Due Sunday November 21 Midnight]()
+
+[Assignment 5, Due Wednesday December 15 Midnight]()
 
 
