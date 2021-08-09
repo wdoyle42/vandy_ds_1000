@@ -1,20 +1,31 @@
 ---
-title: "LLO 8200 Syllabus"
-author: "Will Doyle"
-date: "5/12/2021"
+title: "DS 1000: How Data Shape Our World"
+author: "Josh Clinton and Will Doyle"
+date: "August, 2021"
 output:
   html_document: default
-  word_document: default
 ---
 
-## Introduction to Data Science
+We have entered a time in which vast amounts of data are more widely available than ever before. At the same time, a new set of tools has been developed to analyze this data and provide decision makers with information to help them accomplish their goals. Those who engage with data and interpret it for organizational leaders have taken to calling themselves data scientists, and their craft data science. Other terms that have come into vogue are big data, predictive analytics, and data mining. 
 
-We have entered a time in which vast amounts of data are more widely available than ever before. At the same time, a new set of tools has been developed to analyze this data and provide decision makers with information to help them accomplish their goals. Those who engage with data and interpret it for organizational leaders have taken to calling themselves data scientists, and their craft data science. Other terms that have come into vogue are big data, predictive analytics, and data mining. These can seem to be mysterious domains. The point of this class is to demystify much of this endeavor for individuals who will be organizational leaders.
-The class is structured around developing students' skills in three areas: getting data, analyzing data to make predictions, and presenting the results of analysis. For each area, the subtopics are as follows:
+This course will teach students how data science is used to make key decisions across multiple domains. Data science involves bringing together programming and high powered computing to analyze data using statistics. Data scientists provide insights that allow leaders in business, government and other institutions to make decisions. Students will engage directly with problems in data science, with hands-on work with real world data. Each topic area will also engage with leading intellectuals who are working in a given area. 
+
+This class will focus on using various real-world examples to teach important topics in data science. Students will learn about the following key concepts in data science:
+
+- Structuring and Manipulating Data
+- Data Visualization
+- Making Predictions from Data
+- Understanding Error in Predictions
+- Training and Testing Models
+
 
 ## Evaluation
 
-Students will work in groups on five guided exercises. These exercise will challenge you to implement the skills we discuss in class. Each assignment will be worth 20% of your overall grade. 
+Students will work in groups on five guided exercises. These exercise will challenge you to implement the skills we discuss in class. 
+
+For each module, small teams of students will complete a narrative report on the implementation of a given tool regarding a given concept. The focus of these reports will be explaining an applied data analysis to an external audience, and will include both text and data visualizations. A randomly selected team of students will present these results to the group at the end of each module.  
+
+Evaluation for the course will be based on student completion of assignments and student participation. Assignments will be graded on a 100 percent scale, with each assignment worth 15% of the final grade. The final 10% of the final grade will be based on student participation, which includes attending course meetings and completing in-class prompts. 
 
 ## Required Texts
 
@@ -62,50 +73,341 @@ Silver, Chapters 1–4
 
 *Lesson Notes*
 
+### Intro:	Hello, World
+
+Tuesday, August 31, 2021
+
+*Readings/Resources*
+
+[]()
+
+*Lesson Notes*
+
+[Getting Started with R/Rstudio]()
+
+### Intro:	Data wrangling
+
+Thursday, September 2, 2021
+
 *Readings/Resources*
 
 *Lesson Notes*
 
 *Assignments*
 
-### 
+### Univariate Data Analysis	Univariate descriptives
 
-## Additional Due Dates
-
-
-
-Tuesday, August 31, 2021
-Thursday, September 2, 2021
 Tuesday, September 7, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+###  Univariate Data Analysis	Univariate graphics
+
 Thursday, September 9, 2021
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Univariate Data Analysis	Uncertainty in Univariate Analysis
 Tuesday, September 14, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Conditional Means	Conditionoal mean: tabular
 Thursday, September 16, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Conditional Means	Conditional means: causality
 Tuesday, September 21, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+_Assignment 1 Due September 19_
+
+### Conditional Means	Conditional means: graphics
 Thursday, September 23, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Conditional Means	Conditional means: application
+
 Tuesday, September 28, 2021
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Conditional Means	Conditional means: uncertainty
+
 Thursday, September 30, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Conditional Means	Conditional means: workshop day
+
 Tuesday, October 5, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Regression	Linear regression: graphics
+
 Thursday, October 7, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Regression	Regression: intro
+
 Tuesday, October 12, 2021
-Thursday, October 14, 2021: No Class Fall Break
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+_Assignment 2 Due October 10_
+
+
+### Regression: multiple regression
+
 Tuesday, October 19, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+### Fall Break: Thursday October 14
+
+
+### Regression	Regression application
+
 Thursday, October 21, 2021
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Regression	Regression: workshop day
+
 Tuesday, October 26, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Regression	Regression: unccertainty
+
 Thursday, October 28, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+_Assignment 2 Due November 1_
+
+
+### Binary Outcomes	Binary Outcomes: intro
+
 Tuesday, November 2, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Binary Outcomes	Binary: Uncertainty
+
 Thursday, November 4, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Binary Outcomes	Binary: cross validation
+
 Tuesday, November 9, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Binary Outcomes	Binary: Model Tuning and Comparison
+
 Thursday, November 11, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Binary Outcomes	Binary: application
+
 Tuesday, November 16, 2021
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Binary Outcomes	Binary: workshop
+
 Thursday, November 18, 2021
-Tuesday, November 23, 2021 No Break Thanksgiving
-Thursday, November 25, 2021 No Break Thanksgiving
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+_Assignment 4 Due November 21_
+
+
+### Thanksgiving Break: Tuesday November 23 and Thursday November 25
+
+
+### Unsupervised Learning	Unsupervised: introduction
+
 Tuesday, November 30, 2021
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+### Unsupervised Learning	Unsupervised: uncertaiinty
+
 Thursday, December 2, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+### Unsupervised Learning	Unsupervised: Comparing models
+
 Tuesday, December 7, 2021
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+### Unsupervised Learning	Unsupervised: uncertaiinty
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+### Unsupervised Learning	Unsupervised: application
+
 Thursday, December 9, 2021
 
-Oct 14-15, Thur-Fri	Fall break for undergraduate students
-Nov 20-Nov 28, Sat-Sun	Thanksgiving holidays in most schools
 
-Assignment Due Dates 
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+_Assignment 5 Due December 15_
+
