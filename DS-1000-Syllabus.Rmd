@@ -1,0 +1,111 @@
+---
+title: "LLO 8200 Syllabus"
+author: "Will Doyle"
+date: "5/12/2021"
+output:
+  html_document: default
+  word_document: default
+---
+
+## Introduction to Data Science
+
+We have entered a time in which vast amounts of data are more widely available than ever before. At the same time, a new set of tools has been developed to analyze this data and provide decision makers with information to help them accomplish their goals. Those who engage with data and interpret it for organizational leaders have taken to calling themselves data scientists, and their craft data science. Other terms that have come into vogue are big data, predictive analytics, and data mining. These can seem to be mysterious domains. The point of this class is to demystify much of this endeavor for individuals who will be organizational leaders.
+The class is structured around developing students' skills in three areas: getting data, analyzing data to make predictions, and presenting the results of analysis. For each area, the subtopics are as follows:
+
+## Evaluation
+
+Students will work in groups on five guided exercises. These exercise will challenge you to implement the skills we discuss in class. Each assignment will be worth 20% of your overall grade. 
+
+## Required Texts
+
+We will have two texts for the course. The first is Hadley Wickham's book, R for Data Science:
+
+Wickham, H., & Grolemund, G. (2016). R for data science: Import, tidy, transform, visualize, and model data. San Francisco, CA: O'Reilly Media, Inc.
+
+The other text is Nate Silver's Signal and the Noise:
+
+Silver, N. (2012). The signal and the noise: Why so many predictions fail—but some don’t. New York, NY: Penguin.
+
+## Software
+ 
+We will use only free, open-source software in this course.
+
+We will use R, an open-source data analytic platform for all analysis. R appears to be the most widely used data analysis software in data science. We will utilize RStudio as our integrated development environment (IDE) for R.
+
+## Honor Code Statement
+
+All assignments for this class, including weekly problem sets and the final project, are to be conducted under the obligations set out in Vanderbilt's Honor Code. [Please click here to review the Honor Code](https://www.vanderbilt.edu/student_handbook/the-honor-system/).
+
+If you have any questions at all about the Honor Code or how it will be applied, ask us right away.
+
+Office Hours: Doyle: [Please Use My Booking Page](https://outlook.office365.com/owa/calendar/WillDoyle@Vanderbilt365.onmicrosoft.com/bookings/)
+
+Office Hours: Clinton
+
+Office Hours: TAs
+
+## Schedule
+
+### Intro: The wonderful world of data science
+
+Thursday, August 26, 2021
+
+*Readings/Resources*
+
+Silver, Chapters 1–4
+
+[Download R](https://cran.r-project.org/)
+
+[Download RStudio](https://www.rstudio.com/products/rstudio/download/) You want the Desktop version, free license
+
+[RStudio Introduction and Resources](https://education.rstudio.com/learn/beginner/)
+
+*Lesson Notes*
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+### 
+
+## Additional Due Dates
+
+
+
+Tuesday, August 31, 2021
+Thursday, September 2, 2021
+Tuesday, September 7, 2021
+Thursday, September 9, 2021
+Tuesday, September 14, 2021
+Thursday, September 16, 2021
+Tuesday, September 21, 2021
+Thursday, September 23, 2021
+Tuesday, September 28, 2021
+Thursday, September 30, 2021
+Tuesday, October 5, 2021
+Thursday, October 7, 2021
+Tuesday, October 12, 2021
+Thursday, October 14, 2021: No Class Fall Break
+Tuesday, October 19, 2021
+Thursday, October 21, 2021
+Tuesday, October 26, 2021
+Thursday, October 28, 2021
+Tuesday, November 2, 2021
+Thursday, November 4, 2021
+Tuesday, November 9, 2021
+Thursday, November 11, 2021
+Tuesday, November 16, 2021
+Thursday, November 18, 2021
+Tuesday, November 23, 2021 No Break Thanksgiving
+Thursday, November 25, 2021 No Break Thanksgiving
+Tuesday, November 30, 2021
+Thursday, December 2, 2021
+Tuesday, December 7, 2021
+Thursday, December 9, 2021
+
+Oct 14-15, Thur-Fri	Fall break for undergraduate students
+Nov 20-Nov 28, Sat-Sun	Thanksgiving holidays in most schools
+
+Assignment Due Dates 
