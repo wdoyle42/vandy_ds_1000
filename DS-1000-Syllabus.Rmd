@@ -175,7 +175,7 @@ Wickham \& Grolemund, Chapter 1
 *Assignments*
 
 
-###  Bivariate Data: Scatterplots, Smoothing, and Conditional Means
+###  Bivariate Data: More `ggplot`, Smoothing, and Conditional Means
 
 Tuesday, September 14, 2021
 
