@@ -219,7 +219,7 @@ You are not expected to understand all of what is being discussed, but the expla
 *Assignments*
 _Guided Exercise 1 Due September 19_
 
-### Prediction Verus Causality
+### Description, Prediction, \& Causality: What are we doing?
 
 Thursday, September 23, 2021
 
