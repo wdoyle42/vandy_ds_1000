@@ -10,13 +10,27 @@ We have entered a time in which vast amounts of data are more widely available t
 
 This course will teach students how data science is used to make key decisions across multiple domains. Data science involves bringing together programming and high powered computing to analyze data using statistics. Data scientists provide insights that allow leaders in business, government and other institutions to make decisions. Students will engage directly with problems in data science, with hands-on work with real world data. Each topic area will also engage with leading intellectuals who are working in a given area. 
 
-This class will focus on using various real-world examples to teach important topics in data science. Students will learn about the following key concepts in data science:
+We assume you know _nothing_ about data, statistics, or programming.  This is an introductory level class aimed at introducing and motivating the study of data in a way that focuses on both technical and critical thinking skills.  Both are essential.
+
+This class will focus on using various real-world examples to teach important topics in data science and we will attempt to motivate the tools we learn via motivating questions. Students will learn about the following key concepts in data science:
 
 - Structuring and Manipulating Data
 - Data Visualization
 - Making Predictions from Data
 - Understanding Error in Predictions
 - Training and Testing Models
+
+The examples are mostly drawn from the social sciences given our backgrounds and expertise, but hopefully of interest:
+
+- Predicting elections using polls: become your own [538.com](https://fivethirtyeight.com/) or [Upshot](https://www.nytimes.com/section/upshot)
+
+- Understanding college admissions - become a Dean of Admissions?
+
+- Textual forensics - using words to predict authorship?
+
+- COVID-19 and public health.
+
+NOTE: This is the first time this class been taught so things will assuredly change once we are underway as we gauge the pace and understanding level of class.
 
 ## Evaluation
 
@@ -34,16 +48,27 @@ Guided Exercises: 80%
 
 ## Required Texts
 
-We will have two texts for the course.
+There is not really a required book for this course as no book really combines the critical thinking and technical skills we aspire to teach. As a result we are not requiring you to purchase or read anything, but there are a few recommendations we could make
 
+The closest book in terms of _technical content_ is: 
 
+Wickham, Hadley and Garrett Grolemund. _R for Data Science_. It is freely available to Vanderbilt students [here](https://learning-oreilly-com.proxy.library.vanderbilt.edu/home/). The associated web page with the book is [here](https://r4ds.had.co.nz/).  The book is terse -- focusing on making R "work" rather than how to think about working with data (and R).
 
+_Critical thinking_ will also be important and there are many interesting books about how to think about data (and the analysis of data). An extremely small set includes:
+
+O'Neil, Cathy. _Weapons of Math Destruction_ 
+Silver, Nate. _The Signal and The Noise_.
+Tufte, Edwards. _The Visual Display of Quantitative Information_
+
+Also stay attuned to news about issues and controversies involving data science.
 
 ## Software
  
 We will use only free, open-source software in this course.
 
-We will use R, an open-source data analytic platform for all analysis. R appears to be the most widely used data analysis software in data science. We will utilize RStudio as our integrated development environment (IDE) for R.
+We will use R, an open-source data analytic platform for all analysis. R appears to be the most widely used data analysis software in data science. 
+
+We will utilize RStudio as our integrated development environment (IDE) for R.
 
 ## Honor Code Statement
 
@@ -113,6 +138,9 @@ Tuesday, August 31, 2021
 Thursday, September 2, 2021
 
 *Readings/Resources*
+["The Gender gap was expected to be historic."](https://www.washingtonpost.com/dc-md-va/2020/11/06/election-2020-gender-gap-women/)
+
+["Exit polls, election surveys and more"](https://www.pewresearch.org/fact-tank/2018/11/01/exit-polls-election-surveys-and-more-a-guide-for-the-2018-midterms/)
 
 *Lesson Notes*
 
@@ -153,7 +181,7 @@ Tuesday, September 14, 2021
 
 Assignment 3 Due September 13, Midnight
 
-### Conditional Means	Conditionoal mean: tabular
+### Conditional Means	Conditional mean: tabular
 Thursday, September 16, 2021
 
 *Readings/Resources*
