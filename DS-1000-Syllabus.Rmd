@@ -22,7 +22,7 @@ This class will focus on using various real-world examples to teach important to
 
 The examples are mostly drawn from the social sciences given our backgrounds and expertise, but hopefully of interest:
 
-- Predicting elections using polls: become your own [538.com](https://fivethirtyeight.com/) or [Upshot](https://www.nytimes.com/section/upshot)
+- Predicting elections using polls: become your own [538.com](https://fivethirtyeight.com/) or [The Upshot](https://www.nytimes.com/section/upshot)
 
 - Understanding college admissions - become a Dean of Admissions?
 
@@ -138,16 +138,19 @@ Tuesday, August 31, 2021
 Thursday, September 2, 2021
 
 *Readings/Resources*
+
 ["The Gender gap was expected to be historic."](https://www.washingtonpost.com/dc-md-va/2020/11/06/election-2020-gender-gap-women/)
 
 ["Exit polls, election surveys and more"](https://www.pewresearch.org/fact-tank/2018/11/01/exit-polls-election-surveys-and-more-a-guide-for-the-2018-midterms/)
+
+Wickham \& Grolemund, Chapter 3
 
 *Lesson Notes*
 
 *Assignments*
 
 
-### Univariate Data Analysis	Univariate descriptives
+### Univariate Data Analysis: Descriptives
 
 Tuesday, September 7, 2021
 
@@ -159,21 +162,29 @@ Tuesday, September 7, 2021
 
 Assignment 2 Due September 6, Midnight
 
-###  Univariate Data Analysis	Univariate graphics
+###  Univariate Data Visualization Using `ggplot`
 
-Thursday, September 9, 2021
+Thursday, September 9, 2021^[Note, this lecture and the next may take 3 lectures.]
 
 *Readings/Resources*
+
+Wickham \& Grolemund, Chapter 1
 
 *Lesson Notes*
 
 *Assignments*
 
 
-### Univariate Data Analysis	Uncertainty in Univariate Analysis
+###  Bivariate Data: Scatterplots, Smoothing, and Conditional Means
+
 Tuesday, September 14, 2021
 
 *Readings/Resources*
+
+[Latest Polls - 538](https://projects.fivethirtyeight.com/polls/president-general/national/)
+
+[Forecasting the US Elections - _Economist_](https://projects.economist.com/us-2020-forecast/president)
+
 
 *Lesson Notes*
 
@@ -181,7 +192,7 @@ Tuesday, September 14, 2021
 
 Assignment 3 Due September 13, Midnight
 
-### Conditional Means	Conditional mean: tabular
+### Sampling, Resampling, and Measuring (Some) Uncertainty: Two Amazing Results
 Thursday, September 16, 2021
 
 *Readings/Resources*
@@ -190,21 +201,26 @@ Thursday, September 16, 2021
 
 *Assignments*
 
-
-
-### Conditional Means	Conditional means: causality
+### Application: Predicting Elections Using Conditional Means and Maps
 Tuesday, September 21, 2021
 
 *Readings/Resources*
 
+[Electoral College](https://www.archives.gov/electoral-college/about)
+
+You are not expected to understand all of what is being discussed, but the explanations raise questions about what to do.
+
+[538 Model](https://fivethirtyeight.com/features/how-fivethirtyeights-2020-presidential-forecast-works-and-whats-different-because-of-covid-19/)
+
+[270 to Win Presidential Election Forecast](https://www.270towin.com/2020-election-forecast-predictions/)
+
 *Lesson Notes*
 
 *Assignments*
-
 _Guided Exercise 1 Due September 19_
 
+### Prediction Verus Causality
 
-### Conditional Means	Conditional means: graphics
 Thursday, September 23, 2021
 
 *Readings/Resources*
@@ -215,9 +231,10 @@ Thursday, September 23, 2021
 
 
 
-### Conditional Means	Conditional means: application
+### Conditional Means: application 1
 
 Tuesday, September 28, 2021
+
 *Readings/Resources*
 
 *Lesson Notes*
@@ -226,7 +243,7 @@ Tuesday, September 28, 2021
 
 Assignment 4 Due September 27, Midnight
 
-### Conditional Means	Conditional means: uncertainty
+### Conditional Means: application 2
 
 Thursday, September 30, 2021
 
@@ -238,7 +255,7 @@ Thursday, September 30, 2021
 
 
 
-### Conditional Means	Conditional means: workshop day
+### Conditional Means: workshop day
 
 Tuesday, October 5, 2021
 
@@ -326,7 +343,7 @@ Thursday, October 28, 2021
 _Assignment 2 Due November 1_
 
 
-### Binary Outcomes	Binary Outcomes: intro
+### Binary Outcomes: intro
 
 Tuesday, November 2, 2021
 
@@ -338,7 +355,7 @@ Tuesday, November 2, 2021
 
 
 
-### Binary Outcomes	Binary: Uncertainty
+### Binary Outcomes: Uncertainty
 
 Thursday, November 4, 2021
 
@@ -350,7 +367,7 @@ Thursday, November 4, 2021
 
 
 
-### Binary Outcomes	Binary: cross validation
+### Binary Outcomes: cross validation
 
 Tuesday, November 9, 2021
 
@@ -362,7 +379,7 @@ Tuesday, November 9, 2021
 
 
 
-### Binary Outcomes	Binary: Model Tuning and Comparison
+### Binary Outcomes: Model Tuning and Comparison
 
 Thursday, November 11, 2021
 
@@ -374,7 +391,7 @@ Thursday, November 11, 2021
 
 
 
-### Binary Outcomes	Binary: application
+### Binary Outcomes: application
 
 Tuesday, November 16, 2021
 
@@ -387,7 +404,7 @@ Tuesday, November 16, 2021
 
 
 
-### Binary Outcomes	Binary: workshop
+### Binary Outcomes: workshop
 
 Thursday, November 18, 2021
 
@@ -404,7 +421,7 @@ _Assignment 4 Due November 21_
 ### Thanksgiving Break: Tuesday November 23 and Thursday November 25
 
 
-### Unsupervised Learning	Unsupervised: introduction
+### Unsupervised Learning: introduction
 
 Tuesday, November 30, 2021
 
@@ -416,7 +433,7 @@ Tuesday, November 30, 2021
 *Assignments*
 
 
-### Unsupervised Learning	Unsupervised: uncertaiinty
+### Unsupervised Learning: uncertainty
 
 Thursday, December 2, 2021
 
@@ -427,7 +444,7 @@ Thursday, December 2, 2021
 *Assignments*
 
 
-### Unsupervised Learning	Unsupervised: Comparing models
+### Unsupervised Learning: models selection and comparison
 
 Tuesday, December 7, 2021
 
@@ -438,7 +455,7 @@ Tuesday, December 7, 2021
 *Assignments*
 
 
-### Unsupervised Learning	Unsupervised: uncertaiinty
+### Unsupervised Learning	Unsupervised: application 1
 
 
 *Readings/Resources*
@@ -448,7 +465,7 @@ Tuesday, December 7, 2021
 *Assignments*
 
 
-### Unsupervised Learning	Unsupervised: application
+### Unsupervised Learning	Unsupervised: application 2
 
 Thursday, December 9, 2021
 
