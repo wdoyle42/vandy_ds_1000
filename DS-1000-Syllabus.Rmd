@@ -94,9 +94,10 @@ TL;DR:
 
 Email: please put the phrase "DS 1000" in any email you send to us. While we try to respond to emails in a timely manner, don't expect a response in less than 24 hours. Our office hours are below:
 
-Office Hours: Doyle: [Please Use My Booking Page](https://outlook.office365.com/owa/calendar/WillDoyle@Vanderbilt365.onmicrosoft.com/bookings/)
+Office Hours: Doyle: Tuesday & Thursday 12PM -2PM [Please Use My Booking Page](https://outlook.office365.com/owa/calendar/WillDoyle@Vanderbilt365.onmicrosoft.com/bookings/)
 
-Office Hours: Clinton-- TBA
+Office Hours: Clinton - Tuesday & Thursday 9AM -11AM [Please Use My Booking Page](https://calendly.com/josh-clinton/office-hours-meeting)
+>>>>>>> c150591cd33448f714f5285d23da30c223610d7c
 
 Office Hours: Melissa Meisels [Mondays, 4-5 pm](https://calendly.com/mellissa-b-meisels/officehours?month=2021-08)
 
