@@ -104,8 +104,6 @@ Office Hours: TAs
 
 ### Intro: The wonderful world of data science
 
-Thursday, August 26, 2021
-
 *Readings/Resources*
 
 [Download R](https://cran.r-project.org/)
@@ -116,7 +114,7 @@ Thursday, August 26, 2021
 
 *Lesson Notes*
 
-[]()
+[The wonderful world of Data Science]()
 
 ### Intro:	Hello, World: The basics of interacting with statistical programming languages
 
@@ -141,13 +139,11 @@ Wickham \& Grolemund, Chapter 3
 *Lesson Notes*
 
 
-
 ### Univariate Data Analysis: Descriptives
 
 *Readings/Resources*
 
 *Lesson Notes*
-
 
 ###  Univariate Data Visualization Using `ggplot`
 
