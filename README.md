@@ -1,5 +1,3 @@
-# DS 1000: How Data Shape Our World
-
 ### Syllabus
 
 Please find the syllabus (updated frequently) [at this link](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/DS-1000-Syllabus.html)
