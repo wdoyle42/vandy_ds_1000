@@ -12,11 +12,11 @@ Please find the syllabus (updated frequently) [at this link](https://raw.githack
 
 #### 1\. The Wonderful World of Data Science
 
-Lecture notes:  [PDF]() [.Rmd]()
+Lecture notes:  [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture1_IntroMotivation/Lecture1_Motivation.pdf) [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture1_IntroMotivation/Lecture1_Motivation.Rmd)
 
 #### 2\. Hello, World!
 
-Lecture notes: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.html) [PDF]() [.Rmd]()
+Lecture notes: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.html) [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.pdf) [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.Rmd)
 
 #### 3\.  Data Wrangling
 
@@ -34,11 +34,9 @@ Lecture notes: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectur
 
 ### Assignments
 
-[Assignment 1, Due Sunday August 29]()
+[Assignment 1, Due 11:59 pm Monday August 30](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/01-assignment.html)
 
 
 ### Guided Exercises
 
-
-[Guided Exercise 1]()
 
