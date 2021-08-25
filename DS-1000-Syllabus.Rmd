@@ -90,7 +90,6 @@ TL;DR:
 
 - No food or drink in class. Your laptop will thank you for this rule. 
 
-
 ## Communication
 
 Email: please put the phrase "DS 1000" in any email you send to us. While we try to respond to emails in a timely manner, don't expect a response in less than 24 hours. Our office hours are below:
@@ -117,25 +116,19 @@ Thursday, August 26, 2021
 
 *Lesson Notes*
 
-### Intro:	Hello, World: The basics of interacting with statistical programming languages
+[]()
 
-Tuesday, August 31, 2021
+### Intro:	Hello, World: The basics of interacting with statistical programming languages
 
 *Readings/Resources*
 
 [Basic Basics from R Ladies Sydney](https://rladiessydney.org/courses/ryouwithme/01-basicbasics-3/)
 
-
 *Lesson Notes*
-
-
-*Assignments: Assignment 1 Due August 30, midnight*
 
 [Getting Started with R/Rstudio]()
 
 ### Intro:	Data wrangling
-
-Thursday, September 2, 2021
 
 *Readings/Resources*
 
@@ -147,20 +140,14 @@ Wickham \& Grolemund, Chapter 3
 
 *Lesson Notes*
 
-*Assignments*
 
 
 ### Univariate Data Analysis: Descriptives
-
-Tuesday, September 7, 2021
 
 *Readings/Resources*
 
 *Lesson Notes*
 
-*Assignments*
-
-Assignment 2 Due September 6, Midnight
 
 ###  Univariate Data Visualization Using `ggplot`
 
@@ -172,12 +159,10 @@ Wickham \& Grolemund, Chapter 1
 
 *Lesson Notes*
 
-*Assignments*
 
 
 ###  Bivariate Data: More `ggplot`, Smoothing, and Conditional Means
 
-Tuesday, September 14, 2021
 
 *Readings/Resources*
 
@@ -188,21 +173,17 @@ Tuesday, September 14, 2021
 
 *Lesson Notes*
 
-*Assignments*
 
 Assignment 3 Due September 13, Midnight
 
 ### Sampling, Resampling, and Measuring (Some) Uncertainty: Two Amazing Results
-Thursday, September 16, 2021
 
 *Readings/Resources*
 
 *Lesson Notes*
 
-*Assignments*
 
 ### Application: Predicting Elections Using Conditional Means and Maps
-Tuesday, September 21, 2021
 
 *Readings/Resources*
 
@@ -216,71 +197,50 @@ You are not expected to understand all of what is being discussed, but the expla
 
 *Lesson Notes*
 
-*Assignments*
-_Guided Exercise 1 Due September 19_
 
 ### Description, Prediction, \& Causality: What are we doing?
 
-Thursday, September 23, 2021
 
 *Readings/Resources*
 
 *Lesson Notes*
-
-*Assignments*
 
 
 
 ### Conditional Means: application 1
 
-Tuesday, September 28, 2021
-
 *Readings/Resources*
 
 *Lesson Notes*
 
-*Assignments*
 
-Assignment 4 Due September 27, Midnight
 
 ### Conditional Means: application 2
 
-Thursday, September 30, 2021
-
 *Readings/Resources*
 
 *Lesson Notes*
-
-*Assignments*
 
 
 
 ### Conditional Means: workshop day
 
-Tuesday, October 5, 2021
 
 *Readings/Resources*
 
 *Lesson Notes*
 
-*Assignments*
-
-Assignment 5 Due September October 4, Midnight
 
 ### Regression	Linear regression: graphics
 
-Thursday, October 7, 2021
-
 *Readings/Resources*
 
 *Lesson Notes*
 
-*Assignments*
 
 
 ### Regression	Regression: intro
 
-Tuesday, October 12, 2021
 
 *Readings/Resources*
 
@@ -288,134 +248,98 @@ Tuesday, October 12, 2021
 
 *Assignments*
 
-_Guided Exercise 2 Due October 10_
 
-
-### Fall Break: Thursday October 14
 
 ### Regression: multiple regression
 
-Tuesday, October 19, 2021
-
 *Readings/Resources*
 
 *Lesson Notes*
 
-*Assignments*
-
-Assignment 6 Due October 18, Midnight
 
 ### Regression	Regression application
 
-Thursday, October 21, 2021
-
 
 *Readings/Resources*
 
 *Lesson Notes*
 
-*Assignments*
 
 
 ### Regression	Regression: workshop day
 
-Tuesday, October 26, 2021
 
 *Readings/Resources*
 
 *Lesson Notes*
 
-*Assignments*
 
 
 
 ### Regression	Regression: uncertainty
 
-Thursday, October 28, 2021
-
 *Readings/Resources*
 
 *Lesson Notes*
 
-*Assignments*
 
-
-_Assignment 2 Due November 1_
 
 
 ### Binary Outcomes: intro
 
-Tuesday, November 2, 2021
 
 *Readings/Resources*
 
 *Lesson Notes*
 
-*Assignments*
 
 
 
 ### Binary Outcomes: Uncertainty
 
-Thursday, November 4, 2021
 
 *Readings/Resources*
 
 *Lesson Notes*
 
-*Assignments*
 
 
 
 ### Binary Outcomes: cross validation
 
-Tuesday, November 9, 2021
 
 *Readings/Resources*
 
 *Lesson Notes*
 
-*Assignments*
 
 
 
 ### Binary Outcomes: Model Tuning and Comparison
 
-Thursday, November 11, 2021
-
 *Readings/Resources*
 
 *Lesson Notes*
 
-*Assignments*
 
 
 
 ### Binary Outcomes: application
 
-Tuesday, November 16, 2021
 
 
 *Readings/Resources*
 
 *Lesson Notes*
 
-*Assignments*
 
 
 
 ### Binary Outcomes: workshop
 
-Thursday, November 18, 2021
-
 *Readings/Resources*
 
 *Lesson Notes*
-
-*Assignments*
-
-
-_Assignment 4 Due November 21_
 
 
 ### Thanksgiving Break: Tuesday November 23 and Thursday November 25
@@ -423,14 +347,11 @@ _Assignment 4 Due November 21_
 
 ### Unsupervised Learning: introduction
 
-Tuesday, November 30, 2021
 
 
 *Readings/Resources*
 
 *Lesson Notes*
-
-*Assignments*
 
 
 ### Unsupervised Learning: uncertainty
@@ -441,8 +362,6 @@ Thursday, December 2, 2021
 
 *Lesson Notes*
 
-*Assignments*
-
 
 ### Unsupervised Learning: models selection and comparison
 
@@ -452,8 +371,6 @@ Tuesday, December 7, 2021
 
 *Lesson Notes*
 
-*Assignments*
-
 
 ### Unsupervised Learning	Unsupervised: application 1
 
@@ -462,19 +379,12 @@ Tuesday, December 7, 2021
 
 *Lesson Notes*
 
-*Assignments*
-
 
 ### Unsupervised Learning	Unsupervised: application 2
 
 Thursday, December 9, 2021
 
-
 *Readings/Resources*
 
 *Lesson Notes*
-
-*Assignments*
-
-_Assignment 5 Due December 15_
 
