@@ -1,0 +1,33 @@
+---
+title: "01-Assignment"
+outp
+---
+
+
+
+## Installing R
+
+R is going to be the only programming language we will use. R is an extensible statistical programming environment that can handle all of the main tasks that we'll need to cover this semester: getting data, analyzing data and communicating data analysis.
+
+If you haven't already, you need to download R here: <https://cran.r-project.org/>.
+
+
+
+## Installing RStudio
+
+When we work with R, we communicate via the command line. To help automate this process, we can write scripts, which contain all of the commands to be executed. These scripts generate various kinds of output, like numbers on the screen, graphics or reports in common formats (pdf, word). Most programming languages have several **I** ntegrated **D** evelopment **E** nvironments (IDEs) that encompass all of these elements (scripts, command line interface, output). The primary IDE for R is RStudio.
+
+If you haven't already, you need to download RStudio here: <https://rstudio.com/products/rstudio/download/>. You need the free RStudio desktop version.
+
+
+
+### Post a screenshot from your computer of a working Rstudio installation. 
+
+That's it. That's the assignment. 
+
+The screenshot should be posted on Brightspace, under assignment 1. 
+
+
+
+
+
