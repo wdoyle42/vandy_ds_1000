@@ -3,8 +3,8 @@ title: 'Data Science 1000: How Data Shape Our World'
 author: "Josh Clinton & Will Doyle"
 date: "8/26/2021"
 output:
-  slidy_presentation: default
   beamer_presentation: default
+  slidy_presentation: default
 fontsize: 10pt
 ---
 

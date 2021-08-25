@@ -1,8 +1,9 @@
 ---
-title: "DS 1000: How Data Shape Our World"
+title: 'DS 1000: How Data Shape Our World'
 author: "Josh Clinton and Will Doyle"
 date: "August, 2021"
 output:
+  pdf_document: default
   html_document: default
 ---
 
@@ -120,7 +121,7 @@ Office Hours: Qi Xu [Mondays, 3-4 pm](https://calendly.com/qi-xu/ds1000-office-h
 
 *Lesson Notes*
 
-[The wonderful world of Data Science]()
+Lecture notes:  [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture1_IntroMotivation/Lecture1_Motivation.pdf) [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture1_IntroMotivation/Lecture1_Motivation.Rmd)
 
 ### Intro:	Hello, World: The basics of interacting with statistical programming languages
 
@@ -130,7 +131,8 @@ Office Hours: Qi Xu [Mondays, 3-4 pm](https://calendly.com/qi-xu/ds1000-office-h
 
 *Lesson Notes*
 
-[Getting Started with R/Rstudio]()
+
+Lecture notes: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.html) [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.pdf) [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.Rmd)
 
 ### Intro:	Data wrangling
 
@@ -344,11 +346,7 @@ You are not expected to understand all of what is being discussed, but the expla
 *Lesson Notes*
 
 
-### Thanksgiving Break: Tuesday November 23 and Thursday November 25
-
-
 ### Unsupervised Learning: introduction
-
 
 
 *Readings/Resources*
@@ -358,16 +356,12 @@ You are not expected to understand all of what is being discussed, but the expla
 
 ### Unsupervised Learning: uncertainty
 
-Thursday, December 2, 2021
-
 *Readings/Resources*
 
 *Lesson Notes*
 
 
 ### Unsupervised Learning: models selection and comparison
-
-Tuesday, December 7, 2021
 
 *Readings/Resources*
 
@@ -384,7 +378,6 @@ Tuesday, December 7, 2021
 
 ### Unsupervised Learning	Unsupervised: application 2
 
-Thursday, December 9, 2021
 
 *Readings/Resources*
 
