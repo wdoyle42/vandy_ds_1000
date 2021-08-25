@@ -1,8 +1,10 @@
 ---
-title: "Data Science 1000: How Data Shape Our World"
+title: 'Data Science 1000: How Data Shape Our World'
 author: "Josh Clinton & Will Doyle"
 date: "8/26/2021"
-output: beamer_presentation
+output:
+  slidy_presentation: default
+  beamer_presentation: default
 fontsize: 10pt
 ---
 
@@ -53,7 +55,6 @@ But does quantification equal precision? Or knowledge? Or understanding?
 - _How_ is data collected? What is actually being _measured_?
 - What might be wrong/misleading/misinterpreted?
 - Theory-driven? Data-Driven?
-
 
 Data-driven decisions and conclusions require multiple skills...
 ...and such skills are in high demand.
