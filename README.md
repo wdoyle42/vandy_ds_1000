@@ -14,7 +14,7 @@ Lecture notes: [HTML]() [PDF]() [.Rmd]()
 
 #### 2\. Hello, World!
 
-Lecture notes: [HTML]() [PDF]() [.Rmd]()
+Lecture notes: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.html) [PDF]() [.Rmd]()
 
 #### 3\.  Data Wrangling
 
