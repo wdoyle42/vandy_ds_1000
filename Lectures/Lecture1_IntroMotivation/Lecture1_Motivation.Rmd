@@ -138,8 +138,8 @@ Data-driven decisions and conclusions require multiple skills...
 
 # Your first assignment
 
-- Go and get R!
-- Go and get Rstudio!
+- Go and get R! (https://cran.r-project.org/)
+- Go and get Rstudio! You want the free desktop version (https://www.rstudio.com/products/rstudio/download/)
 - Open them up!
 - Take a picture! 
 

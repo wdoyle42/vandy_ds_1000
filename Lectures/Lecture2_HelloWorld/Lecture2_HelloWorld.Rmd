@@ -17,7 +17,7 @@ Here's what we need to get done today:
 
 ## Introductions
 
-We need three basic sets of tools for this class. We will need `R` to analyze data. We will need `RStudio` to help us interface with R and to produce documentation of our results.
+We need two basic sets of tools for this class. We will need `R` to analyze data. We will need `RStudio` to help us interface with R and to produce documentation of our results.
 
 ## Installing R
 
