@@ -12,7 +12,7 @@ Please find the syllabus (updated frequently) [at this link](https://raw.githack
 
 Lecture notes:  [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture1_IntroMotivation/Lecture1_Motivation.pdf) [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture1_IntroMotivation/Lecture1_Motivation.Rmd)
 
-Survey Results: [HTML]()
+Survey Results: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture1_IntroMotivation/survey_results.html)
 
 #### 2\. Hello, World!
 
