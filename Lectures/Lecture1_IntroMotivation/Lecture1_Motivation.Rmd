@@ -59,6 +59,10 @@ But does quantification equal precision? Or knowledge? Or understanding?
 Data-driven decisions and conclusions require multiple skills...
 ...and such skills are in high demand.
 
+# The Data Science Venn Diagram
+\centering
+\includegraphics[scale=.4]{figs/venn_diagram.png}
+
 # Everyone is doing it?
 \centering
 \includegraphics[scale=.25]{figs/DataScienceVCompProgramming.png}
@@ -73,33 +77,34 @@ Data-driven decisions and conclusions require multiple skills...
 \centering
 \includegraphics[scale=.25]{figs/ShakespeareAuthor.png}
 
-# Can Twitter "sentiment" to predict elections?
-\centering
-\includegraphics[scale=.5]{figs/TwitterPredict.png}
 
-# Can Trends "predict" future market conditions?
-\centering
-\includegraphics[scale=.5]{figs/ScaryParallel.png}
+# Can it tell us who will fall in love?
 
-# Can data diagnose the causes(s) of autism?
 \centering
-\includegraphics[scale=.5]{figs/WakefieldLancet.png}
+
+\includegraphics[scale=.25]{figs/speed_dating.png}
+
+
+# Can it tell us who will give us a pizza?
+
+\centering
+
+\includegraphics[scale=.25]{figs/raop.png}
+
+\includegraphics[scale=.25]{figs/raop_article.png}
 
 # Name the 1400 people most likely to cause or experience gun violence in Chicago?
 \centering
 \includegraphics[scale=.25]{figs/PredictingPolicing.png}
 
-# Spread misinformation?
+# Figure out who is sick or not?
 \centering
-\includegraphics[scale=.5]{figs/Trump2020ElectionMath.png}
+\includegraphics[scale=.25]{figs/portable-xray.png}
 
 # Confuse the Public?
 \centering
 \includegraphics[scale=.5]{figs/HowTheEconomyIsDoingNYT.png}
 
-# Create Inequality?
-\centering
-\includegraphics[scale=.35]{figs/WritingStyle.png}
 
 # What we will do...
 
