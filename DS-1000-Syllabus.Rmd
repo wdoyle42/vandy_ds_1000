@@ -131,7 +131,6 @@ Lecture notes:  [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lecture
 
 *Lesson Notes*
 
-
 Lecture notes: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.html) [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.pdf) [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.Rmd)
 
 ### Intro:	Data wrangling
@@ -145,6 +144,7 @@ Lecture notes: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectur
 Wickham \& Grolemund, Chapter 3
 
 *Lesson Notes*
+
 
 
 ### Univariate Data Analysis: Descriptives

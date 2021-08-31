@@ -1,7 +1,7 @@
 ---
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ##  Welcome to Data Science!
@@ -187,7 +187,6 @@ df%>%
 df%>%
   summarize(median_debt=median(grad_debt_mdn,na.rm=TRUE))
 
-
 ```
 
 *Quick Exercise* Summarize the average entering SAT scores in this dataset.
@@ -228,13 +227,13 @@ gg
 
 ## Your first commit: Hello, World!
 
-For today, I want you to create a file called `01-assignment_<lastname>.Rmd` in your GitHub repo for assignments. It should contain the following elements:
+For today, I want you to create a file called `02-assignment_<lastname>.Rmd` in your class directory. It should contain the following elements:
 
 1.  A sentence that says "Hello, World"
 2.  R output that summarizes one of the variables in the `sc_debt.Rds` dataset
 3.  R output that shows a scatterplot for two of the variables in the `sc_debt.Rds` dataset.
 
-Lucky for you this is is also your assignment! Submit it under assignments, using the format `01-assignment_<lastname>.Rmd`. All assignments should be turned in using this format. Since my last name is Doyle, I would use `01-assignment_doyle.Rmd` as my file name. Unless your name is also Doyle, you should use a different name.
+Lucky for you this is is also your assignment! Submit it under assignments, using the format `02-assignment_<lastname>.Rmd`. All assignments should be turned in using this format. Since my last name is Doyle, I would use `02-assignment_doyle.Rmd` as my file name. Unless your name is also Doyle, you should use a different name.
 
 *Stretch Items*
 

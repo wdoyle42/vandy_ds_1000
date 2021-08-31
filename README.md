@@ -2,9 +2,7 @@
 
 Please find the syllabus (updated frequently) [at this link](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/DS-1000-Syllabus.html)
 
-
 Instructor Emails and Office Hours:
-
 
 Prof. Clinton: _josh.clinton@vanderbilt.edu_
 [Office Hours Signup](https://calendly.com/josh-clinton/office-hours-meeting)
@@ -12,7 +10,6 @@ Prof. Clinton: _josh.clinton@vanderbilt.edu_
 
 Prof. Doyle: _w.doyle@vanderbilt.edu_
 [Office Hours Signup](https://outlook.office365.com/owa/calendar/WillDoyle@Vanderbilt365.onmicrosoft.com/bookings/)
-
 
 Teaching Assistants:
 
