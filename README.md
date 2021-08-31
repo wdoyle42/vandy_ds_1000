@@ -34,7 +34,7 @@ Survey Results: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectu
 
 #### 2\. Hello, World!
 
-Lecture notes: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.html) [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.pdf) [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.Rmd)
+Lecture notes: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.html) [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.pdf) [.Rmd](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.Rmd)
 
 Data: [College Debt Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture2_HelloWorld/sc_debt.Rds)
 
