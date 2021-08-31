@@ -38,6 +38,8 @@ Data: [College Debt Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lec
 
 [Assignment 1, Due 11:59 pm Monday August 30](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/01-assignment.html)
 
+[Assignment 2, Due 11:59 pm Monday September 6](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/01-assignment.html)
+
 
 ### Guided Exercises
 
