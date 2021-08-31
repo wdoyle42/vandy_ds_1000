@@ -2,6 +2,27 @@
 
 Please find the syllabus (updated frequently) [at this link](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/DS-1000-Syllabus.html)
 
+
+Instructor Emails and Office Hours:
+
+
+Prof. Clinton: _josh.clinton@vanderbilt.edu_
+[Office Hours Signup](https://calendly.com/josh-clinton/office-hours-meeting)
+
+
+Prof. Doyle: _w.doyle@vanderbilt.edu_
+[Office Hours Signup](https://outlook.office365.com/owa/calendar/WillDoyle@Vanderbilt365.onmicrosoft.com/bookings/)
+
+
+Teaching Assistants:
+
+Mellissa Meisels: _mellissa.b.meisels@vanderbilt.edu_
+[Office Hours: Mondays 4-5](https://calendly.com/mellissa-b-meisels/officehours?month=2021-08)
+
+Qi Xu: _qi.xu.1@vanderbilt.edu_ 
+[Office Hours Mondays 3-4](https://calendly.com/qi-xu/ds1000-office-hours-qi-xu?month=2021-08) 
+
+
 ### Lecture Notes, Data and Code for Each Topic 
 
 *Note: When new readings or async videos are available, they will be linked under the appropriate week.*
