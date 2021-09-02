@@ -134,37 +134,47 @@ df%>%
   summarize(mean_adm_rate=mean(adm_rate,na.rm=TRUE))
 ```
 
-*Quick Exercise* Calculate average earnings for schools where SAT\>1200
+*Quick Exercise* Calculate average earnings for schools where SAT\>1200 & the admissions rate is between 10 and 20 percent. 
 
 
 ## Mutate
 
+`mutate` is the verb for changing variables in R. Let's say we want to create a variable that's set to 1 if the college admits less than 10 percent of the students who apply. 
+
+```{r}
+df<-df%>%
+  mutate(selective=ifelse(adm_rate<=10,1,0))
+
+```
+
+Or what if we want to create another new variable that changes the admissions rate from its current proportion to a percent?
+
+```{r}
+df<-df%>%
+  mutate(adm_rate_pct=adm_rate*100)
+```
+
+To figure out if that worked we can use `summarize`
+```{r}
+df%>%
+  summarize(mean_adm_rate_pct=mean(adm_rate_pct,na.rm=TRUE))
+```
+
+*Quick exercise: create a new variable that's set to 1 if the college has more than 10,000 undergraduate students *
 
 ## Plotting Data
 
-The last basic tool for looking at a dataset is plotting the data. The code below creates a scatterplot of admission rates by average SAT scores
+Below is a plot of earnings of by SAT scores 
 
 ```{r plotting}
 ## Plotting: bivariate
-gg<-ggplot(data=df,aes(x=sat_avg,y=adm_rate))
-gg<-gg+geom_point()
-gg<-gg+geom_smooth()
-gg
+df%>%
+  ggplot(aes(x=sat_avg,y=md_earn_wne_p6))+
+  geom_point()
 ```
 
+*Quick exercise: plot earnings by admission rate only for schools in California*
+
+*Quick exercise Replicate the above plots, but put debt level on the y axis.*
 
 
-
-*Quick exercise* Replicate the above plots, but put debt level on the y axis.
-
-*Stretch Items*
-
-If you have extra time, you can do the following:
-
-1.  Calculate the average earnings for individuals at the most selective colleges, then compare that with individuals at the least selective colleges in the dataset.
-
-2.  Find a way to determine whether colleges with very high SAT scores tend to have higher or lower debt than colleges with low SAT scores.
-
-3.  Plot the relationship between SAT and debt. What do you see? Does this surprise you?
-
-4.  Now, provide separate plots for SAT and debt by control of the institution.
