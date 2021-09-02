@@ -38,6 +38,8 @@ Lecture notes: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectur
 
 Data: [College Debt Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture2_HelloWorld/sc_debt.Rds)
 
+Part 2 of lecture notes: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld_part2.html) [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld_part2.pdf) [.Rmd](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld_part2.Rmd)
+
 #### 3\.  Data Wrangling
 
 #### 4\. Univariate Data Analysis
