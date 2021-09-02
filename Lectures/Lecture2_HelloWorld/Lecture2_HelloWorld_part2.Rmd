@@ -1,0 +1,170 @@
+---
+output: html_document
+---
+
+
+## Load relevant libraries
+```{r}
+## Get necessary libraries-- won't work the first time, because you need to install them!
+library(tidyverse)
+```
+
+## Load The Data
+```{r}
+df<-readRDS("sc_debt.Rds") 
+names(df)
+```
+
+| Name           | Definition                                                                                                                                                                                             |
+|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| unitid         | Unit ID                                                                                                                                                                                                |
+| instnm         | Institution Name                                                                                                                                                                                       |
+| stabbr         | State Abbreviation                                                                                                                                                                                     |
+| grad_debt_mdn  | Median Debt of Graduates                                                                                                                                                                               |
+| control        | Control Public or Private                                                                                                                                                                              |
+| region         | Census Region                                                                                                                                                                                          |
+| preddeg        | Predominant Degree Offered: Associates or Bachelors                                                                                                                                                    |
+| openadmp       | Open Admissions Policy: 1= Yes, 2=No,3=No 1st time students                                                                                                                                            |
+| adm_rate       | Admissions Rate: proportion of applications accepted                                                                                                                                                   |
+| ccbasic        | Type of institution-- see [here](https://data.ed.gov/dataset/9dc70e6b-8426-4d71-b9d5-70ce6094a3f4/resource/658b5b83-ac9f-4e41-913e-9ba9411d7967/download/collegescorecarddatadictionary_01192021.xlsx) |
+| selective      | Institution admits fewer than 10 % of applicants, 1=Yes, 0=No                                                                                                                                          |
+| research_u     | Institiution is a research university 1=Yes, 0=No                                                                                                                                                      |
+| sat_avg        | Average Sat Scores                                                                                                                                                                                     |
+| md_earn_wne_p6 | Average Earnings of Recent Graduates                                                                                                                                                                   |
+|ugds  | Number of undergraduates |
+
+## Looking at datasets
+
+We can use "glimpse" to see what's in a dataset 
+```{r}
+glimpse(df)
+```
+
+
+## Filter, Select, Arrange
+
+In exploring data, many times we want to look at smaller parts of the dataset. There are three commands we'll use today that help with this.
+
+\-`filter` selects only those cases or rows that meet some logical criteria.
+
+\-`select` selects only those variables or columns that meet some criteria
+
+\-`arrange` arranges the rows of a dataset in the way we want.
+
+For more on these, please see this [vignette](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html).
+
+
+We can look at the first 5 rows:
+```{r}
+head(df)
+```
+
+Or the last 5 rows:
+
+```{r}
+tail(df)
+```
+
+
+## Using filter in combination with other commands
+
+`filter` can be used with any command that retruns true or false. This can be really powerful, for instance the command `str_detect` "detects" the relevant string in the data, so we can look for any college with the word "Colorado" in its name. 
+
+```{r}
+df%>%
+  filter(str_detect(instnm,"Colorado"))%>%
+  select(instnm,adm_rate,sat_avg)
+```
+
+## Reminder: logical operators
+
+-   `>`, `<`: greater than, less than
+-   `>=`, `<=`: greater than or equal to, less than or equal to
+-   `!` :not, as in `!=` not equal to
+-   `&` AND
+-   `|` OR
+
+*Quick Exercise: Select Colleges with either Colorado OR California in their names*
+
+
+## Extending Select
+
+Select can also be used with other characteristics. 
+
+For quick guide on this: https://dplyr.tidyverse.org/reference/select.html
+
+
+
+```{r}
+df%>%
+  select(contains("region"))
+```
+
+## To select only numeric variables
+```{r}
+df%>%
+  select(where(is.numeric))
+```
+
+*Quick Exercise* Use the same setup to select only character variables (`is.character`)
+
+## Summarizing Data
+
+To summarize data, we use the summarize command. Inside that command, we tell R two things: what to call the new object (a data frame, really) that we're creating, and what numerical summary we would like. The code below summarizes median debt for the colleges in the dataset by calculating the average of median debt for all institutions.
+
+```{r summarize}
+df%>%
+  summarize(mean_debt=mean(grad_debt_mdn,na.rm=TRUE))
+
+df%>%
+  summarize(median_debt=median(grad_debt_mdn,na.rm=TRUE))
+
+
+```
+
+*Quick Exercise* Summarize the average entering SAT scores in this dataset.
+
+## Combining Commands
+
+We can also combine commands, so that summaries are done on only a part of the dataset. Below, we summarize median debt for selective schools, and not very selective schools.
+
+```{r combining commands}
+df%>%
+  filter(stabbr=="CA")%>%
+  summarize(mean_adm_rate=mean(adm_rate,na.rm=TRUE))
+```
+
+*Quick Exercise* Calculate average earnings for schools where SAT\>1200
+
+
+## Mutate
+
+
+## Plotting Data
+
+The last basic tool for looking at a dataset is plotting the data. The code below creates a scatterplot of admission rates by average SAT scores
+
+```{r plotting}
+## Plotting: bivariate
+gg<-ggplot(data=df,aes(x=sat_avg,y=adm_rate))
+gg<-gg+geom_point()
+gg<-gg+geom_smooth()
+gg
+```
+
+
+
+
+*Quick exercise* Replicate the above plots, but put debt level on the y axis.
+
+*Stretch Items*
+
+If you have extra time, you can do the following:
+
+1.  Calculate the average earnings for individuals at the most selective colleges, then compare that with individuals at the least selective colleges in the dataset.
+
+2.  Find a way to determine whether colleges with very high SAT scores tend to have higher or lower debt than colleges with low SAT scores.
+
+3.  Plot the relationship between SAT and debt. What do you see? Does this surprise you?
+
+4.  Now, provide separate plots for SAT and debt by control of the institution.
