@@ -92,6 +92,7 @@ names(df)
 | sat_avg        | Average Sat Scores                                                                                                                                                                                     |
 | md_earn_wne_p6 | Average Earnings of Recent Graduates                                                                                                                                                                   |
 |ugds  | Number of undergraduates |
+| costt4a | Average cost of attendance (tuition-grants) |
 
 ## Looking at datasets
 
@@ -211,6 +212,23 @@ df%>%
 
 *Quick Exercise* Calculate average earnings for schools where SAT\>1200
 
+
+```{r}
+df%>%
+  filter(sat_avg>1200)%>%
+  summarize(avg_earnings=mean(md_earn_wne_p6,na.rm=TRUE))
+
+```
+
+
+```{r}
+df%>%
+  filter(sat_avg<1200&sat_avg>1000)%>%
+  summarize(avg_earnings=mean(md_earn_wne_p6,na.rm=TRUE))
+
+```
+
+
 ## Plotting Data
 
 The last basic tool for looking at a dataset is plotting the data. The code below creates a scatterplot of admission rates by average SAT scores
@@ -223,7 +241,35 @@ gg<-gg+geom_smooth()
 gg
 ```
 
+
+```{r}
+df%>%
+  ggplot(aes(x=sat_avg,y=adm_rate))+
+  geom_point()+
+  geom_smooth()
+```
+
+
+```{r}
+gg<-ggplot(data=df,aes(x=sat_avg,y=grad_debt_mdn))
+gg<-gg+geom_point()
+gg<-gg+geom_smooth()
+gg
+```
+
+
 *Quick exercise* Replicate the above plots, but put debt level on the y axis.
+
+
+*How would we calculate expected debt in the middle range of SAT?*
+
+```{r}
+df%>%
+  filter(sat_avg>1000&sat_avg<1200)%>%
+  summarize(median_debt=median(grad_debt_mdn,na.rm=TRUE))
+```
+
+
 
 ## Your first commit: Hello, World!
 

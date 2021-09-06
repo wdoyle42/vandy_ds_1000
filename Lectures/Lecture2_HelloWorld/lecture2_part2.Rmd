@@ -79,21 +79,6 @@ df%>%
   select(instnm,adm_rate,sat_avg)
 ```
 
-
-```{r}
-df%>%
-  filter(str_detect(instnm,"Colorado") | str_detect(instnm,"California"))%>%
-  select(instnm,adm_rate,sat_avg)
-```
-
-```{r}
-df%>%
-  filter(str_detect(instnm,"Colorado|California"))%>%
-  select(instnm,adm_rate,sat_avg)
-```
-
-
-
 ## Reminder: logical operators
 
 -   `>`, `<`: greater than, less than
@@ -123,14 +108,6 @@ df%>%
 df%>%
   select(where(is.numeric))
 ```
-
-
-## To select only numeric variables
-```{r}
-df%>%
-  select(where(is.character))
-```
-
 
 *Quick Exercise* Use the same setup to select only character variables (`is.character`)
 
@@ -169,7 +146,7 @@ df%>%
 
 ```{r}
 df<-df%>%
-  mutate(selective=ifelse(adm_rate<=.1,1,0))
+  mutate(selective=ifelse(adm_rate<=10,1,0))
 
 ```
 
@@ -188,21 +165,6 @@ df%>%
 
 *Quick exercise: create a new variable that's set to 1 if the college has more than 10,000 undergraduate students *
 
-```{r}
-df<-df%>%
-  mutate(big=ifelse(ugds>=10000,1,0))
-
-```
-
-```{r}
-df%>%
-  filter(sat_avg>1000&sat_avg<1200)%>%
-  ggplot(aes(x=sat_avg,y=adm_rate))+
-  geom_point()
-```
-
-
-
 ## Plotting Data
 
 Below is a plot of earnings of by SAT scores 
@@ -217,5 +179,4 @@ df%>%
 *Quick exercise: plot earnings by admission rate only for schools in California*
 
 *Quick exercise Replicate the above plots, but put debt level on the y axis.*
-
 
