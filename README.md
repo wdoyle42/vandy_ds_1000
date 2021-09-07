@@ -45,6 +45,10 @@ Part 2 of lecture notes: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/m
 Lecture slides: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic3_DataWrangling/Topic3_DataWranglingLecture-Student.pdf)
 Lecture notes: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic3_DataWrangling/DataWrangling.pdf)
 
+[Michigan Exit Poll Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic3_DataWrangling/data/Final%20MI%20subset.Rdata)
+
+[Johns Hopkins Covid Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic3_DataWrangling/data/JohnsHopkinsStateCasesTS.csv)
+
 
 #### 4\. Univariate Data Analysis
 
@@ -63,7 +67,7 @@ Lecture notes: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures
 [Assignment 1, Due 11:59 pm Monday August 30](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/01-assignment.html)
 
 [Assignment 2, Due 11:59 pm Monday September 6](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/02-assignment.html)
-
+s
 [Assignment 2 Walkthrough](https://youtu.be/GjhLjdI8Slc)
 [Assignment 2 Key](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/02-assignment-key.Rmd)
 
