@@ -42,6 +42,10 @@ Part 2 of lecture notes: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/m
 
 #### 3\.  Data Wrangling
 
+Lecture slides: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic3_DataWrangling/Topic3_DataWranglingLecture-Student.pdf)
+Lecture notes: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic3_DataWrangling/DataWrangling.pdf)
+
+
 #### 4\. Univariate Data Analysis
 
 #### 5\. Conditional Means
