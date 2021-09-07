@@ -64,6 +64,8 @@ Lecture notes: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures
 
 [Assignment 2, Due 11:59 pm Monday September 6](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/02-assignment.html)
 
+[Assignment 2 Walkthrough](https://youtu.be/GjhLjdI8Slc)
+[Assignment 2 Key](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/02-assignment-key.Rmd)
 
 ### Guided Exercises
 
