@@ -47,6 +47,7 @@ Lecture notes: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures
 
 [Michigan Exit Poll Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic3_DataWrangling/data/Final%20MI%20subset.Rdata)
 
+
 [Johns Hopkins Covid Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic3_DataWrangling/data/JohnsHopkinsStateCasesTS.csv)
 
 
@@ -71,6 +72,8 @@ s
 [Assignment 2 Walkthrough](https://youtu.be/GjhLjdI8Slc)
 [Assignment 2 Key](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/02-assignment-key.Rmd)
 
+
+[Assignment 3](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/03-assignment.html)
 ### Guided Exercises
 
 
