@@ -221,7 +221,9 @@ pre code {
 <li>Categorical: unordered– an unordered categorical variable has no sensible ordering that can be applied. Think about something like college major. There’s no “number” we might apply to philosophy that has any meaningful distance from a number we might apply to chemical engineering.</li>
 </ul>
 <p>Unlike an ordered variable, an unordered categorical variable should be ordered in terms of the proportions falling into each of the categories. As with an unordered variable, it’s best just to show the proportions in each category for variables with less than ten levels. The mode is a reasonable single variable summary of an unordered categorical variable.</p>
-<p>-Categorical: unordered, binary– this kind of variable has no particular order, but can be just binary. A “1” means that the case has that characteristics, a “0” means the case does not have that characteristic. For instance, whether a tree is deciduous or not.</p>
+<ul>
+<li>Categorical: unordered, binary– this kind of variable has no particular order, but can be just binary. A “1” means that the case has that characteristics, a “0” means the case does not have that characteristic. For instance, whether a tree is deciduous or not.</li>
+</ul>
 <p>An unordered binary variable can also be summarized by the mean, which is the same thing as the proportion of the sample with that characteristic.</p>
 <p>In R, categorical variables CAN be stored as text or numbers. Don’t count on the data to help you out– you as the analyst need to figure this out.</p>
 <p>We probably need to talk about factors. <SIGH> In R, a factor is a way of storing categorical variables. The factor provides additional information, including an ordering of the variable and a number assigned to each “level” of the factor. A categorical variable is a general term that’s understood across statistics. A factor variable is a specific R term. Most of the time it’s best not to have a categorical variable structured as a factor unless you know you want it to be a factor. More on this later . . .</p>
@@ -231,14 +233,15 @@ pre code {
 <p>I’m going to walk you through how an analyst might typically decide what type of variables they’re working with. It generally works like this:</p>
 <ol style="list-style-type: decimal">
 <li>Take a look at a few observations and form a guess as to what type of variable it is.</li>
-<li>Based on that guess, create an appropriate plot or table.</li>
+<li>Based on that guess, create an appropriate plot or table.Plots are generally used for continuous variables, while tables mostly are helpful in sorting out categorical variables. No promises, though.<br />
+</li>
 <li>If the plot or table looks as expected, calculate some summary measures. If not, go back to 1.</li>
 </ol>
 </div>
 <div id="glimpse-to-start-whats-in-here-anyway" class="section level2">
 <h2>“Glimpse” to start: what’s in here anyway?</h2>
-<p>Basically the first thing we’re going to do with any dataset is just to take a quick look. We can call the data itself, but that will just show the first few cases and the first few variables. Far better is the glimpse command, which shows us all variables and the first few observations for all of the variables. Here’s a link to the codebook for this dataset:</p>
-<p>The six variables we’re going to think about are field goals, free throw percentage, college attended, rookie season,</p>
+<p>Basically the first thing we’re going to do with any dataset is just to take a quick look. We can call the data itself, but that will just show the first few cases and the first few variables. Far better is the glimpse command, which shows us all variables and the first few observations for all of the variables. <a href="https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture4Univariate/nba_players_2018.html">Here’s a link to the codebook for this dataset</a>.</p>
+<p>The six variables we’re going to think about are field goals, free throw percentage, college attended, rookie season, conference and nba seasons played.</p>
 <pre class="r"><code>glimpse(nba)</code></pre>
 <pre><code>## Rows: 530
 ## Columns: 37
@@ -282,7 +285,6 @@ pre code {
 </div>
 <div id="continuous" class="section level2">
 <h2>Continuous</h2>
-<p>Field goals</p>
 <p>Let’s start by taking a look at field goals. It seems pretty likely that this is a continuous variable. Let’s take a look at the top 50 spots.</p>
 <pre class="r"><code>nba%&gt;% ## Start with the dataset
   select(namePlayer,slugTeam,fgm)%&gt;% ## and then select a few variables
@@ -635,18 +637,50 @@ pre code {
 ## 49 Missouri                   2
 ## 50 Murray State               2
 ## # … with 7 more rows</code></pre>
+<pre class="r"><code>nba%&gt;%
+  filter(!is.na(org))%&gt;%
+  filter(!org==&quot;Other&quot;)%&gt;%
+  filter(!str_detect(org,&quot;CB|KK|rytas|FC|B.C.|S.K.|Madrid&quot;))%&gt;%
+  group_by(org)%&gt;%
+  count(name=&quot;total_in_group&quot;)%&gt;%
+  ungroup()%&gt;%
+  mutate(proportion=total_in_group/sum(total_in_group))%&gt;%
+  arrange(-proportion)</code></pre>
+<pre><code>## # A tibble: 57 × 3
+##    org                    total_in_group proportion
+##    &lt;fct&gt;                           &lt;int&gt;      &lt;dbl&gt;
+##  1 Kentucky                           25     0.0933
+##  2 Duke                               17     0.0634
+##  3 California-Los Angeles             15     0.0560
+##  4 Kansas                             11     0.0410
+##  5 Arizona                            10     0.0373
+##  6 Texas                              10     0.0373
+##  7 North Carolina                      9     0.0336
+##  8 Michigan                            8     0.0299
+##  9 Villanova                           7     0.0261
+## 10 Indiana                             6     0.0224
+## # … with 47 more rows</code></pre>
 </div>
 <div id="categorica-unordered-binary" class="section level2">
 <h2>Categorica: unordered, binary</h2>
-<p>Conference</p>
+<p>Let’s look at the nba conferences.</p>
 <pre class="r"><code>nba%&gt;%select(idConference)%&gt;%
   glimpse()</code></pre>
 <pre><code>## Rows: 530
 ## Columns: 1
 ## $ idConference &lt;int&gt; 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 2, 1, 2, 1, 1, 1, 1, 2, 2, …</code></pre>
-<p>It looks like conference is structured as numeric, but a “1” or a “2”. Because it’s best to have</p>
+<p>It looks like conference is structured as numeric, but a “1” or a “2”.</p>
+<p><em>Quick Exercise: Figure out which conference is 1 and which is 2</em></p>
+<p>Because it’s best to have this set up as a binary. It’s simple in this case: just subtract 1!</p>
 <pre class="r"><code>nba&lt;-nba%&gt;%
-  mutate</code></pre>
+  mutate(conference_bin=idConference-1)</code></pre>
+<p>And now we can summarize it:</p>
+<pre class="r"><code>nba%&gt;%
+  summarize(mean(conference_bin))</code></pre>
+<pre><code>## # A tibble: 1 × 1
+##   `mean(conference_bin)`
+##                    &lt;dbl&gt;
+## 1                  0.492</code></pre>
 </div>
 <div id="analysis" class="section level2">
 <h2>Analysis</h2>

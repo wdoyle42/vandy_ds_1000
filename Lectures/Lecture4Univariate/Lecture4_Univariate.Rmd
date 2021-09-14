@@ -59,7 +59,7 @@ The mean of a binary variable is exactly the same thing as the proportion of the
 
 Unlike an ordered variable, an unordered categorical variable should be ordered in terms of the proportions falling into each of the categories. As with an unordered variable, it's best just to show the proportions in each category for variables with less than ten levels. The mode is a reasonable single variable summary of an unordered categorical variable. 
 
--Categorical: unordered, binary-- this kind of variable has no particular order, but can be just binary. A "1" means that the case has that characteristics, a "0" means the case does not have that characteristic. For instance, whether a tree is deciduous or not.
+- Categorical: unordered, binary-- this kind of variable has no particular order, but can be just binary. A "1" means that the case has that characteristics, a "0" means the case does not have that characteristic. For instance, whether a tree is deciduous or not.
 
 An unordered binary variable can also be summarized by the mean, which is the same thing as the proportion of the sample with that characteristic. 
 
@@ -72,26 +72,22 @@ We probably need to talk about factors. <SIGH> In R, a factor is a way of storin
 I'm going to walk you through how an analyst might typically decide what type of variables they're working with. It generally works like this:
 
 1. Take a look at a few observations and form a guess as to what type of variable it is.
-2. Based on that guess, create an appropriate plot or table. 
+2. Based on that guess, create an appropriate plot or table.Plots are generally used for continuous variables, while tables mostly are helpful in sorting out categorical variables. No promises, though.  
 3. If the plot or table looks as expected, calculate some summary measures. If not, go back to 1. 
 
 ## "Glimpse" to start: what's in here anyway?
 
-Basically the first thing we're going to do with any dataset is just to take a quick look. We can call the data itself, but that will just show the first few cases and the first few variables. Far better is the glimpse command, which shows us all variables and the first few observations for all of the variables. Here's a link to the codebook for this dataset:
+Basically the first thing we're going to do with any dataset is just to take a quick look. We can call the data itself, but that will just show the first few cases and the first few variables. Far better is the glimpse command, which shows us all variables and the first few observations for all of the variables. [Here's a link to the codebook for this dataset](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture4Univariate/nba_players_2018.html).
 
-
-
-The six variables we're going to think about are field goals, free throw percentage, college attended, rookie season, 
+The six variables we're going to think about are field goals, free throw percentage, college attended, rookie season, conference and nba seasons played.
 
 ```{r}
 glimpse(nba)
 ```
 
 
-
 ## Continuous
 
-Field goals
 
 Let's start by taking a look at field goals. It seems pretty likely that this is a continuous variable. Let's take a look at the top 50 spots. 
 
@@ -121,9 +117,7 @@ Now, technically field goals don't meet the definition I set out above as being 
 
 *Quick Exercise: Do the same thing for field goal percentage and think about what kind of variable it is*
 
-
 ## Measures for Continuous Variables
-
 
 The mean is used most of the time for continuous variables, but it's VERY sensitive to outliers. The median (50th percentile) is usually better, but it can be difficult to explain to general audiences. 
 
@@ -167,7 +161,6 @@ nba%>%
   ungroup()%>%
   mutate(proportion=total_in_group/sum(total_in_group))
 ```
-
 
 What does this tell us? 
 
@@ -228,21 +221,44 @@ nba%>%
   print(n=50)
 ```
 
+```{r}
+nba%>%
+  filter(!is.na(org))%>%
+  filter(!org=="Other")%>%
+  filter(!str_detect(org,"CB|KK|rytas|FC|B.C.|S.K.|Madrid"))%>%
+  group_by(org)%>%
+  count(name="total_in_group")%>%
+  ungroup()%>%
+  mutate(proportion=total_in_group/sum(total_in_group))%>%
+  arrange(-proportion)
+```
+
 
 ## Categorica: unordered, binary
 
-Conference
+Let's look at the nba conferences.
 
 ```{r}
 nba%>%select(idConference)%>%
   glimpse()
 ```
 
-It looks like conference is structured as numeric, but a "1" or a "2". Because it's best to have 
+It looks like conference is structured as numeric, but a "1" or a "2". 
+
+*Quick Exercise: Figure out which conference is 1 and which is 2*
+
+Because it's best to have this set up as a binary. It's simple in this case: just subtract 1!
 
 ```{r}
 nba<-nba%>%
-  mutate
+  mutate(conference_bin=idConference-1)
+```
+
+And now we can summarize it:
+
+```{r}
+nba%>%
+  summarize(mean(conference_bin))
 ```
 
 
@@ -263,7 +279,6 @@ nba%>%
   print(n=50)
 
 ```
-
 
 Next, what about field goal percentage? 
 
