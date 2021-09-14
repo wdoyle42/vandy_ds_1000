@@ -57,6 +57,10 @@ Lecture Notes: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lecture
 
 Dataset:[nba_players.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture4Univariate/nba_players_2018.Rds)
 
+[Codebook for dataset](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture4Univariate/nba_players_2018.html)
+
+[If you're interested, code to access the NBA reference database](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture4Univariate/nba_players.R)
+
 #### 5\. Conditional Means
 
 #### 6\. Linear Regression
