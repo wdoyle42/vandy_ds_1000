@@ -53,6 +53,10 @@ Lecture notes: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures
 
 #### 4\. Univariate Data Analysis
 
+Lecture Notes: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture4Univariate/Lecture4_Univariate.Rmd) [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture4Univariate/Lecture4_Univariate.pdf) [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture4Univariate/Lecture4_Univariate.html)
+
+Dataset:[nba_players.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture4Univariate/nba_players_2018.Rds)
+
 #### 5\. Conditional Means
 
 #### 6\. Linear Regression

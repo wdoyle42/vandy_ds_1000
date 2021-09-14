@@ -3,8 +3,8 @@ title: "Univariate Descriptives"
 author: "Will Doyle"
 date: "9/9/2021"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ```{r}
