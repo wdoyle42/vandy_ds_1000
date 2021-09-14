@@ -83,6 +83,8 @@ Dataset: [nba_players.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Le
 
 [Assignment 3, Due 11:59 pm Monday September 13](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/03-assignment.html)
 
+[Assignment 3 Key](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/03-assignment-key.Rmd)
+
 ### Guided Exercises
 
 
