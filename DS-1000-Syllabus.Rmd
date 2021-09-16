@@ -153,6 +153,9 @@ Wickham \& Grolemund, Chapter 3
 
 *Lesson Notes*
 
+
+
+
 ###  Univariate Data Visualization Using `ggplot`
 
 Thursday, September 9, 2021^[Note, this lecture and the next may take 3 lectures.]
@@ -178,7 +181,6 @@ Wickham \& Grolemund, Chapter 1
 *Lesson Notes*
 
 
-Assignment 3 Due September 13, Midnight
 
 ### Sampling, Resampling, and Measuring (Some) Uncertainty: Two Amazing Results
 

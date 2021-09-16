@@ -66,7 +66,7 @@ Lecture Notes, Part 2:[.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/
 
 Dataset: [game_summary.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture4Univariate/game_summary.Rds) 
 
-[Codebook for game_summary.Rds]()
+[Codebook for game_summary.Rds](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture4Univariate/game_summary_codebook.html)
 
 [If you're interested, code to access the NBA reference database for player-level data](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture4Univariate/nba_players.R)
 

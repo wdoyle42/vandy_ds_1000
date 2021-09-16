@@ -7,7 +7,12 @@ games<-game_logs(seasons=2017:2019)
 
 game_summary<-games%>%
   filter(typeSeason=="Regular Season")%>%
-  group_by(idGame,yearSeason, dateGame,idTeam,nameTeam,locationGame)%>%
+  group_by(idGame,
+           yearSeason, 
+           dateGame,
+           idTeam,
+           nameTeam,
+           locationGame)%>% ## Data is player level, this groups at game level
   summarize(tov=sum(tov),
             pts=sum(pts),
             treb=sum(treb),
