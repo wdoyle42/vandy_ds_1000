@@ -70,7 +70,7 @@ Dataset: [game_summary.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/L
 
 [If you're interested, code to access the NBA reference database for player-level data](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture4Univariate/nba_players.R)
 
-[If you're interested, code to access the NBA reference database for game-level data](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture4Univariate/nba_games.R)
+[If you're interested, code to access the NBA reference database for game-level data](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture4Univariate/nba_teams.R)
 
 
 #### 5\. Conditional Means

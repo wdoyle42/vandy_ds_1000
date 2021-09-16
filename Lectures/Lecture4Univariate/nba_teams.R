@@ -1,7 +1,5 @@
 library(tidyverse)
-library(nbastatR)
-
-
+library(nbastatR) ## You'll need to get this library
 
 Sys.setenv("VROOM_CONNECTION_SIZE" = 131072 * 2)
 
