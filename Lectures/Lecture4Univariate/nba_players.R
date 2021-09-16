@@ -1,6 +1,9 @@
 library(nbastatR)
 library(tidyverse)
 
+## To get nbastatR:
+## library(devtools) # need to get and install
+## install_github(abresler/nbastatR)
 
 Sys.setenv("VROOM_CONNECTION_SIZE" = 131072 * 2)
 

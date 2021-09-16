@@ -1,6 +1,10 @@
 library(tidyverse)
 library(nbastatR) ## You'll need to get this library
 
+## To get nbastatR:
+## library(devtools) # need to get and install
+## install_github(abresler/nbastatR)
+
 Sys.setenv("VROOM_CONNECTION_SIZE" = 131072 * 2)
 
 games<-game_logs(seasons=2017:2019)

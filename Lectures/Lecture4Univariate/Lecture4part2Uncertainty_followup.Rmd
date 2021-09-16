@@ -394,19 +394,26 @@ Again, yes but just barely.
 We can undertake the steps above using R's built-in capabilities. Below I create a dataset that's structured for bootstrap resampling:
 
 ```{r}
-boot_2017<-bootstraps(gms%>%filter(yearSeason==2017),times = 10000)
+bs_prop<-gms%>%
+  filter(yearSeason==2017)%>%
+  count()%>%
+  summarize(prop=sample_size/n)%>%
+  as_vector()
+  
+  boot_2017<-mc_cv(gms%>%filter(yearSeason==2017),
+                   prop=1-bs_prop,
+                   times = 10000)
 ```
 
 This is what's called a "splits" data structure. It splits the data into two parts: one part will be used in the analysis, one part will be held out. For reasons that escape me, the command only allows the data to be split 90/10, with 90 percent held out for analysis and 10 percent for assessment.  
 
 The function below takes the data (in split format), samples each element down to the specified sample size (100 in our case) and then pulls the turnover variable `tov`. It then returns a dataset that includes just the mean of the specified variable, in this case `tov`.
 ```{r}
-sample_size=100
+
 
 calc_tov_mean_winners <- function(split){
   dat <- assessment(split) %>% ## create an object called dat from each "split" of the data
     filter(isWin)%>% ## filter just for winners
-    sample_n(size=sample_size)%>% ## Sample the split down to 100
     pull(tov) ## pull just turnovers
 
   # Put it in this tidy format to use int_pctl
@@ -418,7 +425,6 @@ calc_tov_mean_winners <- function(split){
 calc_tov_mean_losers <- function(split){
   dat <- assessment(split) %>% ## create an object called dat from each "split" of the data
     filter(!isWin)%>% ## filter just for losers
-    sample_n(size=sample_size)%>% ## Sample the split down to 100
     pull(tov) ## pull just turnovers
 
   # Put it in this tidy format to use int_pctl
@@ -429,12 +435,24 @@ calc_tov_mean_losers <- function(split){
 ```
 
 ```{r}
+boot_2017$splits[[1]]%>%
+  assessment()%>%
+  filter(isWin)%>%
+  sample_n(size=sample_size)
+```
+
+
+```{r}
 results_winners<-boot_2017%>% ## start with the resampled dataset
   mutate(tov_mean= ## mutate to create a column called tov_mean 
            map(splits,calc_tov_mean_winners))  ## map the "calc" function onto each split
         
 results_winners%>%
-  int_pctl(tov_mean)
+  select(tov_mean)%>%
+  unnest()%>%
+  summarize(pct_025=quantile(estimate,.025),
+            pct_075=quantile(estimate,.975))
+
 
 results_winners%>%
   select(tov_mean)%>%
@@ -445,15 +463,22 @@ results_winners%>%
 results_losers<-boot_2017%>% ## start with the resampled dataset
   mutate(tov_mean= ## mutate to create a column called tov_mean 
            map(splits,calc_tov_mean_losers))  ## map the "calc" function onto each split
-        
-results_losers%>%int_pctl(tov_mean)
+  
+    
+results_losers%>%
+  select(tov_mean)%>%
+  unnest()%>%
+  summarize(pct_025=quantile(estimate,.025),
+            pct_075=quantile(estimate,.975))
 
 
-results_winners%>%
+results_losers%>%
   select(tov_mean)%>%
   unnest(cols=tov_mean)%>%
   ggplot(aes(x=estimate))+
   geom_density()
+
+
 
 ```
 
