@@ -53,13 +53,25 @@ Lecture notes: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures
 
 #### 4\. Univariate Data Analysis
 
-Lecture Notes: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture4Univariate/Lecture4_Univariate.Rmd) [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture4Univariate/Lecture4_Univariate.pdf) [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture4Univariate/Lecture4_Univariate.html)
+Lecture Notes, Part 1: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture4Univariate/Lecture4_Univariate.Rmd) [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture4Univariate/Lecture4_Univariate.pdf) [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture4Univariate/Lecture4_Univariate.html)
 
 Dataset: [nba_players.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture4Univariate/nba_players_2018.Rds)
 
-[Codebook for dataset](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture4Univariate/nba_players_2018.html)
+[Codebook for nba_players.Rds](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture4Univariate/nba_players_2018.html)
+
+
+
+Lecture Notes, Part 2:[.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture4Univariate/Lecture4_Univariate.Rmd)
+[PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture4Univariate/Lecture4_Univariate.pdf)
+[HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture4Univariate/Lecture4part2Uncertainty.html)
+
+Dataset: [game_summary.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture4Univariate/game_summary.Rds) 
+
+[Codebook for game_summary.Rds]()
 
 [If you're interested, code to access the NBA reference database](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture4Univariate/nba_players.R)
+
+
 
 #### 5\. Conditional Means
 
