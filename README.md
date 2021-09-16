@@ -60,7 +60,6 @@ Dataset: [nba_players.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Le
 [Codebook for nba_players.Rds](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture4Univariate/nba_players_2018.html)
 
 
-
 Lecture Notes, Part 2:[.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture4Univariate/Lecture4_Univariate.Rmd)
 [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture4Univariate/Lecture4_Univariate.pdf)
 [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture4Univariate/Lecture4part2Uncertainty.html)
@@ -69,8 +68,9 @@ Dataset: [game_summary.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/L
 
 [Codebook for game_summary.Rds]()
 
-[If you're interested, code to access the NBA reference database](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture4Univariate/nba_players.R)
+[If you're interested, code to access the NBA reference database for player-level data](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture4Univariate/nba_players.R)
 
+[If you're interested, code to access the NBA reference database for game-level data](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture4Univariate/nba_games.R)
 
 
 #### 5\. Conditional Means
