@@ -192,8 +192,8 @@ So for game winners:
 ```{r}
 gms_tov_rs%>%
   filter(isWin)%>%
-  summarize(pct_05=quantile(mean_tov,.025),
-            pct_95=quantile(mean_tov,.975))
+  summarize(pct_025=quantile(mean_tov,.025),
+            pct_975=quantile(mean_tov,.975))
 
 ```
 
@@ -203,8 +203,8 @@ And for game losers
 ```{r}
 gms_tov_rs%>%
   filter(!isWin)%>%
-  summarize(pct_05=quantile(mean_tov,.025),
-            pct_95=quantile(mean_tov,.975))
+  summarize(pct_025=quantile(mean_tov,.025),
+            pct_975=quantile(mean_tov,.975))
 ```
 
 This tells us that we can expect that game losers in future seasons will turn the ball over between ... 12.7 and 14.9 times. 
@@ -291,7 +291,7 @@ The tradeoff here is between providing a narrow range of values vs. the probabil
 
 ## Empirical Bootstrap
 
-What we just did is called the empirical bootstrap. It's massively useful, because it can be applied for any summary measure of the data: median, percentiles, and measures like regression coefficients. Here is the summary of steps for the empirical bootstrap:
+What we just did is called the [empirical bootstrap](https://ocw.mit.edu/courses/mathematics/18-05-introduction-to-probability-and-statistics-spring-2014/readings/MIT18_05S14_Reading24.pdf). It's massively useful, because it can be applied for any summary measure of the data: median, percentiles, and measures like regression coefficients. Here is the summary of steps for the empirical bootstrap:
 
 - Decide on the summary measure to be used for the variable (it doesn't have to be the mean)
 - Calculate the summary measure on a small subsample (called the bootstrap sample) of the data
@@ -345,15 +345,33 @@ results_winners<-boot_2017%>% ## start with the resampled dataset
   mutate(tov_mean= ## mutate to create a column called tov_mean 
            map(splits,calc_tov_mean_winners))  ## map the "calc" function onto each split
         
-results_winners%>%int_pctl(tov_mean)
+results_winners%>%
+  int_pctl(tov_mean)
+
+results_winners%>%
+  select(tov_mean)%>%
+  unnest(cols=tov_mean)%>%
+  ggplot(aes(x=estimate))+
+  geom_density()
 
 results_losers<-boot_2017%>% ## start with the resampled dataset
   mutate(tov_mean= ## mutate to create a column called tov_mean 
            map(splits,calc_tov_mean_losers))  ## map the "calc" function onto each split
         
 results_losers%>%int_pctl(tov_mean)
+
+
+results_winners%>%
+  select(tov_mean)%>%
+  unnest(cols=tov_mean)%>%
+  ggplot(aes(x=estimate))+
+  geom_density()
+
 ```
 
 
+## What's wrong with this particular application
+
+The idea here is that the interval applies to data drawn from the *exact same* data generating process. Usually that's in reference to new samples drawn from an infinitely large population. In this case, it's just subsequent seasons. But the NBA changes! In particular, the rules and the way the rules are enforced change over time, so it's not quite accurate to think of this as the exact same data generating process. 
 
 
