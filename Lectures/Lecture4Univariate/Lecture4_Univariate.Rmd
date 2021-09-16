@@ -88,7 +88,6 @@ glimpse(nba)
 
 ## Continuous
 
-
 Let's start by taking a look at field goals. It seems pretty likely that this is a continuous variable. Let's take a look at the top 50 spots. 
 
 ```{r}
@@ -117,6 +116,28 @@ Now, technically field goals don't meet the definition I set out above as being 
 
 *Quick Exercise: Do the same thing for field goal percentage and think about what kind of variable it is*
 
+```{r}
+nba%>% ## Start with the dataset
+  select(namePlayer,slugTeam,pctFG)%>% ## and then select a few variables
+  arrange(-pctFG)%>% ## arrange in reverse order of field goals
+  print(n=50) ## print out the top 50
+```
+
+```{r}
+nba%>%
+  ggplot(aes(x=pctFG))+
+  geom_density()
+```
+
+```{r}
+nba%>%
+  ggplot(aes(x=pctFG))+
+  geom_histogram()
+```
+
+
+
+
 ## Measures for Continuous Variables
 
 The mean is used most of the time for continuous variables, but it's VERY sensitive to outliers. The median (50th percentile) is usually better, but it can be difficult to explain to general audiences. 
@@ -131,7 +152,17 @@ nba%>%
 
 In this case I'd really prefer the mean as a single measure of field goal production, but depending on the audience I still might just go ahead and use the median. 
 
+
 *Quick Exercise: What measure would you prefer for field goal percentage? Why?*
+
+```{r}
+nba%>%
+  summarize(mean_fgm=mean(pctFG))
+
+nba%>%
+  summarize(median_fgm=median(pctFG))
+```
+
 
 ## Categorical: ordered
 
@@ -251,14 +282,14 @@ Because it's best to have this set up as a binary. It's simple in this case: jus
 
 ```{r}
 nba<-nba%>%
-  mutate(conference_bin=idConference-1)
+  mutate(west_conference_bin=idConference-1)
 ```
 
 And now we can summarize it:
 
 ```{r}
 nba%>%
-  summarize(mean(conference_bin))
+  summarize(mean(west_conference_bin))
 ```
 
 
@@ -274,15 +305,30 @@ nba%>%
   filter(!org=="Other")%>%
   filter(!str_detect(org,"CB|KK|rytas|FC|B.C.|S.K.|Madrid"))%>%
   group_by(org)%>%
-  summarize(mean_fg=sum(fgm))%>%
-  arrange(-mean_fg)%>%
+  summarize(total_fg=sum(fgm))%>%
+  arrange(-total_fg)%>%
   print(n=50)
 
 ```
 
 Next, what about field goal percentage? 
 
-## Top 50 Colleges by Average Field Goal Percent
+```{r}
+nba%>%
+  filter(!is.na(org))%>%
+  filter(!org=="Other")%>%
+  filter(!str_detect(org,"CB|KK|rytas|FC|B.C.|S.K.|Madrid"))%>%
+  group_by(org)%>%
+  summarize(mean_fg_pct=mean(pctFG))%>%
+  arrange(-mean_fg_pct)%>%
+  print(n=50)
+
+```
+
+
+
+
+## Top 50 Colleges by Average Free Throw Percent
 ```{r}
 nba%>%
   filter(!is.na(org))%>%
