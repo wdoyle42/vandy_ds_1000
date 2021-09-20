@@ -72,14 +72,16 @@ Dataset: [game_summary.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/L
 
 [If you're interested, code to access the NBA reference database for game-level data](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture4Univariate/nba_teams.R)
 
+#### 5\. Univariate Data Visualization
 
-#### 5\. Conditional Means
+Detailed Lecture Notes: [HTML](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/NationalPopularVote.html) 
 
-#### 6\. Linear Regression
+Lecture slides: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/Topic5_StudentCopy_VisualizationUnivariateGraphics.pdf)
 
-#### 7\. Binary Outcomes
+Dataset: [Pres2020.PV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/data/Pres2020.PV.Rdata) 
 
-#### 8\. Unsupervised Learning
+Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/StudentOutline_UnivariateDataViz.Rmd) 
+
 
 
 
