@@ -74,7 +74,7 @@ Dataset: [game_summary.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/L
 
 #### 5\. Univariate Data Visualization
 
-Detailed Lecture Notes: [HTML](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/NationalPopularVote.html) 
+Detailed Lecture Notes: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/NationalPopularVote.pdf) 
 
 Lecture slides: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/Topic5_StudentCopy_VisualizationUnivariateGraphics.pdf)
 
