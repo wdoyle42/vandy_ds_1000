@@ -47,8 +47,15 @@ Lecture notes: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures
 
 [Michigan Exit Poll Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic3_DataWrangling/data/Final%20MI%20subset.Rdata)
 
-
 [Johns Hopkins Covid Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic3_DataWrangling/data/JohnsHopkinsStateCasesTS.csv)
+
+*Readings/Resources*
+
+["The Gender gap was expected to be historic."](https://www.washingtonpost.com/dc-md-va/2020/11/06/election-2020-gender-gap-women/)
+
+["Exit polls, election surveys and more"](https://www.pewresearch.org/fact-tank/2018/11/01/exit-polls-election-surveys-and-more-a-guide-for-the-2018-midterms/)
+
+[Wickham \& Grolemund, Chapter 3](https://learning-oreilly-com.proxy.library.vanderbilt.edu/home/)
 
 
 #### 4\. Univariate Data Analysis
@@ -72,15 +79,17 @@ Dataset: [game_summary.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/L
 
 [If you're interested, code to access the NBA reference database for game-level data](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture4Univariate/nba_teams.R)
 
+#### 5\. Univariate Data Visualization
 
-#### 5\. Conditional Means
+Detailed Lecture Notes: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/NationalPopularVote.pdf) 
 
-#### 6\. Linear Regression
+Lecture slides: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/Topic5_StudentCopy_VisualizationUnivariateGraphics.pdf)
 
-#### 7\. Binary Outcomes
+Dataset: [Pres2020.PV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/data/Pres2020.PV.Rdata) 
 
-#### 8\. Unsupervised Learning
+Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/StudentOutline_UnivariateDataViz.Rmd) 
 
+[If interested: Challenger: The Final Flight](https://www.netflix.com/title/81012137)
 
 
 ### Assignments

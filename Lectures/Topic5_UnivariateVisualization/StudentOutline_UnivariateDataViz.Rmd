@@ -1,0 +1,109 @@
+---
+title: "Univariate Visualization Using `ggplot`"
+author: "YOUR NAME HERE"
+date: 9/21/21
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+#     Principles of Data Visualization: Do's and Don'ts
+
+INSERT NOTES/THOUGHTS HERE
+
+#     US COVID Map
+
+A popular representation of the pandemic is: https://coronavirus.jhu.edu/us-map
+
+I think this is a good/bad visualization because....
+
+#   Application National Popular Vote in 2020
+
+We are going to analyze data that...
+
+First load the data.  Note that the `Rdata` object is in a folder called "data".  If you want to put it in the same folder just delete that part.
+
+```{r}
+load(file="data/Pres2020.PV.Rdata")
+glimpse(Pres2020.PV)
+```
+
+#   Define some variables we need
+
+Create a variable called `margin` for Biden - Trump using `mutate`
+
+```{r}
+Pres2020.PV <- Pres2020.PV %>%
+  mutate()
+```
+
+#   Barplots
+
+We use a barplot for....
+
+The code to create a barplot using `ggplot` is....
+
+```{r}
+
+```
+
+# Everything is an object!
+
+Adding variable labels and a vertical line summarizing the mean:
+
+```{r}
+
+```
+
+# Saving the plot
+
+You can save the plot manually using RStudio and the "Plots" window, but better is to program it directly.
+
+Here is how we save a plot:
+
+```{r}
+
+```
+
+
+#   Histograms
+
+We use histograms for....
+
+The default histogram code is...
+
+```{r}
+```
+
+#   Tweaking Histograms
+
+We can change the number of "bins" being plotted as follows... 
+
+```{r}
+```
+
+#     Advanced: Density Plots
+
+A density plot is....
+
+It can be useful for...
+
+We can convert a histogram plot to a density plot using....
+
+```{r}
+```
+
+
+#   On your own
+
+Try different things!  
+- Change the color?  
+- Change the number of bins?
+- Save the graph as a pdf?
+- Plot some different variables: `Trump`, `Biden`, `Mode`, `SampleSize`
+
+
+
