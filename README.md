@@ -82,7 +82,7 @@ Dataset: [Pres2020.PV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/
 
 Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/StudentOutline_UnivariateDataViz.Rmd) 
 
-
+[If interested: Challenger: The Final Flight](https://www.netflix.com/title/81012137)
 
 
 ### Assignments
