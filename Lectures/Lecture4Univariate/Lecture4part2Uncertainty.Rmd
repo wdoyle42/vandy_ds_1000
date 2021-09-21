@@ -420,7 +420,6 @@ results_losers<-boot_2017%>% ## start with the resampled dataset
         
 results_losers%>%int_pctl(tov_mean)
 
-
 results_winners%>%
   select(tov_mean)%>%
   unnest(cols=tov_mean)%>%
@@ -432,6 +431,6 @@ results_winners%>%
 
 ## What's wrong with this particular application
 
-The idea here is that the interval applies to data drawn from the *exact same* data generating process. Usually that's in reference to new samples drawn from an infinitely large population. In this case, it's just subsequent seasons. But the NBA changes! In particular, the rules and the way the rules are enforced change over time, so it's not quite accurate to think of this as the exact same data generating process. 
+The idea here is that the bootstrap confidence interval applies to data drawn from the *exact same* data generating process. Usually that's in reference to new samples drawn from an infinitely large population. In this case, it's just subsequent seasons. But the NBA changes! In particular, the rules and the way the rules are enforced change over time, so it's not quite accurate to think of this as the exact same data generating process. 
 
 
