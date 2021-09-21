@@ -1,5 +1,8 @@
 ---
 title: "Guided Exercise 1"
+output:
+  html_document:
+    df_print: paged
 ---
 
 ## Offensive Rebounds in the NBA
