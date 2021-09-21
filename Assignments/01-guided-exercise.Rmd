@@ -1,0 +1,29 @@
+---
+title: "Guided Exercise 1"
+---
+
+## Offensive Rebounds in the NBA
+
+Congratulations! Your group has been hired as the data science team for the brand-new NBA franchise, the Data Sciencers! Your GM has been reading some basketball analytics books, and she thinks that the key to winning is to focus on players that have excellent offensive rebounding statistics. 
+
+In basketball, an offensive rebound occurs when a team takes a shot and misses, 
+but a player from the same team recovers the ball. Offensive rebounds allow a
+team another chance to score on each possession, and are generally thought of as
+one of the keys to winning more games. In this exercise, we're going to ask you to take a look at offensive rebounding
+percent, which is defined as offensive rebounds/(offensive rebounds+opponent defensive rebounds).
+
+Your GM has asked your team to evaluate the offensive rebounding percent of winning and losing teams in the 2019 season, in order to set a target for the GM's decisions about drafts and trades for the next season. You need to write a very short and clear report for the GM in non-technical language.  
+
+In this brief, we'd like you to create a two page summary of about 500 words where you report on the following aspects of offensive rebounds.
+
+What does the distribution of offensive rebound percent look like? How would you describe it for a broader audience? What number or numbers would you use to summarize it? What would you characterize as a high or low level of offensive rebound percent?
+
+Do winning teams really have a higher offensive rebounding percent? How do you know? How much higher is it, if it really is higher? 
+
+Provide a range of uncertainty around offensive rebounding percent for winning and losing teams. Describe what this range means. 
+
+Do better-rested teams have higher or lower offensive rebounding percents? What's the range of uncertainty around these estimates? 
+
+Write this up as a very brief report. The report should answer these questions, but should not read like a series of answers to the questions one-by-one. You should include graphics and numeric summaries as appropriate. 
+
+Each group should submit a .Rmd file that contains your analysis, and a pdf file that contains your report. You do NOT need to "knit" the .Rmd document into the pdf document. Your group can use google documents or other collaboration tools to put together the report. 
