@@ -108,4 +108,10 @@ Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectu
 
 ### Guided Exercises
 
+[1st Guided Exercise, Due 11:59 pm Monday October 4](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/01-guided-exercise.html) [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/01-guided-exercise.pdf) [RMD](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Assignments/01-guided-exercise.Rmd) 
+
+Dataset:[game_summary.rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/game_summary.Rds)
+
+[Codebook for game_summary.rds](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Assignments/game_summary_codebook.md)
+
 
