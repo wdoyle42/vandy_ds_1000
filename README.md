@@ -93,7 +93,9 @@ Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectu
 
 #### 6\. Conditional Data Visualization
 
-Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_ConditionalVisualization/StudentOutline_ConditionalVisualization.Rmd) 
+Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic6_ConditionalVisualization/StudentOutline_ConditionalVisualization.Rmd) 
+
+Optional Report on 2020 Polls: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic6_ConditionalVisualization/AAPOR-Task-Force-on-02020-Pre-Election-Polling_Report-FNL.pdf) 
 
 ### Assignments
 
