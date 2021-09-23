@@ -91,6 +91,9 @@ Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectu
 
 [If interested: Challenger: The Final Flight](https://www.netflix.com/title/81012137)
 
+#### 6\. Conditional Data Visualization
+
+Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_ConditionalVisualization/StudentOutline_ConditionalVisualization.Rmd) 
 
 ### Assignments
 
