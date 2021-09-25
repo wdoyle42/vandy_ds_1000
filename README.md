@@ -95,6 +95,8 @@ Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectu
 
 Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic6_ConditionalVisualization/StudentOutline_ConditionalVisualization.Rmd) 
 
+Lecture slides - Part 1: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic6_ConditionalVisualization/Topic6_ConditionalVariation_Part1.pdf)
+
 Optional Report on 2020 Polls: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic6_ConditionalVisualization/AAPOR-Task-Force-on-2020-Pre-Election-Polling_Report-FNL.pdf) 
 
 ### Assignments
