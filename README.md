@@ -97,7 +97,17 @@ Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectu
 
 Lecture slides - Part 1: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic6_ConditionalVisualization/Topic6_ConditionalVariation_Part1.pdf)
 
+Lecture slides - Part 2: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic6_ConditionalVisualization/Topic6_ConditionalVariation_Part2.pdf)
+
 Optional Report on 2020 Polls: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic6_ConditionalVisualization/AAPOR-Task-Force-on-2020-Pre-Election-Polling_Report-FNL.pdf) 
+
+#### 7\. Resampling Redux
+
+Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/StudentOutline_Topic7Resampling.Rmd) 
+
+Lecture slides: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/Topic7_ResamplingLecture.pdf)
+
+Dataset: [pa.sample.select.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/data/pa.sample.select.Rdata) 
 
 ### Assignments
 
