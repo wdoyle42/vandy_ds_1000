@@ -105,9 +105,6 @@ Optional Report on 2020 Polls: [PDF](https://github.com/wdoyle42/vandy_ds_1000/r
 
 #### 7\. Resampling Redux
 
-Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/StudentOutline_Topic7Resampling.Rmd) 
-
-Lecture slides: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/Topic7_ResamplingLecture.pdf)
 
 Dataset: [pa.sample.select.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/data/pa.sample.select.Rdata) 
 
