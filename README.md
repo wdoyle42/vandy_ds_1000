@@ -95,6 +95,8 @@ Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectu
 
 Student Outline: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic6_ConditionalVisualization/StudentOutline_ConditionalVisualization.Rmd) 
 
+Complete Markdown Code: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic6_ConditionalVisualization/Topic6_MarkdownComplete.Rmd) 
+
 Lecture slides - Part 1: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic6_ConditionalVisualization/Topic6_ConditionalVariation_Part1.pdf)
 
 Lecture slides - Part 2: [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic6_ConditionalVisualization/Topic6_ConditionalVariation_Part2.pdf)
