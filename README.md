@@ -136,3 +136,11 @@ Dataset:[game_summary.rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/As
 [Codebook for game_summary.rds](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Assignments/game_summary_codebook.md)
 
 
+### Helpful Resources
+
+[Rstudio Cheat Sheet: Data Wrangling](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+
+[Rstudio Cheat Sheet: ggplot2 ](https://github.com/rstudio/cheatsheets/raw/master/data-visualization.pdf)
+
+[R-graphics Cookbook](http://www.cookbook-r.com/Graphs/)
+
