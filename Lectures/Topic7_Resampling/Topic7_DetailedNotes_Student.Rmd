@@ -1,0 +1,683 @@
+---
+title: "Resampling and Polling"
+author: "Prof. Josh Clinton"
+date: "9/29/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+set.seed(42)
+```
+
+
+# Motivating questions:
+
+- What is _random sampling_ and why is random sampling so powerful as a method of collecting data?
+
+- Why can the opinions of 1000 people be used to measure the public opinion of 350 million people?  
+
+- If my data is a random sample, how many observations do I need to calculate an accurate average?
+
+- How much better is a random sample of size 1000 than a sample of size 100?  In what ways?
+
+###   Quantifying uncertainty is critical for science
+
+- Without knowing how much your results may change it is hard to describe, predict, or understand relationships.
+
+- Lots of ways that uncertainty/error can arise!  Data, Modelling, User Error, ...
+
+- Focus on on "best case" - what if our data is a random sample from the population of interest, how much would the results change if we did everything we just did again?  Variation due to _random sampling_!
+
+- NOTE: Very rarely are we in this condition (hence the need for statistical modelling).
+
+### Some Simple Sampling
+
+The function `sample(X, Y, replace = TRUE, prob = P)` will sample `Y` units from a vector `X` with or without replacement (`replace = TRUE`) or {`replace = FALSE`) using a vector of probability {`P`} (the default is equal probability).  
+
+```{r  eval=TRUE, echo=TRUE, collapse=TRUE}
+Z <- seq(1,8)
+
+## Randomly draw 8 samples from Z, with replacement
+sample(Z, 8, replace = TRUE) 
+## Randomly draw 8 samples from Z, without replacement
+sample(Z, 8, replace = FALSE) 
+## Randomly draw 8 samples from Z, with replacement
+sample(Z, 8, replace = TRUE, prob = Z/sum(Z))
+``` 
+
+### Calculating Probability through Simulation
+
+
+- Probability can be thought of as the ``limit'' of repeated identical experiments.
+- Use loops to repeat an experiment and calculate the probability of certain events.
+
+### e.g., Birthday Problem
+
+- How many people do you need for the probability that at least two people have the same birthday exceeds 0.5?
+
+- `unique`: the number of unique values in a vector
+
+```{r}
+values <- c(1,2,3,3)
+length(values)
+```
+
+- `length`: the length of a vector
+
+```{r}
+
+unique(values)
+```
+
+Solving via simulation
+
+```{r}
+sims <- 10000 ## number of simulations
+bday <- 1:365 ## possible birthdays
+answer <- NULL ## holder for our answers
+
+for (k in 1:25) {
+  count <- 0  ## counter
+  for (i in 1:sims) {
+    class <- sample(bday, k, replace = TRUE) # sampling with replacement
+    if (length(unique(class)) < length(class)) {
+      count <- count + 1
+    }
+  }  
+  ## printing the estimate
+  cat("The estimated probability for", k,"people is:", count/sims, "\n")
+  answer[k] <- count/sims # store the answers
+}
+```
+
+In graphical terms:
+
+```{r}
+dat <- bind_cols(npeople=seq(1,25),answer)
+
+ggplot(dat,aes(x=npeople,y=answer)) + 
+  geom_line() +
+  labs(x = "Number of People") +
+  labs(y="Probability") + 
+  labs(title = "Birthday Problem: probability of shared birthday for each size class") +
+  geom_hline(yintercept=.5)
+```
+
+##  IN-CLASS: How many students needed to have the probability of a shared birthday exceed .75?
+
+- copy the code from above
+- what do you need to change?
+
+```{r}
+
+```
+
+
+## STRETCH: but uniform (equal) probability of birth?
+
+\centering
+![https://github.com/fivethirtyeight/data/tree/master/births](figs/BirthDistribution.png)
+- Can you change the code `sample` to recalculate?
+- Will require you to wrangle the data to change from number of births per day to the relative probability.  How?
+
+#  Application: Voter Files & Polling
+
+Many political parties, interest groups, and media organizations rely on voter files to predict elections.
+
+
+![Email from yesterday (9/29/21)](figs/TargetSmart.png)
+
+
+Suppose you want to determine which counties to target with political activity based on the support for each party (e.g., get-out-the vote efforts, advertising, resource allocation, etc.).  
+
+
+```{r}
+load("data/pa.sample.select.Rdata")
+glimpse(pa.sample)
+```
+
+One critical variable is partisanship!
+
+```{r}
+pa.sample %>%
+  count(likely.party)
+```
+
+Let's clean it up a bit.  Why do we like indicator variables?  
+```{r}
+pa.sample <- pa.sample %>%
+    mutate(likely.dem = ifelse(likely.party == "D",1,0), 
+          likely.rep = ifelse(likely.party == "R",1,0), 
+          likely.ind = ifelse(likely.party == "I",1,0))
+```
+
+
+```{r}
+pa.sample %>%
+  count(likely.dem)
+```
+How does partisanship at the county-level vary?
+
+```{r}
+pa.sample %>%
+  group_by(fips.county) %>%
+  summarize(DemPct = mean(likely.dem)) %>%
+  arrange(-DemPct)
+```
+
+What fraction of counties in PA have 50% Democrats?
+
+```{r}
+pa.sample %>%
+  group_by(fips.county) %>%
+  summarize(DemMaj = mean(likely.dem) > .5) %>%
+  ungroup %>%
+  summarize(PctDemCounties = mean(DemMaj))
+```
+
+What does that imply about the efficiency of targetting particular counties for activity?
+
+## IN CLASS: how many counties have more Democrats than Republicans?  
+
+```{r}
+
+```
+
+- What does that mean?  
+- How might the Democrats and Republicans approach elections differently given this?
+
+Statewide breakdown?
+
+```{r}
+PA.pty.breakdown <- pa.sample %>%
+          summarize(pct.dem = mean(likely.dem), 
+                    pct.rep = mean(likely.rep), 
+                    pct.ind = mean(likely.ind))
+
+PA.pty.breakdown
+```
+- Does this seem right?
+
+## Motivation 
+
+- Suppose you want to conduct a study of voters to help your candidate.  How many voters do you need to get an accurate result?
+
+- How much accuracy do you have for a study of a given size?
+
+- Much much does size matter? What matters more?
+
+- When pollsters do polls they often sample directly from the voter file! If the voter file is "true" (is it?) how accurate are samples from the voter file?
+
+
+### Sampling (at least) Two Ways:
+
+- `sample` is a "base R" function that samples from a vector
+
+- `sample_n` is a `tidyverse` version that samples rows from a tibble. (need `dplyr` for `sample_n`)
+
+- `replace = FALSE` is the default for each!
+
+### Using sample_n
+
+```{r}
+#library(dplyr)
+sample_n(pa.sample,5,replace= TRUE)
+```
+
+Now let's use `sample_n` in a loop to illustrate the importance of sample size.
+
+```{r}
+pty.est <- NULL
+samplesize <- c(3,10,34,567,4762)
+
+for(i in seq_along(samplesize)){
+  pty.est <- pa.sample %>% 
+    sample_n(samplesize[i], replace= TRUE) %>%
+    summarize(MeanDem = mean(likely.dem),
+              MeanRep = mean(likely.rep),
+              MeanInd = mean(likely.ind)) %>%
+    mutate(SampleSize = samplesize[i]) %>%
+    bind_rows(pty.est)
+}
+
+
+pty.est
+```
+
+Can we visualize the relationship Between sample size and the estimate we get?
+
+```{r}
+pasample.plot <- pty.est %>% 
+  ggplot(aes(x=SampleSize,y=MeanDem)) +
+  geom_line() + 
+  geom_point() +
+  labs(x = "Number of Observations") + 
+  labs(y = "Pct. Dem in Sample") +
+  labs(title = "Comparing Estimates for Various Sample Sizes")
+
+pasample.plot
+```
+
+Now add the "truth" to compare!
+
+```{r}
+pasample.plot + geom_hline(yintercept=PA.pty.breakdown[[1]])
+```
+
+## IN-CLASS: Can you add `MeanRep` to this plot?  What do you have to change?
+
+```{r}
+
+```
+
+
+
+Now let's get more granular - look at the relationship for samples of size 1 to 1000!
+
+```{r}
+samplesize <- seq(1,1000)
+
+pty.est <- NULL
+
+for(i in seq_along(samplesize)){
+  pty.est <- pa.sample %>% 
+    sample_n(samplesize[i], replace= TRUE) %>%
+    summarize(MeanDem = mean(likely.dem),
+              MeanRep = mean(likely.rep),
+              MeanInd = mean(likely.ind)) %>%
+    mutate(SampleSize = samplesize[i]) %>%
+    bind_rows(pty.est)
+}
+
+pty.est %>% 
+  ggplot() +
+  geom_line(aes(x=SampleSize,y=MeanDem)) + 
+  geom_point(aes(x=SampleSize,y=MeanDem)) +
+  labs(x = "Number of Observations") + 
+  labs(y = "Pct. Dem in Sample") +
+  scale_y_continuous(breaks=seq(0,1,by=.05)) +
+  geom_hline(yintercept=PA.pty.breakdown[[1]])
+```
+
+## IN CLASS: How much better do we do if have up to 10,000 respondents/data points?
+
+```{r}
+
+```
+
+
+
+### So how big of a (random) sample do we need?
+
+- How does the precision of our estimate change as the sample size increases?  
+
+- How many data points do we need to give "accurate" estimates?  (Assuming everything else is OK!)
+
+- ASIDE: `cut`: takes a vector and creates a factor that labels groups based on dividing vector into equal sizes based on `breaks`
+
+```{r}
+x <- c(1,2,3,4,5,6)
+cut(x,breaks=2)
+```
+
+What do we mean by "accurate"?  Two measures: 
+
+```{r}
+ pty.est <-  pty.est %>% 
+  mutate(Absolute.Error = abs(MeanDem - PA.pty.breakdown[[1]]),
+         Squared.Error = (MeanDem - PA.pty.breakdown[[1]])^2,
+         cut = cut(SampleSize, breaks = 10))
+```
+
+How does absolute error change by sample size? 
+
+```{r}
+ pty.est %>% 
+  group_by(cut) %>%
+  summarize(avgae = mean(Absolute.Error),
+            sdae = sd(Absolute.Error))
+```
+
+Visualize! 
+
+```{r}
+pty.est %>% ggplot() +
+  geom_point(aes(x=SampleSize,y=Squared.Error)) +
+  geom_line(aes(x=SampleSize,y=Squared.Error))
+```
+
+## RECAP: Law of Large Numbers
+
+- As the number of data points being analyzed get larger, the mean of a random sample of that data will get closer and closer to the true mean in the data generating process.
+
+- Importance of random sampling!  If every observation has an equal chance of being observed/measured/studied, more data means more accurate results!
+
+- BUT, is the data really a random sample?  Is random sampling the largest source of error?
+
+
+# Amazing Result 2: Central Limit Theorem
+
+So we know that a large random sample of data is expected to give a sample average close to the true average (Law of Large Numbers).
+
+- But can we say anything about the distribution of the sample mean?
+
+- i.e., What if we take repeated observations from the same data generating process, calculate the mean, and then look at the shape of the result histogram?  What will the histogram of means look like?
+
+- How does the answer depend on if our data is binary (0,1), categorical (e.g., 1,2,3,4), or continuous?
+
+- Hard case?  Distribution of the mean of a binary variable: "likely Dem" (1), or not (0)
+
+Let's consider resampling means:
+
+```{r}
+# Fix Sample Size, Vary number of Samples
+n.samplesize <- 1000
+n.samples <- 10
+
+pty.mean <- NULL
+
+for(i in 1:n.samples){
+  pty.mean <- pa.sample %>% 
+    sample_n(n.samplesize, replace= TRUE) %>%
+    summarize(MeanDem = mean(likely.dem),
+              MeanRep = mean(likely.rep),
+              MeanInd = mean(likely.ind)) %>%
+    bind_rows(pty.mean)
+}
+
+clt.plot <- pty.mean %>% ggplot() + 
+  geom_histogram(aes(x=MeanDem), bins=20) +
+  labs(title="Distribution of Means for Various Number of Studies") +
+  xlim(.42,.53)
+
+clt.plot
+```
+
+
+## IN-CLASS: Plot distribution of means for 50 studies, 100 studies, 500 studies, 1000 studies
+
+```{r}
+
+```
+
+
+- Think of this as the number of polls being done each week.
+
+- Or number of quality assurance tests being done on a product to test for manufacturing defects.
+
+- What do you observe?
+
+
+## Central Limit Theorem
+
+- The distribution of means from random samples from a population will approach a normal distribution as the number of random samples being drawn (and analyzed) increases.
+
+- This is why the normal distribution is so special!  
+
+- Basis of a lot of statistics: e.g., difference of means tests (Z-test, T-test)
+
+One application is the margin of error in polls.  
+
+We start with a simple sample `my.sample` and then use the results of that study to make inferences about the larger population (`pa.sample`).
+
+```{r}
+n.samplesize <- 1000
+my.sample <- sample_n(pa.sample,n.samplesize,replace= TRUE)
+
+mean(my.sample$likely.dem)
+mean(pa.sample$likely.dem) # Truth
+
+mean(my.sample$likely.dem) - mean(pa.sample$likely.dem) # Error
+```
+
+Let's see what the distribution of 5000 means looks like!
+
+First lets create a matrix of 5000 poll results.  How many responses are in each poll?  So how many total observations?
+```{r}
+B <- 5000
+
+resample5000 <- NULL
+for(i in 1:n.samples){
+  resample5000 <- my.sample %>% 
+    sample_n(nrow(my.sample), replace= TRUE) %>%
+    summarize(MeanDem = mean(likely.dem),
+              MeanRep = mean(likely.rep),
+              MeanInd = mean(likely.ind)) %>%
+    bind_rows(resample5000)
+}
+```
+
+Now use this tibble to summarize the variation/dispersion in the means!
+
+```{r}
+quantile5000 <- resample5000 %>%
+  summarize(pct025.DemMean = quantile(MeanDem,.025),
+            pct05.DemMean = quantile(MeanDem,.05),
+            pct25.DemMean = quantile(MeanDem,.25),
+            pct75.DemMean = quantile(MeanDem,.75),
+            pct95.DemMean = quantile(MeanDem,.95),
+            pct975.DemMean = quantile(MeanDem,.975))
+
+quantile5000
+```
+
+If we recenter by subtracting off the mean we get the margin of error.  (May be useful to multiple by 100 to put in percentage points?)
+
+```{r}
+quantile5000 - mean(my.sample$likely.dem)
+
+100*(quantile5000 - mean(my.sample$likely.dem))
+```
+
+- 50\% of sample means fall between what 2 values?
+
+- Why does it get bigger for bigger percentiles?
+
+### How does the size of the margin of error change by sample size? Double Looping
+
+- What does `i` do?  
+- What does `j` do?
+
+Why is `resample <- NULL` within the first loop but `MoE <- Null` is not?
+
+```{r}
+samplesizes <- c(10,100,200,300,400,500,600,700,800,900,1000,5000,10000)
+MoE <- NULL
+
+for(i in seq_along(samplesizes)){
+
+  resample <- NULL
+    
+  for(j in 1:1000){
+  resample <- pa.sample %>% 
+    sample_n(samplesizes[i], replace= TRUE) %>%
+    summarize(MeanDem = mean(likely.dem),
+              MeanRep = mean(likely.rep),
+              MeanInd = mean(likely.ind)) %>%
+    mutate(SampleSize = samplesizes[i]) %>%
+    bind_rows(resample) 
+  }
+  
+  MoE <- resample %>%
+    summarize(moe = abs(quantile(MeanDem,.025) - mean(MeanDem))) %>%
+    mutate(SampleSize = samplesizes[i]) %>%
+    bind_rows(MoE) 
+}
+```
+
+What does that look like?
+```{r}
+MoE
+```
+
+Visualize for clarity!
+
+```{r}
+ggplot(MoE) +
+  geom_point(aes(x=SampleSize,y=moe)) +
+  geom_line(aes(x=SampleSize,y=moe)) +
+  labs(x="Sample Size") + 
+  labs(title = "Relationship Between Random Sample Size and Margin of Error") +
+  scale_y_continuous(breaks=seq(0,.3,by=.02)) +
+  labs(y="% Margin of Error (+/-)")
+```
+
+## IN-CLASS: Now do the same for likely independents.  How does the width change?  Which is bigger? Why?
+
+```{r}
+ 
+```
+
+# Bootstrap: General Idea
+
+- General idea is to use our sample as the population -- draw repeated samples to learn about the variation in our estimates.
+- Completely generic -- can be applied to _any_ function/statistic of the data!
+- Completely easy -- all we need to do is to be able to sample from our data with replacement!
+- The basic idea -- variation in the samples we draw reflect how any single sample may vary from the true population. This between-sample variation will result in variation in the statistic/function we are interested in that we can then use.
+- Limitation? -- computing time/memory.
+
+NOTE: Assumes that our samples are identically and independently distributed.
+
+### Implementation:
+
+1. Sample from our data `B` times with replacement.
+2. For each sample `b` in `B`, calculate the statistic of interest.
+3. Use the distribution of those `b` statistics to evaluate precision!
+
+OK, let's work with this -- bootstrap the sample mean.
+
+We get sample of individual level data from the voter file.  How accurate are various samples?
+
+- Assume voter file is truth and our sample is an estimate!
+
+- Probability the % of likely Democrats is greater than .4?
+
+- Probability Dem % is greater than 3 times the Ind %?
+
+- Probability 10% more Dems than Reps in the state of PA?
+
+```{r}
+B <- 5000
+
+bootstrap5000 <- NULL
+for(i in 1:n.samples){
+  bootstrap5000<- my.sample %>% 
+    sample_n(nrow(my.sample), replace= TRUE) %>%
+    summarize(MeanDem = mean(likely.dem),
+              MeanRep = mean(likely.rep),
+              MeanInd = mean(likely.ind),
+              MeanDemgt = ifelse(MeanDem > .4,1,0),
+              MeanDemRep = ifelse(MeanDem > MeanRep,1,0),
+              Dem3Ind = ifelse(MeanDem > 3*MeanInd,1,0),
+              DR10diff = ifelse(MeanDem-MeanRep > .1,1,0)) %>%
+    bind_rows(bootstrap5000)
+}
+```
+
+Now lets analyze the bootstrap tibble to get the results!  (Note we could look at the quantiles as well to estimate the precision of these point estimates!)
+
+```{r}
+bootstrap5000 %>%
+  summarize(MeanDemGT = mean(MeanDemgt),
+            MeanDemRep = mean(MeanDemRep),
+            Dem3Ind  = mean(Dem3Ind),
+            DR10diff  = mean(DR10diff))
+```
+
+
+### What if we lack the underlying individual level data?
+
+- In the 2020 Democratic Primary, a candidate would only receive delegates to the Democratic Convention if they get at least 15\%.
+
+- What is the probability that a candidate will get a delegate?
+
+![YouGov Polling Results](figs/YouGovNov35.png)
+
+- `rbinom` - how many 1's if we draw `n` samples of `size` observations with the probability of seeing a 1 is `prob` and the probability of seeing a 0 is `1-prob`.
+
+- 1000 Samples of a poll of 579 respondents where the probability of Sanders Support is .14
+
+What does this do?
+
+```{r}
+SandersSupport <- rbinom(n=1000, size=579, prob=.14)
+summary(SandersSupport)
+```
+
+What does this do?
+
+```{r}
+SandersSupport <- SandersSupport/579
+summary(SandersSupport)
+```
+
+## IN CLASS: How can we calculate the probability that Sanders is > .15?
+
+```{r}
+
+```
+
+Can we do this? Why or why not?  How does this differ from what we did above?  
+
+```{r}
+MeanDem <- rbinom(n=1000, size=100, prob=PA.pty.breakdown$pct.dem)
+MeanRep <- rbinom(n=1000, size=100, prob=PA.pty.breakdown$pct.rep)
+
+mean(MeanDem > MeanRep)
+```
+
+But we can use a similar process for the presidential polls!
+
+```{r}
+load(file="data/Pres2020.PV.Rdata")
+election.day <- as.Date("11/3/2020", "%m/%d/%Y")  
+Pres2020.PV <- Pres2020.PV %>%
+                mutate(EndDate = as.Date(Pres2020.PV$EndDate, "%m/%d/%Y"), 
+                      StartDate = as.Date(Pres2020.PV$StartDate, "%m/%d/%Y"),
+                      DaysToED = as.numeric(election.day - EndDate),
+                      margin = Biden - Trump,
+                      pollnum = as.numeric(rownames(Pres2020.PV)),
+                      BidenError = Biden - DemCertVote,
+                      TrumpError = Trump - RepCertVote,
+                      SignedError = (Biden-Trump) - (DemCertVote - RepCertVote))
+```
+
+```{r}
+dat <- NULL
+r_sampleBiden <- matrix(NA,nrow=1000,ncol=nrow(Pres2020.PV))
+r_sampleTrump <- matrix(NA,nrow=1000,ncol=nrow(Pres2020.PV))
+
+for(i in 1:nrow(Pres2020.PV)){
+  dat <- Pres2020.PV[i,]
+  r_sampleBiden[,i] <- rbinom(n = 1000, size = dat$SampleSize, prob = dat$Biden/100)/dat$SampleSize
+  r_sampleTrump[,i] <- rbinom(n = 1000, size = dat$SampleSize, prob = dat$Trump/100)/dat$SampleSize
+
+  }    
+```
+
+How does this compare to the reported "Margin of Error"
+
+```{r}
+Pres2020.PV$MoE[2]
+abs(mean(r_sampleBiden[,2]) - quantile(r_sampleBiden[,2], .025))
+```
+
+How much overall average error by candidate?
+
+```{r}
+mean(r_sampleBiden - Pres2020.PV$DemCertVote[1]/100)
+mean(Pres2020.PV$BidenError/100)
+```
+
+##    IN-CLASS: How much error for Trump?
+
+```{r}
+
+```
+
+- Does this suggest anything about random sampling?
+
+## SUPER STRETCH: which polls are more "accurate" than others?  How does accuracy change over time?
