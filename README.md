@@ -144,3 +144,5 @@ Dataset:[game_summary.rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/As
 
 [R-graphics Cookbook](http://www.cookbook-r.com/Graphs/)
 
+[... And the full list of Rstudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/)
+
