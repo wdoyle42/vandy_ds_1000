@@ -105,6 +105,9 @@ Optional Report on 2020 Polls: [PDF](https://github.com/wdoyle42/vandy_ds_1000/r
 
 #### 7\. Resampling Redux
 
+Partial List of functions used thus far: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/FunctionList.Rmd)
+[HTML](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/FunctionList.html)
+
 Lecture Notes - Part 1: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/Topic7_DetailedNotes_Student.Rmd)
 [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/Topic7_DetailedNotes_Student.pdf)
 [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic7_Resampling/Topic7_DetailedNotes_Student.html)
