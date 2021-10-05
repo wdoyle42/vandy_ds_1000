@@ -1,0 +1,211 @@
+---
+title: "Offensive Rebounds in the NBA"
+author: "Will Doyle"
+output: 
+      html_document: default
+---
+
+```{r,echo = FALSE, warning=FALSE,  results ='hide', include=TRUE,  message=FALSE}
+                      
+knitr::opts_chunk$set(echo = FALSE, 
+                      warning=FALSE, 
+                      results ='hide',
+                      include=TRUE,
+                      message=FALSE)
+library(tidyverse)
+library(scales)
+library(knitr)
+```
+
+```{r}
+nba<-read_rds("game_summary.Rds")
+```
+
+This brief provides information on patterns in offensive rebounding.
+
+## Distribution of Offensive Rebounding, 2019
+```{r}
+nba%>%
+  filter(yearSeason==2019)%>%
+  ggplot(aes(x=oreb_pct))+
+  geom_histogram()
+```
+
+```{r}
+nba%>%
+  filter(yearSeason==2019)%>%
+  summarize(mean_oreb_pct=mean(oreb_pct))
+
+nba%>%
+  filter(yearSeason==2019)%>%
+  summarize(fivenum(oreb_pct))
+```
+
+In 2019, offenses recovered 22.7 percent of rebounds on average. For the entire season, the lowest offensive rebounding percent was 3 percent, while the highest was 47 percent. 
+
+```{r}
+nba%>%
+  filter(yearSeason==2019)%>%
+  ggplot(aes(x=oreb_pct,fill=isWin))+
+  geom_density(alpha=.2)
+```
+
+
+```{r}
+oreb_iswin_pct<-nba%>%
+  filter(yearSeason==2019)%>%
+  group_by(isWin)%>%
+  summarize(mean_oreb_pct=mean(oreb_pct))
+
+nba%>%
+  group_by(isWin)%>%
+  filter(yearSeason==2019)%>%
+  summarize(fivenum(oreb_pct))
+```
+
+On average, winning teams collected 23.8 percent of offensive rebounds, while losing teams grabbed 21.6 percent of offensive rebounds- a difference of 2.2 percentage points.There's considerable overlap in the proportion of offensive rebounds between winning and losing teams. 
+
+
+```{r,cache=TRUE}
+
+sample_size=30 ## bootstrap sample size
+
+nba_oreb_rs<-NULL ##  Create a NULL variable: will fill this in later
+
+for (i in 1:10000){ # Repeat the steps below 10,000 times
+  nba_oreb_rs<-nba%>% ## Create a dataset called gms_tov_rs (rs=resampled)
+  filter(yearSeason==2019)%>%  ## Just 2017
+  group_by(isWin)%>% ## Group by won or lost
+  sample_n(size=sample_size) %>% ## Sample 100 games
+  summarize(mean_oreb_pct=mean(oreb_pct))%>% ## Calculate mean turnovers for winners and losers
+    bind_rows(nba_oreb_rs) ## add this result to the existing dataset
+}
+```
+
+## Likely Range of Offensive Rebound Percent
+```{r}
+nba_oreb_rs%>%
+  ggplot(aes(x=mean_oreb_pct,fill=isWin))+
+  geom_density(alpha=.2)
+```
+
+## 80 Percent Bootstrap Interval, Offensive Rebounds by Winning/Losing Teams
+```{r}
+nba_oreb_rs%>%
+  group_by(isWin)%>%
+  summarize(low_oreb=quantile(mean_oreb_pct,.1),
+            hi_oreb=quantile(mean_oreb_pct,.9))%>%
+  kable()
+```
+
+For losing teams, the offensive rebounding percent is likely to range from 20 to 23 percent, while for winning teams the offensive rebounding percent is likely to range from 22 to 26 percent. What this means is that in building a roster we want to shoot for a target offensive rebounding percent that's clearly above 22 percent, and hopefully closer to 26 percent. Winning teams rarely have an offensive rebounding percent less than 22 percent. 
+
+
+## Offensive Rebounding Percent: Overall and Likely Intervals for Averages in Future Seasons
+```{r}
+nba%>%
+  ggplot(aes(x=oreb_pct, fill=isWin))+
+  geom_density(alpha=.1)+
+  geom_vline(data=oreb_iswin_pct,aes(xintercept=mean_oreb_pct
+                                     ,color=isWin))+
+  geom_density(data=nba_oreb_rs, 
+               aes(x=mean_oreb_pct,fill=isWin),
+               alpha=.5)+
+  xlab("Offensive Rebounding Percent")+
+  ylab("")+
+  theme_minimal()
+  
+```
+
+
+This graphic shows the overall distribution of offensive rebound percent for all games in 2019, and shows the likely range of average offensive rebounding percent for other seasons. Winning teams in 2019 average an offensive rebounding percent of 23.8, while losing teams average 21.6 percent. As the bootstrap distribution shows, in future seasons we can expect to see winning teams average between 22.2 and 25.5 percent while losing teams will likely average between 20.1 and 23.2 percent. 
+
+
+# Offensive Rebounding and Rest
+
+It could be that teams that are better rested are more likely to both have higher offensive rebounds and wins, so it's worth examining the relationship between offensive rebounds and rest. 
+
+## Days of Rest, 2019 Season
+```{r}
+nba%>%
+  filter(teamrest<120)%>%
+  group_by(teamrest)%>%
+  count()%>%
+  ggplot(aes(y=n,x=as.factor(teamrest)))+
+  geom_col()
+```
+
+Most games are played on one day of rest, while a sizeable minority are played on no rest, and a smaller amount are played on two or more days of rest. 
+
+```{r}
+nba<-nba%>%
+  mutate(`Rest Level`=recode_factor(teamrest,
+                           `0`="No Rest",
+                           `1`="One Day of Rest",
+                           .default="More than One Day of Rest"
+                           ))
+```
+
+```{r}
+nba%>%
+  group_by(`Rest Level`)%>%
+  summarize(mean_oreb_rest=mean(oreb_pct))
+```
+
+Teams with no rest average an offensive rebound percent of 22.2, teams with one day of rest averaged 22.7 percent, and teams with more than one day of rest average 22.8 percent. These are not substantively large differences. 
+
+```{r}
+nba%>%
+  ggplot(aes(x=oreb_pct,fill=`Rest Level`))+
+  geom_density(alpha=.2)+
+  xlab("Offensive Rebound Percent")+
+  ylab("")+
+  theme_minimal()+
+  theme(legend.position="bottom")
+```
+
+
+```{r,cache=TRUE}
+
+nba<-nba%>%
+  ungroup()
+
+sample_size=30 ## bootstrap sample size
+
+nba_oreb_rest_rs<-NULL ##  Create a NULL variable: will fill this in later
+
+for (i in 1:10000){ # Repeat the steps below 10,000 times
+  nba_oreb_rest_rs<-nba%>% ## Create a dataset called gms_tov_rs (rs=resampled)
+  filter(yearSeason==2019)%>%  ## Just 2017
+  group_by(`Rest Level`)%>% ## Group by won or lost
+  sample_n(size=sample_size) %>% ## Sample 100 games
+  summarize(mean_oreb_pct=mean(oreb_pct))%>% ## Calculate mean turnovers for winners and losers
+    bind_rows(nba_oreb_rest_rs) ## add this result to the existing dataset
+}
+```
+
+
+## 80 Percent Bootstrap Interval, Offensive Rebounds by Rest
+```{r,results='asis'}
+nba_oreb_rest_rs%>%
+  group_by(`Rest Level`)%>%
+  summarize(low_level=quantile(mean_oreb_pct,.1),
+            high_level=quantile(mean_oreb_pct,.9))%>%
+  kable()
+```
+
+The range of likely offensive rebounding percent is very similar among teams with no rest, one day of rest and more than one day of rest.
+
+## Mean Offensive Rebounding by Rest: Bootstrap Intervals
+```{r}
+nba_oreb_rest_rs%>%
+  ggplot(aes(x=mean_oreb_pct,fill=`Rest Level`))+
+  geom_density(alpha=.5)+
+  xlab("Mean Offensive Rebounding Percent")+
+  ylab("")+
+  scale_x_continuous(labels=label_percent())+
+  theme_minimal()+
+  theme(legend.position = "bottom")
+```
+
+The range of uncertainty of average offensive rebounding percent for each rest level of teams overlaps considerably with that of every other rest level, indicating that there's likely little or no relationship between rest level and offensive rebounding. 
