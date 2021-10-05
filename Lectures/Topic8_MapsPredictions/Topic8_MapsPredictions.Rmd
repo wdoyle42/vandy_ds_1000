@@ -19,7 +19,7 @@ library(tidyverse)
 Our data this time is all state-level presidential polls conducted in 2020.
 
 ```{r}
-load(file = "data/StatePresidentalVote2020.Rdata")
+load(file = "data/StatePresidentialVote2020.Rdata")
 glimpse(dat)
 ```
 
