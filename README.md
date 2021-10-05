@@ -152,6 +152,9 @@ Dataset:[game_summary.rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/As
 
 [Codebook for game_summary.rds](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Assignments/game_summary_codebook.md)
 
+Key for Guided Exercise 1: [.Rmd File](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/01-guided_exercise_key.Rmd) ["Knitted"" HTML version](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/01-guided_exercise_key.html)
+
+[Walkthrough for Guided Exercise 1](https://youtu.be/MNcfzel7_F8)
 
 ### Helpful Resources
 
