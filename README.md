@@ -105,13 +105,27 @@ Optional Report on 2020 Polls: [PDF](https://github.com/wdoyle42/vandy_ds_1000/r
 
 #### 7\. Resampling Redux
 
-Lecture Notes, [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/Topic7_DetailedNotes_Student.Rmd)
+Lecture Notes - Part 1: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/Topic7_DetailedNotes_Student.Rmd)
 [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/Topic7_DetailedNotes_Student.pdf)
 [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic7_Resampling/Topic7_DetailedNotes_Student.html)
+
+Lecture Notes - Part 2: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/Topic7_DetailedNotes_part2.Rmd)
+[PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/Topic7_DetailedNotes_part2.pdf)
+[HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic7_Resampling/Topic7_DetailedNotes_part2.html)
 
 Dataset: [pa.sample.select.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/data/pa.sample.select.Rdata) 
 
 Dataset: [Pres2020.PV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/data/Pres2020.PV.Rdata) 
+
+#### 8\. Mapping and Predicting
+
+Lecture Notes - Part 1: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_MapsPredictions/Topic8_MapsPredictions.Rmd)
+[PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_MapsPredictions/Topic8_MapsPredictions.pdf)
+[HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic8_MapsPredictions/Topic8_MapsPredictions.html)
+
+Dataset: [StatePresidentialVote2020.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_MapsPredictions/data/StatePresidentialVote2020.Rdata) 
+
+Dataset: [StateECV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_MapsPredictions/data/StateECV.Rdata) 
 
 ### Assignments
 
