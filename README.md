@@ -120,15 +120,20 @@ Dataset: [pa.sample.select.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/
 
 Dataset: [Pres2020.PV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/data/Pres2020.PV.Rdata) 
 
-#### 8\. Mapping and Predicting
+#### 8\. Predicting (And Mapping)
 
-Lecture Notes - Part 1: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_MapsPredictions/Topic8_MapsPredictions.Rmd)
-[PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_MapsPredictions/Topic8_MapsPredictions.pdf)
-[HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic8_MapsPredictions/Topic8_MapsPredictions.html)
+Predicting the Electoral College: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_Predictions/Topic8_PredictionsClassWork.Rmd)
+[HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic8_Predictions/Topic8_PredictionsClassWork.html)
 
-Dataset: [StatePresidentialVote2020.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_MapsPredictions/data/StatePresidentialVote2020.Rdata) 
+Dataset: [Pres2020.StatePolls.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_Predictions/data/Pres2020.StatePolls.Rdata) 
 
-Dataset: [StateECV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_MapsPredictions/data/StateECV.Rdata) 
+Optional Notes - Mapping in R: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_Predictions/Topic8_Maps.Rmd)
+[PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_Predictions/Topic8_Maps.pdf)
+[HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic8_Predictions/Topic8_Predictions.html)
+
+Optional Dataset: [StatePresidentialVote2020.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_Predictions/data/StatePresidentialVote2020.Rdata) 
+
+Optional Dataset: [StateECV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_Predictions/data/StateECV.Rdata) 
 
 ### Assignments
 
