@@ -129,7 +129,7 @@ Dataset: [Pres2020.StatePolls.Rdata](https://github.com/wdoyle42/vandy_ds_1000/r
 
 Optional Notes - Mapping in R: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_Predictions/Topic8_Maps.Rmd)
 [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_Predictions/Topic8_Maps.pdf)
-[HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic8_Predictions/Topic8_Predictions.html)
+[HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic8_Predictions/Topic8_Maps.html)
 
 Optional Dataset: [StatePresidentialVote2020.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_Predictions/data/StatePresidentialVote2020.Rdata) 
 
