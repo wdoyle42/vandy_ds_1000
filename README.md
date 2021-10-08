@@ -122,6 +122,9 @@ Dataset: [Pres2020.PV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/
 
 #### 8\. Predicting (And Mapping)
 
+Predicting the Electoral College - JDC Code: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_Predictions/Topic8_Predictions.Rmd)
+[HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic8_Predictions/Topic8_Predictions.html)
+
 Predicting the Electoral College: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_Predictions/Topic8_PredictionsClassWork.Rmd)
 [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic8_Predictions/Topic8_PredictionsClassWork.html)
 
