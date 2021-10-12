@@ -167,7 +167,7 @@ Key for Guided Exercise 1: [.Rmd File](https://github.com/wdoyle42/vandy_ds_1000
 [2nd Guided Exercise, Due 11:59 pm Monday October 25](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/04-guided-exercise2.html)
 [.Rmd](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Assignments/04-guided-exercise2.Rmd) 
 
-Grading Rubric:  [.Rmd File](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/04-guided-exercise2-rubric.Rmd)
+Grading Rubric:  [.Rmd File](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/02-guided-exercise2-rubric.rmd)
 
 Dataset:[Pres2016.PV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/Pres2016.PV.Rdata)
 
