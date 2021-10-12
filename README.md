@@ -118,7 +118,7 @@ Lecture Notes - Part 2: [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/mai
 
 Dataset: [pa.sample.select.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/data/pa.sample.select.Rdata) 
 
-Dataset: [Pres2020.PV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic7_Resampling/data/Pres2020.PV.Rdata) 
+Dataset: [Pres2020.PV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/data/Pres2020.PV.Rdata) 
 
 #### 8\. Predicting (And Mapping)
 
