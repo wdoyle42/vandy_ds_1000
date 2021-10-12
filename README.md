@@ -174,6 +174,8 @@ Dataset:[Pres2016.PV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/A
 Dataset:[Pres2016.StatePolls.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/Pres2016.StatePolls.Rdata)
 
 
+Dataset: [Pres2020.StatePolls.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_Predictions/data/Pres2020.StatePolls.Rdata)
+
 ### Helpful Resources
 
 [Rstudio Cheat Sheet: Data Wrangling](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
