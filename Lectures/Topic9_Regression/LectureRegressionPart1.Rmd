@@ -76,6 +76,8 @@ This data comes from the Internet Movie Data Based, with contributions from seve
 +---------------+--------------------------------------------------------------------------------------------------------------+
 | box_office_a  | Box office take                                                                                              |
 +---------------+--------------------------------------------------------------------------------------------------------------+
+| language      | Languages spoken in the movie                                                                                |
++---------------+--------------------------------------------------------------------------------------------------------------+
 
 ## Can we make money in the movie business?
 
@@ -173,10 +175,9 @@ mv<-mv%>%
   mutate(log_gross=log(gross))
 ```
 
-
-
 ## Basic Linear Model
-This plot shows a line fit to the data, with the log of budget on the x axis and the log of gross budget on the y axis. 
+
+This plot shows a line fit to the data, with the log of budget on the x axis and the log of gross budget on the y axis.
 
 ```{r}
 mv%>%
@@ -187,7 +188,6 @@ mv%>%
 #+
 #    xlim(0,20)+ylim(0,25)
 ```
-
 
 Does an assumption of linearity work in this case? Why or why not? Can we summarize this whole dataset in just two numbers?
 
