@@ -3,8 +3,6 @@ title: "Using Regression for Prediction"
 output: html_document
 ---
 
-
-
 ## Overview
 
 So far, we've been using just the simple mean to make predictions. Today, we'll continue using the simple mean to make predictions, but now in a complicated way. Before, when we calculated conditional means, we did so in certain "groupings" of variables. When we run linear regression, we no longer need to do so. Instead, linear regression allows us to calculate the conditional mean of the outcome at *every* value of the predictor. If the predictor takes on just a few values, then that's the number of conditional means that will be calculated. If the predictor is continuous and takes on a large number of values, we'll still be able to calculate the conditional mean at every one of those values.
@@ -13,7 +11,7 @@ The model we posit for regression is as follows:
 
 $$Y=\beta_0+\beta_1 x_1 +\beta_2 x_2+ ... \beta_k x_k + \epsilon$$
 
-It's just a linear, additive model. Y increases or decreases as a function of x, with multiple x's included. $\epsilon$ is the extent to which an individual value is above or below the line created. $\beta$ is the amount that $Y$ increases or decreases for a one unit change in $x$.
+It's just a linear, additive model. Y increases or decreases as a function of x, with multiple x's included. $\epsilon$ is the extent to which an individual value is above or below the line created. $\beta$ is the amount that $Y$ increases or decreases for a one unit change in $x$. With the simplifying assumption of linearity, we can summarize what we know about the relationship between the independent and dependent variable in a very parsimonious way. The tradeoff is that an assumption of linearity may not always be warranted.
 
 ```{r,echo=FALSE}
 library(tidyverse)
@@ -22,16 +20,15 @@ library(plotly)
 library(scales)
 ```
 
-
 ## Motivation: predicting movie revenues
 
-*“Nobody knows anything...... Not one person in the entire motion picture field knows for a certainty what's going to work. Every time out it's a guess and, if you're lucky, an educated one.”*
+*"Nobody knows anything...... Not one person in the entire motion picture field knows for a certainty what's going to work. Every time out it's a guess and, if you're lucky, an educated one."*
 
--William Goldman, screenwriter of The Princess Bride and All the President's Men. 
+-William Goldman, screenwriter of The Princess Bride and All the President's Men.
 
 In this series of lectures we're going to see if we can predict which movies will bring in more money. Predicting movie revenues is known to be a very difficult problem, as some movies vastly outperform expectations, while other (very expensive) movies flop badly. Unlike other areas of the economy, it's not always easy to know which characteristics of movies are associated with higher gross revenues. Nevertheless, we shall persist!
 
-It's typical for an investor group to have a model to understand the range of performance for a given movie. Investors want to know what range of return they might expect for an investment in a given movie. We'll try and get started on just such a model. 
+It's typical for an investor group to have a model to understand the range of performance for a given movie. Investors want to know what range of return they might expect for an investment in a given movie. We'll try and get started on just such a model.
 
 ## The Data
 
@@ -71,14 +68,14 @@ This data comes from the Internet Movie Data Based, with contributions from seve
 +---------------+--------------------------------------------------------------------------------------------------------------+
 | runtime       | Running time in minutes                                                                                      |
 +---------------+--------------------------------------------------------------------------------------------------------------+
-| id            | ?                                                                                                            |
+| id            | Alternate ID                                                                                                 |
 +---------------+--------------------------------------------------------------------------------------------------------------+
 | imdb_id       | IMDB unique ID                                                                                               |
 +---------------+--------------------------------------------------------------------------------------------------------------+
 | bechdel_score | 1=two women characters, 2=they speak to each other, 3= about something other than a man, 0=none of the above |
 +---------------+--------------------------------------------------------------------------------------------------------------+
-
-
+| box_office_a  | Box office take                                                                                              |
++---------------+--------------------------------------------------------------------------------------------------------------+
 
 ## Can we make money in the movie business?
 
@@ -114,19 +111,20 @@ mv%>%
   drop_na()
 ```
 
-16 million on average. We better get this right! Okay, Let's get started on our model. 
+16 million on average. We better get this right! Okay, Let's get started on our model.
 
 ## Dependent Variable
 
-Our dependent variable will be gross from the movie which is a measure of revenue from all sources: box office, streaming, dvds etc. 
+Our dependent variable will be gross from the movie which is a measure of revenue from all sources: box office, streaming, dvds etc.
 
 ```{r}
 mv%>%
   ggplot(aes(gross))+
-  geom_density()
+  geom_density()+
+  scale_x_continuous(labels=dollar_format())
 ```
 
-Well, that looks weird. Some movies make A LOT. Most, not so much. We need to work with this on an appropriate scale. When working with almost any data that has to do with money we're going to see things on an exponential scale. Our solution will be to transform this to be on a "log scale". REally what we're doing is taking the natural log of a number, which is the amount that Euler's constant $e$ would need to be raisede to in order to equal the nominal amount. 
+Well, that looks weird. Some movies make A LOT. Most, not so much. We need to work with this on an appropriate scale. When working with almost any data that has to do with money we're going to see things on an exponential scale. Our solution will be to transform this to be on a "log scale". REally what we're doing is taking the natural log of a number, which is the amount that Euler's constant $e$ would need to be raised to in order to equal the nominal amount.
 
 $$ log_e(y)=x, \equiv e^x=y   $$
 
@@ -141,19 +139,19 @@ mv%>%
                      breaks=breaks_log(n=6))
 ```
 
-That looks somewhat better. Notice how the steps on the log scale imply very different amounts. Effectively what we're doing is changing our thinking to be aboout percent changes. A 10% increase in gross above 10,000 is 1000. A 10% increase in gross above 100,000 is 10,000. On a log scale, these are equivalent steps.  Transforming this on the front end will have some implications on the back end, but we'll deal with that in good time.
+That looks somewhat better. Notice how the steps on the log scale imply very different amounts. Effectively what we're doing is changing our thinking to be aboout percent changes. A 10% increase in gross above 10,000 is 1000. A 10% increase in gross above 100,000 is 10,000. On a log scale, these are equivalent steps. Transforming this on the front end will have some implications on the back end, but we'll deal with that in good time.
 
 ## Gross as a Function of Budget
 
-It's quite likely that gross revenues will be related to the budget, but how likely? Let's plot the relationship and find out. 
+It's quite likely that gross revenues will be related to the budget, but how likely? Let's plot the relationship and find out.
 
 ```{r}
 gg<-mv%>%
   ggplot(aes(x=budget,y=gross,text=paste(title,"<br>",
                                           "Budget:", dollar(budget), "<br>",
                                           "Gross:" ,dollar(gross))))+
-  geom_point(size=.25,alpha=.5)+
-  geom_smooth(method="lm")+
+    geom_point(size=.25,alpha=.5)+
+
   scale_x_continuous(trans="log",
                      labels=label_dollar(),
                      breaks=log_breaks())+
@@ -166,7 +164,7 @@ gg<-mv%>%
 ggplotly(gg,tooltip = "text")
 ```
 
-You can navigate this plot and find out what the titles are. This is made possible by the ggplotly command, which uses the plotly library. 
+You can navigate this plot and find out what the titles are. This is made possible by the ggplotly command, which uses the plotly library.
 
 To make things easier, I'm going to create a new variable that just the log of gross revenues
 
@@ -175,13 +173,31 @@ mv<-mv%>%
   mutate(log_gross=log(gross))
 ```
 
+
+
+## Basic Linear Model
+This plot shows a line fit to the data, with the log of budget on the x axis and the log of gross budget on the y axis. 
+
+```{r}
+mv%>%
+  mutate(log_budget=log(budget))%>%
+  ggplot(aes(y=log_gross,x=log_budget))+
+  geom_point(size=.25,alpha=.5)+
+  geom_smooth(method="lm")
+#+
+#    xlim(0,20)+ylim(0,25)
+```
+
+
+Does an assumption of linearity work in this case? Why or why not? Can we summarize this whole dataset in just two numbers?
+
 ## Root Mean Squared Error
 
-To understand how far off we are, we need to summarize our errors. We will use different ways of doing this this semester, but let's start with a very standard one, Root Mean Squared Error, or RMSE. An error term is the distance between each point and its prediction. We square the errors, take the average, then take the square root of the result. The name RMSE is exactly what RMSE is-- neat, huh?
+To understand how far off we are, we need to summarize our errors. We will use a very standard method, Root Mean Squared Error, or RMSE. An error term is the distance between each point and its prediction. We square the errors, take the average, then take the square root of the result. The name RMSE is exactly what RMSE is-- neat, huh?
 
-$$ RMSE(\\hat{Y})=\\sqrt{ 1/n \\sum\_{i=1}^n(Y_i-\\hat{Y_i})^2} $$
+$$ RMSE(\hat{Y})=\sqrt{ 1/n \sum_{i=1}^n(Y_i-\hat{Y_i})^2} $$
 
-The errors in the above graphic are simply the vertical distances from the actual point to the point plotted by the line. We take those distance (positive for the points above the line, negative for the points below the line) and square them, then take the average of all of those squares, then take the square root of that average: voila, rmse. 
+The errors in the above graphic are simply the vertical distances from the actual point to the point plotted by the line. We take those distance (positive for the points above the line, negative for the points below the line) and square them, then take the average of all of those squares, then take the square root of that average: voila, rmse.
 
 Luckily we have an r function that can do this for us, helpfully named $rmse$.
 
@@ -234,7 +250,6 @@ lm_fit <-
   set_mode("regression")
 ```
 
-
 ..and then we'll add that model to our workflow
 
 ```{r}
@@ -242,10 +257,9 @@ movie_wf<-movie_wf%>%
   add_model(lm_fit)
 ```
 
-
 ## Set Formula
 
-To start training our model, we need to specify a formula. The dependent variable always goes on the left hand side, while the independent variable or variables always go on the right hand side. The formula below is for a model with gross revenues on the left hand side, and budget on the right hand side. 
+To start training our model, we need to specify a formula. The dependent variable always goes on the left hand side, while the independent variable or variables always go on the right hand side. The formula below is for a model with gross revenues on the left hand side, and budget on the right hand side.
 
 ```{r}
 movie_formula<-as.formula("log_gross~budget")
@@ -253,14 +267,14 @@ movie_formula<-as.formula("log_gross~budget")
 
 ## Define the Recipe
 
-A recipe takes the formula and applies it to the dataset and then specifies a set of *pre-processing* steps: steps that the analyst wants to take to adjust the data prior to running the model. In our model, we've decided that budget and gross should be log transformed before being included. 
+A recipe takes the formula and applies it to the dataset and then specifies a set of *pre-processing* steps: steps that the analyst wants to take to adjust the data prior to running the model. In our model, we've decided that budget and gross should be log transformed before being included.
 
 ```{r}
 movie_rec<-recipe(movie_formula,mv_train)%>%
     step_log(budget)
 ```
 
-Having specified how the data should be processed, we can add the recipe to the workflow. 
+Having specified how the data should be processed, we can add the recipe to the workflow.
 
 ```{r}
 movie_wf<-
@@ -287,9 +301,9 @@ movie_fit%>%
   tidy()
 ```
 
-What this tells us is that for each additional one percent increase in budgets, gross is predicted to increase by .95 percent.
+What this tells us is that for each additional one percent increase in budgets, gross is predicted to increase by about .95 percent.
 
-This means different things at different budgets. It also means that there aren't increasing returns to scale, at least looking at this sample of movies. 
+This means different things at different budgets. It also means that there aren't increasing returns to scale, at least looking at this sample of movies.
 
 To look at measures of model fit, we can use `glance`:
 
@@ -299,6 +313,11 @@ movie_fit%>%
   glance()
 ```
 
+## Evaluate Predictions in the Testing Data
+
+All of that information is about how the model performed in the *training* data. Now it's time to take a look at how it performs in the *testing* data. To do this, we use the model to make predictions in the testing data then calculate RMSE. What's happening here is that R is using the simple calculation from our previous model: intercept plus slope of the line (coefficient) on budget to predict our outcome of log gross revenues.
+
+This code adds predictions to the dataset.
 
 ```{r}
 mv_test<-movie_fit%>%
@@ -307,11 +326,37 @@ mv_test<-movie_fit%>%
   bind_cols(mv_test) ## add to the existing testing dataset
 ```
 
+With those predictions in hand, we can calculate the rmse in the testing dataset.
+
 ```{r}
 mv_test%>%
   rmse(truth=log_gross,estimate=.pred1)
 ```
 
+Is this good? Who knows! RMSE is very context dependent. One way to think about it for us is that the model predicts that a 10 million dollar investment will generate about 33 million: sounds good, right?
+
+```{r}
+
+quick_est<-exp(1.2+log(1e7))
+dollar(quick_est)
+
+
+```
+
+Except the rmse says that gross could be between 115 million (yay) and 9.5 million (a loss of 5 percent). Right now, that's our prediction-- a 10 million dollar investment, base on this model, will make somewhere between 9.5 million and 115 million. Your investors are probably not thrilled and are thinking about just putting the money in T Bills.
+
+```{r}
+quick_upper_bound<-exp(1.2+log(1e7) +1.25)
+
+dollar(quick_upper_bound)
+
+quick_lower_bound<-exp(1.2+log(1e7) -1.25)
+
+dollar(quick_lower_bound)
+
+```
+
+Here's a comparison of the predicted value with the actual value in the testing dataset.
 
 ```{r}
 mv_test%>%
@@ -319,8 +364,6 @@ mv_test%>%
   geom_point()+
   geom_smooth(method="lm")
 ```
-
-
 
 *Quick Exercise* Run a regression using a single different continuous predictor (there aren't many in this dataset). Calculate rmse and see if you can beat my score.
 
@@ -338,39 +381,38 @@ mv%>%
   geom_density()
 ```
 
-Unlike budget or gross, there isn't a strong need to transform the score. 
+Unlike budget or gross, there isn't a strong need to transform the score.
 
 ## Set Formula
 
- I add score to the formula simply by using "`+`" in the formula. 
+I add score to the formula simply by using "`+`" in the formula.
 
 ```{r}
 mv_formula<-as.formula("log_gross~budget+score")
 ```
 
-I now need to update the recipe to include the new formula. Notice that I am not using the `step_log` command on the score variable, based on what I observed above. 
+I now need to update the recipe to include the new formula. Notice that I am not using the `step_log` command on the score variable, based on what I observed above.
 
 ```{r}
 mv_recipe<-recipe(mv_formula,mv_train)%>%
   step_log(budget)
 ```
 
-
-Now I can update the worklfow with the new formula. 
+Now I can update the worklfow with the new formula.
 
 ```{r}
 movie_wf<-movie_wf%>%
   update_recipe(mv_recipe)
 ```
 
-And with that, I'm ready to fit the model again. 
+And with that, I'm ready to fit the model again.
 
 ```{r}
 movie_fit<-movie_wf%>%
   fit(data=mv_train)
 ```
 
-Let's take a look at the results. 
+Let's take a look at the results.
 
 ```{r}
 movie_fit%>%
@@ -378,15 +420,13 @@ movie_fit%>%
   tidy()
 ```
 
-
-There is a positive and statistically significant relationship between score and gross revenues, *after* controlling for budget. So this means that at any budget level, higher ratings on the IMDB scale predict higher gross. Small-budget movies with higher scores, and high-budget movies with higher scores are all predicted to have higher gross revenues. 
+There is a positive and statistically significant relationship between score and gross revenues, *after* controlling for budget. So this means that at any budget level, higher ratings on the IMDB scale predict higher gross. Small-budget movies with higher scores, and high-budget movies with higher scores are all predicted to have higher gross revenues.
 
 ```{r}
 movie_fit%>%
   pull_workflow_fit()%>%
   glance()
 ```
-
 
 ## Calculate RMSE
 
@@ -402,10 +442,9 @@ mv_test%>%
   rmse(truth=log_gross,estimate=.pred2)
 ```
 
-That . . . didn't do much! We're not getting a big increase in model fit as a result of including score, even though it IS related to the outcome. 
+That . . . didn't do much! We're not getting a big increase in model fit as a result of including score, even though it IS related to the outcome.
 
 What does this rmse *actually* mean? We can get a sense by using the parameeters of the model to calculate the predicted gross for a 10 million dollar movie with average IMDB scores, then add or subtract the rmse.
-
 
 ```{r}
 mv_sum<-mv%>%
@@ -431,7 +470,7 @@ movie_fit%>%
   
 ```
 
-So, for a 10 million dollar investment, this model says we could make between 5 million and 66 million. Remember William Goldman? 
+So, for a 10 million dollar investment, this model says we could make between 5 million and 66 million. Remember William Goldman?
 
 *Quick Exercise* Run a regression using two different predictors. Calculate rmse and see if you can beat my score.
 
