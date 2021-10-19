@@ -1,0 +1,296 @@
+---
+title: Regression, Part 2
+author: Will Doyle
+output: html_document
+---
+
+## Introduction
+
+In this section we're going to continue fitting regression to the training data and
+testing the predictions against the testing data. We're also going to add some new elements. In particular, We'll be using independent variables or predictor variables that are binary or categorical. 
+
+We'll need the same libraries as last week:
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(plotly)
+```
+
+And the same dataset, which includes data on movies released since 1980. 
+
+```{r}
+mv<-readRDS("mv.Rds")%>%
+  filter(!is.na(budget))%>%
+  mutate(log_gross=log(gross))%>%
+  mutate(bechdel_bin=ifelse(bechdel_score==3,1,0))%>%
+  mutate(bechdel_factor=recode_factor(bechdel_bin,
+                                      `1`="Pass",
+                                      `0`="Fail",
+                                      ))
+```
+
+
+
+## Training and Testing Data
+
+As before, I'm going to split the data into training and testing versions. 
+
+```{r}
+set.seed(35202)
+
+split_data<-mv%>%initial_split()
+
+mv_train<-training(split_data)
+
+mv_test<-testing(split_data)
+```
+
+## Set Model
+
+We're going to use the same linear model as last time, so I'll specify that here. 
+
+```{r}
+lm_fit <- 
+  linear_reg() %>% 
+  set_engine("lm")%>%
+  set_mode("regression")
+```
+
+
+## Begin Workflow
+
+Now I start my workflow. A workflow is pretty much what it sounds like. It's a set of steps in a modeling process. To start with, let's add our model as defined above to the workflow. 
+
+```{r}
+movie_wf<-workflow()%>%
+  add_model(lm_fit)
+```
+
+## A Brief Digression: The Bechdel Test
+
+The [Bechdel test](https://en.wikipedia.org/wiki/Bechdel_test) was first made famous by Alison Bechdel in 1985-- Bechdel credited the idea to Liz Wallace and her reading of Virginia Woolf. It asks three questions about a movie:
+
+1. Does it have two women in it?
+2. Who talk to each other?
+3. About something other than a man?
+
+The test sets an unbelievably low bar, and yet a remarkable number of movies don't pass it. One excuse sometimes used by filmmakers is that movie audiences tend to be young and male, and so favor movies that don't necessarily pass this test. However, a study by CAA and shift7 called this logic into question:
+
+[A study indicates that female-led movies make more money thatn those that are not.](https://www.nytimes.com/2018/12/11/movies/creative-artists-agency-study.html?smtyp=cur&smid=tw-nytimesarts)
+
+[And here's the study](https://shift7.com/media-research). 
+
+Let's see if we can replicate their results in this data.
+
+```{r}
+mv%>%
+  group_by(bechdel_bin)%>%
+  count()
+```
+
+
+```{r}
+mv%>%
+  mutate(budget_level=ntile(budget,n=5))%>%
+  group_by(budget_level,bechdel_factor)%>%
+  summarize(mean_gross=mean(gross,na.rm=TRUE))%>%
+  drop_na()%>%
+  ggplot(aes(x=budget_level,y=mean_gross,fill=bechdel_factor))+
+  geom_col(position="dodge")+
+  scale_y_continuous(labels=dollar_format())+
+  ylab("Gross Earnings")+xlab("Size of Movie Budget")+
+  scale_fill_discrete(name="Passed Bechdel Test")+
+  theme_minimal()+
+  theme(legend.position = "bottom")
+```
+
+
+## Regression with a binary variable
+
+Let's see if we can use regression to obtain a similar result. The next variable I want to include is the Bechdel variable, which is a binary variable set to "1" if the movie passes the Bechdel test. 
+
+```{r}
+mv%>%
+  group_by(bechdel_bin)%>%
+  summarize(count=n())%>%
+  mutate(`Proportion`=count/sum(count))%>%
+  arrange(-Proportion)
+```
+
+
+## Set Formula
+
+Next, I add the variable `bechdel_factor` to the formula. 
+
+```{r}
+movie_formula<-as.formula("log_gross~budget+score+bechdel_factor")
+```
+
+The variable `bechdel_bin` is now added to our formula. But we need to tell the model how to handle this variable, since it is a categorical variable. 
+
+## Set Recipe
+```{r}
+movie_rec<-recipe(movie_formula,data=split_data)%>%
+  step_log(budget)%>%
+  step_dummy(bechdel_factor)
+```
+
+The `step_dummy` command will convert a factor variable into a series of dummy (0 or 1) variables. There will always be one fewer dummy variable than levels in the factor. For our two-level factor, R will generate one dummy variable. 
+
+## Add recipe to workflow
+
+We can now add the recipe to the previously existing workflow. 
+
+```{r}
+movie_wf<-
+  movie_wf%>%
+  add_recipe(movie_rec)
+```
+
+## Fit to training data
+
+Now we can fit the processed data to the training dataset and take a look at the results. 
+
+```{r}
+movie_wf<-movie_wf%>%
+  fit(mv_train)
+```
+
+The `tidy` command allows us to see the coefficients from the model fit to the training data. 
+
+```{r}
+movie_wf%>%
+  pull_workflow_fit()%>%
+  tidy()
+```
+
+So if a movie fails the Bechdel test, then it makes less money, even AFTER controlling for budget and IMDB score. This is really important: we always interpret binary variables as a comparison between the group that is set to 1 (fails Bechdel test) and the group that is set to 0 (passes).  
+
+
+```{r}
+movie_wf%>%
+  pull_workflow_fit()%>%
+  glance()
+```
+
+
+## Predict on testing data and calculate rmse
+
+We can add predictions to the testing dataset in the same way we did before. 
+
+```{r}
+mv_test<-
+  movie_wf%>%
+  predict(new_data=mv_test)%>%
+  rename(.pred3=.pred)%>%
+  bind_cols(mv_test)
+```
+
+## Calculate RMSE
+
+Calculating rmse works the same as well. 
+
+```{r}
+mv_test%>%
+  rmse(truth=log_gross,estimate=.pred3)
+```
+
+It seems like that helped, but we need to be really careful: it's not the same dataset! When there's missing data, we can't make direct comparisons of RMSE. We're doing the analysis on a new version of the dataset, limited to only those cases with available data.  
+
+## Regression with a categorical variable
+
+We can also include categorical variables (not just binary variables) in our model using much the same process. Let's see if a movie's [MPAA Rating](https://www.the-numbers.com/market/mpaa-ratings) is related to its gross. 
+
+What numbers of movies have different ratings?
+```{r}
+mv%>%group_by(rating)%>%count()
+```
+
+
+## Set Formula
+```{r}
+movie_formula<-as.formula("log_gross~budget+score+rating")
+```
+
+## Set Recipe
+
+Because our formula now includes a variable that is categorical, we need to change our recipe to reflect that. Below, `step_dummy` is applied to the  `rating`` variables. 
+
+```{r}
+movie_rec<-recipe(movie_formula,mv_train)%>%
+  step_log(budget)%>%
+  step_other(rating, threshold=.005)%>%
+  step_dummy(rating)
+```
+
+The `step_other` command is used to identify very rare occurences in a given categorical variable. In this case, it's set to recategorize levels that are less than one half of one percent of the overall sample. Having done that, we can feed it forward to the `step_dummy` command to convert the variable into a series of categorical variables. We will again have a set of dummy variables, one for every level of the categorical variable save one. In this case, the excluded or reference category will be rated G movies. 
+
+## Update workflow with new recipe
+
+Because we've already created the workflow `income_wf` we can update it with our new recipe, using the command `update_recipe`.
+
+```{r}
+movie_wf<-movie_wf%>%
+  update_recipe(movie_rec)
+```
+
+## Fit to training data and look at coefficients and model fit
+
+Now we're ready to fit our linear model. The fit command below tells it to fit the model, with results stored in the object `lm_results`. We can then pipe the lm_results to the `tidy` command to see the coefficients. To see measures of model fit we can use `pull_workflow_fit` and then pipe those results to the `glance` command. 
+
+```{r}
+movie_wf<-movie_wf%>%
+  fit(mv_train)
+```
+
+```{r}
+movie_wf%>%
+  pull_workflow_fit()%>%
+  tidy()
+```
+
+Interpreting categorical variables is a bit tricky. What this shows is that "Not Rated" movies have a log gross that is 2.19 lower than rated G movies. Similarly, rated R movies have a log gross that is .875 lower than rated G movies. All of the coefficients from that categorical variable-- everything that starts with "rating_" must be interpreted relative to the reference category-- rated G movies. The choice of the reference category is arbitrary and can be changed. 
+
+```{r}
+movie_wf%>%
+  pull_workflow_fit()%>%
+  glance()
+```
+
+
+## Predict on testing data and calculate rmse
+
+With our new variable included, we can do our normal steps of generating a prediction and adding it to the testing dataset. 
+
+```{r}
+mv_test<-
+  movie_wf%>%
+  predict(mv_test)%>%
+  rename(.pred4=.pred)%>%
+  bind_cols(mv_test)
+```
+
+## Calculate RMSE
+
+With the data in the testing dataset, we can then generate the RMSE from our new model.
+
+```{r}
+mv_test%>%rmse(truth=log_gross,estimate=.pred4)
+```
+
+## Using `last_fit`
+
+The `tidymodels` package has a function that automates the steps of running the model, generating predictions in the testing dataset and then generating metrics of model fit from the testing dataset. It's called `last_fit`. This accomplishes the same steps above, but does it all at once.
+
+```{r}
+lf<-last_fit(movie_wf,split=split_data)
+lf$.metrics
+```
+
+As you can see we get the same RMSE from last fit as when we did it "by hand."
+
+
+## Last Note
+
+Remember that we need to carefully distinguish between categorical variables and continuous variables when including them in our models. If we're using categorical variables we'll need to pre-process the data in order to let the model know that these variables should be included as categorical variables, with an excluded reference category. 

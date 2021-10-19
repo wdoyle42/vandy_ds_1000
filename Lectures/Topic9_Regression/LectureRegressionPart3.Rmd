@@ -1,0 +1,322 @@
+---
+title: "Regression: Feature Selection"
+author: "Will Doyle"
+---
+
+## Introduction
+
+In this last lecture we'll introduce a couple of new concepts: cross validation and feature selection.
+
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(knitr)
+```
+
+## The Data
+
+```{r}
+mv<-readRDS("mv.Rds")%>%
+  filter(!is.na(budget))%>%
+  mutate(log_gross=log(gross))%>%
+  mutate(year=as_factor(year))%>%
+  select(title,
+    log_gross,
+         budget,
+         rating,
+         genre,
+         runtime,
+         year)%>%
+  drop_na()
+```
+
+
+```{r}
+split_data<-initial_split(mv)
+
+mv_train<-training(split_data)
+
+mv_test<-testing(split_data)
+```
+
+
+## Monte Carlo Resampling
+
+```{r}
+mv_rs<-mc_cv(mv_train,times=25) ## More like 1000 in practice
+```
+
+
+## Elastic Net for Feature Selection
+
+Adding/dropping variables
+
+Upweighting/downweighting
+
+Lasso-- choosing one among many correlated variables
+
+Ridge-- "shrinking" estimates for many correlated variables
+
+Penalty (Lambda): Penalty<1, mixture=0 is Ridge
+
+Mixture (alpha): Penalty<1, mixture=1 is Lasso
+
+Anything where mixture is not 0 or 1 is called elastic net, combining the two. 
+
+## Defining an Elastic Net Model
+
+```{r}
+penalty_spec<-.1
+
+mixture_spec<-.5
+
+enet_fit<- 
+  linear_reg(penalty=penalty_spec,
+             mixture=mixture_spec) %>% 
+  set_engine("glmnet")
+
+
+```
+
+## Define the Workflow
+
+```{r}
+movie_wf<-workflow()
+```
+
+## Add the Model
+
+```{r}
+movie_wf<-movie_wf%>%
+  add_model(enet_fit)
+```
+
+## Set Formula
+
+Dot notation
+
+```{r}
+movie_formula<-as.formula("log_gross~.")
+```
+
+## Recipe
+
+Importance of generalizing preprocessing
+
+```{r}
+movie_rec<-recipe(movie_formula,mv)%>%
+  update_role(-title,new_role="predictor")%>%
+  update_role(log_gross,new_role="outcome")%>%
+  update_role(title,new_role="id variable")%>%
+  step_log(budget)%>%
+  step_other(all_nominal(),threshold = .01)%>%
+  step_dummy(all_nominal())%>%
+  step_normalize(all_predictors())%>%
+  step_naomit(all_predictors())
+```
+
+
+```{r}
+movie_wf<-movie_wf%>%
+  add_recipe(movie_rec)
+```
+
+## Fit resamples
+
+```{r}
+movie_enet_fit<-movie_wf%>%
+  fit_resamples(mv_rs)
+```
+
+## Examine resamples and fit
+
+```{r}
+movie_enet_fit%>%
+  collect_metrics()
+```
+
+
+## CV results
+```{r}
+movie_enet_fit%>%
+  unnest(.metrics)%>%
+  filter(.metric=="rmse")%>%
+  ggplot(aes(x=.estimate))+
+  geom_density()
+```
+
+## Finalize Workflow
+```{r}
+movie_enet_final <- finalize_workflow(movie_wf,
+                                      select_best(movie_enet_fit,metric="rmse")) %>%
+  fit(mv)
+```
+
+## Parameter Estimates
+```{r}
+movie_enet_final%>%
+  pull_workflow_fit()%>%
+  tidy()%>%
+  kable()
+```
+
+
+## Prediction in the testing dataset
+
+```{r}
+movie_enet_final%>%last_fit(split_data)%>%
+  collect_metrics()
+```
+
+
+
+## Model Tuning
+
+```{r}
+enet_tune_fit<- 
+  linear_reg(penalty=tune(),
+             mixture=tune()) %>% 
+  set_engine("glmnet")
+```
+
+
+##  Update Workflow
+```{r}
+movie_wf<-movie_wf%>%
+  update_model(enet_tune_fit)
+```
+
+## Create Grid for Model Tuning
+```{r}
+enet_grid<-grid_regular(parameters(enet_tune_fit,size=9))
+```
+
+## Fit Using the Grid
+```{r}
+movie_enet_tune_fit <- 
+  movie_wf %>%
+    tune_grid(mv_rs,grid=enet_grid)
+```
+
+## Examine Results
+
+```{r}
+movie_enet_tune_fit%>%
+  collect_metrics()%>%
+  filter(.metric=="rmse")%>%
+  arrange(mean)
+```
+
+## Plot Results
+
+```{r}
+movie_enet_tune_fit%>%
+unnest(.metrics)%>%
+  filter(.metric=="rmse")%>%
+  mutate(tune_id=paste0("penalty=",prettyNum(penalty,digits=4),
+                        ", mixture=",prettyNum(mixture,digits=4))) %>%
+  select(tune_id,.estimate)%>%
+  rename(RMSE=.estimate)%>%
+  ggplot(aes(x=RMSE,color=tune_id,fill=tune_id))+
+  geom_density(alpha=.1)
+```
+
+## Choose best model and fit to training data
+```{r}
+movie_final<-
+  finalize_workflow(movie_wf,
+                    select_best(movie_enet_tune_fit,
+                                metric="rmse"))%>%
+  fit(mv_train)
+```
+
+## Examine Parameter Estimates
+
+```{r}
+movie_final%>%
+  pull_workflow_fit()%>%
+  tidy()%>%
+  mutate(penalty=prettyNum(penalty,digits=4))%>%
+  kable()
+```
+
+
+```{r}
+movie_final%>%
+  pull_workflow_fit()%>%
+  glance()
+```
+
+
+## Make Prediction
+
+```{r}
+pred_df<-movie_final%>%
+  predict(mv_test)%>%
+  rename(`Predicted Gross`=.pred)%>%
+  bind_cols(mv_test)%>%
+  rename(`Actual Gross`=log_gross)
+```
+
+```{r}
+rmse(pred_df,truth = `Actual Gross`,estimate = `Predicted Gross`)
+```
+
+
+```{r}
+gg<-pred_df%>%
+  ggplot(aes(y=`Actual Gross`,x=`Predicted Gross`,text=title))+
+  geom_point(alpha=.25,size=.5)
+
+ggplotly(tooltip = "text")
+
+```
+
+Or Just
+```{r}
+movie_final%>%last_fit(split_data)%>%
+  collect_metrics()
+```
+
+
+## Choose best model and fit to full data
+```{r}
+movie_final<-
+  finalize_workflow(movie_wf,
+                    select_best(movie_enet_tune_fit,
+                                metric="rmse"))%>%
+  fit(mv)
+```
+
+```{r}
+movie_final%>%
+  pull_workflow_fit()%>%
+  tidy()%>%
+  mutate(penalty=prettyNum(penalty))%>%
+  kable()
+```
+
+This is what we would use for any incoming data.Let's say the proposal is to make either a horror 
+or adventure movie for 10 million
+
+```{r}
+
+newdata<-data_grid(mv,
+          log_gross=1,         
+          budget=1e7,
+          rating=c("R","PG-13"),
+          genre=c("Horror","Adventure"),
+          runtime=100,
+          year=as_factor(2020))
+
+movie_final%>%
+  predict(newdata)%>%
+  bind_cols(newdata)%>%
+  mutate(low_dollar_amount=dollar(exp(.pred-1.2)))%>%
+  mutate(mean_dollar_amount=dollar(exp(.pred)))%>%
+  mutate(hi_dollar_amount=dollar(exp(.pred+1.2)))
+  
+
+```
+
