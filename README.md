@@ -138,6 +138,16 @@ Optional Dataset: [StatePresidentialVote2020.Rdata](https://github.com/wdoyle42/
 
 Optional Dataset: [StateECV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_Predictions/data/StateECV.Rdata) 
 
+
+#### 9\. Regression
+
+Regression notes, part 1: [.Rmd](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic9_Regression/LectureRegressionPart1.Rmd) [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic9_Regression/LectureRegressionPart1.html)
+
+Movie Data: [mv.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic9_Regression/mv.Rds)
+
+[In case you're interested, code for accessing movie data, including the IMDB data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic9_Regression/access_movie_data.R)
+
+
 ### Assignments
 
 [Assignment 1, Due 11:59 pm Monday August 30](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/01-assignment.html)
