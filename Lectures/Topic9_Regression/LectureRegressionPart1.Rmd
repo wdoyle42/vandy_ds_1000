@@ -17,7 +17,7 @@ The graphic below fits a line (in red) to the data:
 
 ![](condmean_reg.pmg.png)
 
-The line has the general function y=12+(2\*x). We're saying that if hourly wages were 0, the person would be predicted to spend 12 on entertainment (who knows where they got it). As hourly wages go up, the line predicts that weekly spending goes up \\\$2 for every \\\$1 increase in hourly wages. The line we fit to this data summarizes the relationship using just two numbers: the intercept (value of the y when x=0) and slope-- the amount that y increases as a function of x. We call the slope the *coefficient* on x.
+The line has the general function y=12+(2\*x). We're saying that if hourly wages were 0, the person would be predicted to spend 12 on entertainment (who knows where they got it). As hourly wages go up, the line predicts that weekly spending goes up \$2 for every \$1 increase in hourly wages. The line we fit to this data summarizes the relationship using just two numbers: the intercept (value of the y when x=0) and slope-- the amount that y increases as a function of x. We call the slope the *coefficient* on x.
 
 The general model we posit for regression is as follows:
 
@@ -138,7 +138,7 @@ mv%>%
   scale_x_continuous(labels=dollar_format())
 ```
 
-Well, that looks weird. Some movies make A LOT. Most, not so much. We need to work with this on an appropriate scale. When working with almost any data that has to do with money we're going to see things on an exponential scale. Our solution will be to transform this to be on a "log scale". REally what we're doing is taking the natural log of a number, which is the amount that Euler's constant $e$ would need to be raised to in order to equal the nominal amount.
+Well, that looks weird. Some movies make A LOT. Most, not so much. We need to work with this on an appropriate scale. When working with almost any data that has to do with money we're going to see things on an exponential scale. Our solution will be to transform this to be on a "log scale". Really what we're doing is taking the natural log of a number, which is the amount that Euler's constant $e$ would need to be raised to in order to equal the nominal amount.
 
 $$ log_e(y)=x, \equiv e^x=y   $$
 
@@ -209,7 +209,7 @@ $$ RMSE(\hat{Y})=\sqrt{ 1/n \sum_{i=1}^n(Y_i-\hat{Y_i})^2} $$
 
 The errors in the above graphic are simply the vertical distances from the actual point to the point plotted by the line. We take those distance (positive for the points above the line, negative for the points below the line) and square them, then take the average of all of those squares, then take the square root of that average: voila, rmse.
 
-Luckily we have an r function that can do this for us, helpfully named $rmse$.
+Luckily we have an r function that can do this for us, helpfully named `rmse`.
 
 Calculating rmse from the data we used to fit the line is actually not correct, because it doesn't help us learn about out of sample data. To solve this problem, we need another concept: training and testing.
 
@@ -223,7 +223,7 @@ The data that is used to generate our predictions is known as *training* data. T
 
 That data that is used to validate our predictions is known as *testing* data. With testing data, we take our trained model and see how good it is at predicting outcomes using out of sample data.
 
-One very simple approach to this would be to cut our data. We could then train our model on half the data, then test it on the other portion. This would tell us whether our measure of model fit (e.g. rmse) is similar or different when we apply our model to out of sample data. That's what we're going to do in this lesson. We'll split the data randomly in half, with one half used to train our models and the other half used to test the model against out of sample data.
+One very simple approach to this would be to cut our data. We could then train our model on half the data, then test it on the other portion. This would tell us whether our measure of model fit (e.g. rmse) is similar or different when we apply our model to out of sample data. That's what we're going to do in this lesson. We'll split the data randomly in two, with one part used to train our models and the other part used to test the model against out of sample data.
 
 I use the `initial_split` command to designate the way that the data should be split-- in this case 75/25. The testing data (which is a random quarter of the original dataset) is stored as `mv_test`. The training data is stored as `mv_train`. We'll run our models on `mv_train`.
 
@@ -353,7 +353,7 @@ dollar(quick_est)
 
 ```
 
-Except the rmse says that gross could be between 115 million (yay) and 9.5 million (a loss of 5 percent). Right now, that's our prediction-- a 10 million dollar investment, base on this model, will make somewhere between 9.5 million and 115 million. Your investors are probably not thrilled and are thinking about just putting the money in T Bills.
+Except the rmse says that gross could be between 51 million (yay) and 4.2 million. Right now, that's our prediction-- a 10 million dollar investment, base on this model, will make somewhere between 4.2 million and 51 million. Your investors are probably not thrilled and are thinking about just putting the money in T Bills.
 
 ```{r}
 quick_upper_bound<-exp(1.2+ .95*log(1e7) +1.25)
@@ -371,8 +371,8 @@ Here's a comparison of the predicted value with the actual value in the testing 
 ```{r}
 mv_test%>%
   ggplot(aes(y=log_gross,x=.pred1))+
-  geom_point()+
-  geom_smooth(method="lm")
+  geom_point(size=.25,alpha=.5)+
+  geom_smooth(method="lm",se=FALSE)
 ```
 
 *Quick Exercise* Run a regression using a single different continuous predictor (there aren't many in this dataset). Calculate rmse and see if you can beat my score.
