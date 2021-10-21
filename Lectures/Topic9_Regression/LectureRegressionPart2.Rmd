@@ -80,7 +80,7 @@ The test sets an unbelievably low bar, and yet a remarkable number of movies don
 
 [And here's the study](https://shift7.com/media-research). 
 
-Let's see if we can replicate their results in this data.
+Let's see if we can replicate their results in this data. First of all, what proportion of these movies made since 2000 pass the Bechdel test?
 
 ```{r}
 mv%>%
@@ -88,6 +88,9 @@ mv%>%
   count()
 ```
 
+A majority, but 873 (873!!) movies did not have two female characters that spoke to each other about anything other than a man. 
+
+Let's see if the contention of movie execs about earning power holds up.
 
 ```{r}
 mv%>%
@@ -104,6 +107,7 @@ mv%>%
   theme(legend.position = "bottom")
 ```
 
+Nope. At every budget level, movies that pass the Bechdel test make more money, not less. 
 
 ## Regression with a binary variable
 
@@ -126,7 +130,7 @@ Next, I add the variable `bechdel_factor` to the formula.
 movie_formula<-as.formula("log_gross~budget+score+bechdel_factor")
 ```
 
-The variable `bechdel_bin` is now added to our formula. But we need to tell the model how to handle this variable, since it is a categorical variable. 
+The variable `bechdel_factor` is now added to our formula. But we need to tell the model how to handle this variable, since it is a categorical variable. 
 
 ## Set Recipe
 ```{r}
@@ -258,7 +262,6 @@ movie_wf%>%
   glance()
 ```
 
-
 ## Predict on testing data and calculate rmse
 
 With our new variable included, we can do our normal steps of generating a prediction and adding it to the testing dataset. 
@@ -294,3 +297,10 @@ As you can see we get the same RMSE from last fit as when we did it "by hand."
 ## Last Note
 
 Remember that we need to carefully distinguish between categorical variables and continuous variables when including them in our models. If we're using categorical variables we'll need to pre-process the data in order to let the model know that these variables should be included as categorical variables, with an excluded reference category. 
+
+
+```{r}
+mv%>%
+  summarize(across(c(rating,genre) ,.fns=tally))
+```
+

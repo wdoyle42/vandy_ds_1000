@@ -143,6 +143,9 @@ Optional Dataset: [StateECV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw
 
 Regression notes, part 1: [.Rmd](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic9_Regression/LectureRegressionPart1.Rmd) [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic9_Regression/LectureRegressionPart1.html)
 
+Regression notes, part 2:
+[.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic9_Regression/LectureRegressionPart2.Rmd)
+
 Movie Data: [mv.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic9_Regression/mv.Rds)
 
 [In case you're interested, code for accessing movie data, including the IMDB data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic9_Regression/access_movie_data.R)
@@ -183,10 +186,10 @@ Dataset:[Pres2016.PV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/A
 
 Dataset:[Pres2016.StatePolls.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/Pres2016.StatePolls.Rdata)
 
-
 Dataset: [Pres2020.StatePolls.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_Predictions/data/Pres2020.StatePolls.Rdata)
 
 Dataset: [Pres202.Pv.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/data/Pres2020.PV.Rdata)
+
 
 ### Helpful Resources
 
