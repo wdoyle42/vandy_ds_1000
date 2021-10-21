@@ -6,8 +6,8 @@ output: html_document
 
 ## Introduction
 
-In this section we're going to continue fitting regression to the training data and
-testing the predictions against the testing data. We're also going to add some new elements. In particular, We'll be using independent variables or predictor variables that are binary or categorical. 
+In this section we're going to continue fitting regressions to the training data and
+testing the predictions against the testing data. We'll include additional continuous variables. We're also going to add some new elements. In particular, We'll be using independent variables or predictor variables that are binary or categorical. 
 
 We'll need the same libraries as last week:
 
@@ -29,7 +29,6 @@ mv<-readRDS("mv.Rds")%>%
                                       `0`="Fail",
                                       ))
 ```
-
 
 
 ## Training and Testing Data
@@ -161,19 +160,18 @@ The `tidy` command allows us to see the coefficients from the model fit to the t
 
 ```{r}
 movie_wf%>%
-  pull_workflow_fit()%>%
+  extract_fit_parsnip()%>%
   tidy()
 ```
 
-So if a movie fails the Bechdel test, then it makes less money, even AFTER controlling for budget and IMDB score. This is really important: we always interpret binary variables as a comparison between the group that is set to 1 (fails Bechdel test) and the group that is set to 0 (passes).  
+So if a movie fails the Bechdel test, then it makes less money, even AFTER controlling for budget and IMDB score. This is really important: we always interpret binary variables as a comparison between the group that is set to 1 (fails Bechdel test) and the group that is set to 0 (passes). 
 
 
 ```{r}
 movie_wf%>%
-  pull_workflow_fit()%>%
+  extract_fit_parsnip()%>%
   glance()
 ```
-
 
 ## Predict on testing data and calculate rmse
 
@@ -196,7 +194,7 @@ mv_test%>%
   rmse(truth=log_gross,estimate=.pred3)
 ```
 
-It seems like that helped, but we need to be really careful: it's not the same dataset! When there's missing data, we can't make direct comparisons of RMSE. We're doing the analysis on a new version of the dataset, limited to only those cases with available data.  
+It seems like including the Bechdel score increased our accuracy, but we need to be really careful: it's not the same dataset! I didn't have complete data on the Bechdel score, so we dropped a bunch of cases that had missing data. When there's missing data, we can't make direct comparisons of RMSE. We're doing the analysis on a new version of the dataset, limited to only those cases with available data. There ARE some limited solutions to this problem, but the bottom line is that missing data is . . .  missing.   
 
 ## Regression with a categorical variable
 
@@ -204,7 +202,9 @@ We can also include categorical variables (not just binary variables) in our mod
 
 What numbers of movies have different ratings?
 ```{r}
-mv%>%group_by(rating)%>%count()
+mv%>%
+  group_by(rating)%>%
+  count()
 ```
 
 
@@ -228,7 +228,7 @@ The `step_other` command is used to identify very rare occurences in a given cat
 
 ## Update workflow with new recipe
 
-Because we've already created the workflow `income_wf` we can update it with our new recipe, using the command `update_recipe`.
+Because we've already created the workflow `movie_wf` we can update it with our new recipe, using the command `update_recipe`.
 
 ```{r}
 movie_wf<-movie_wf%>%
@@ -237,7 +237,7 @@ movie_wf<-movie_wf%>%
 
 ## Fit to training data and look at coefficients and model fit
 
-Now we're ready to fit our linear model. The fit command below tells it to fit the model, with results stored in the object `lm_results`. We can then pipe the lm_results to the `tidy` command to see the coefficients. To see measures of model fit we can use `pull_workflow_fit` and then pipe those results to the `glance` command. 
+Now we're ready to fit our linear model. The fit command below tells it to fit the model, with results stored in the object `lm_results`. We can then pipe the lm_results to the `tidy` command to see the coefficients. To see measures of model fit we can use `extract_fit_parsnip` and then pipe those results to the `glance` command. 
 
 ```{r}
 movie_wf<-movie_wf%>%
@@ -246,7 +246,7 @@ movie_wf<-movie_wf%>%
 
 ```{r}
 movie_wf%>%
-  pull_workflow_fit()%>%
+  extract_fit_parsnip()%>%
   tidy()
 ```
 
@@ -254,7 +254,7 @@ Interpreting categorical variables is a bit tricky. What this shows is that "Not
 
 ```{r}
 movie_wf%>%
-  pull_workflow_fit()%>%
+  extract_fit_parsnip()%>%
   glance()
 ```
 

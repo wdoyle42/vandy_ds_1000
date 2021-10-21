@@ -12,9 +12,13 @@ In this last lecture we'll introduce a couple of new concepts: cross validation 
 library(tidyverse)
 library(tidymodels)
 library(knitr)
+library(plotly)
+library(modelr)
 ```
 
 ## The Data
+
+We're going to work with a subset of the data that only includes a few variables, which are selected below. 
 
 ```{r}
 mv<-readRDS("mv.Rds")%>%
@@ -31,6 +35,7 @@ mv<-readRDS("mv.Rds")%>%
   drop_na()
 ```
 
+As usual, we'll split the data 75/25. 
 
 ```{r}
 split_data<-initial_split(mv)
@@ -41,14 +46,20 @@ mv_test<-testing(split_data)
 ```
 
 
+## Cross Validation
+
+
+
 ## Monte Carlo Resampling
+
+Now we're going to do something pretty different. To facili
 
 ```{r}
 mv_rs<-mc_cv(mv_train,times=25) ## More like 1000 in practice
 ```
 
 
-## Elastic Net for Feature Selection
+## Lasso for Feature Selection
 
 Adding/dropping variables
 
@@ -58,20 +69,20 @@ Lasso-- choosing one among many correlated variables
 
 Ridge-- "shrinking" estimates for many correlated variables
 
-Penalty (Lambda): Penalty<1, mixture=0 is Ridge
+ Penalty<1, mixture=0 is Ridge
 
-Mixture (alpha): Penalty<1, mixture=1 is Lasso
+ Penalty<1, mixture=1 is Lasso
 
 Anything where mixture is not 0 or 1 is called elastic net, combining the two. 
 
-## Defining an Elastic Net Model
+## Defining a Lasso Model
 
 ```{r}
-penalty_spec<-.1
+penalty_spec<-.25
 
-mixture_spec<-.5
+mixture_spec<-1
 
-enet_fit<- 
+lasso_fit<- 
   linear_reg(penalty=penalty_spec,
              mixture=mixture_spec) %>% 
   set_engine("glmnet")
@@ -89,7 +100,7 @@ movie_wf<-workflow()
 
 ```{r}
 movie_wf<-movie_wf%>%
-  add_model(enet_fit)
+  add_model(lasso_fit)
 ```
 
 ## Set Formula
@@ -102,14 +113,13 @@ movie_formula<-as.formula("log_gross~.")
 
 ## Recipe
 
-Importance of generalizing preprocessing
 
 ```{r}
 movie_rec<-recipe(movie_formula,mv)%>%
-  update_role(-title,new_role="predictor")%>%
+  update_role(-title,new_role="predictor")%>% 
   update_role(log_gross,new_role="outcome")%>%
   update_role(title,new_role="id variable")%>%
-  step_log(budget)%>%
+  step_log(budget)%>% 
   step_other(all_nominal(),threshold = .01)%>%
   step_dummy(all_nominal())%>%
   step_normalize(all_predictors())%>%
@@ -125,21 +135,20 @@ movie_wf<-movie_wf%>%
 ## Fit resamples
 
 ```{r}
-movie_enet_fit<-movie_wf%>%
+movie_lasso_fit<-movie_wf%>%
   fit_resamples(mv_rs)
 ```
 
 ## Examine resamples and fit
 
 ```{r}
-movie_enet_fit%>%
+movie_lasso_fit%>%
   collect_metrics()
 ```
 
-
 ## CV results
 ```{r}
-movie_enet_fit%>%
+movie_lasso_fit%>%
   unnest(.metrics)%>%
   filter(.metric=="rmse")%>%
   ggplot(aes(x=.estimate))+
@@ -148,14 +157,14 @@ movie_enet_fit%>%
 
 ## Finalize Workflow
 ```{r}
-movie_enet_final <- finalize_workflow(movie_wf,
-                                      select_best(movie_enet_fit,metric="rmse")) %>%
+movie_lasso_final <- finalize_workflow(movie_wf,
+                                      select_best(movie_lasso_fit,metric="rmse")) %>%
   fit(mv)
 ```
 
 ## Parameter Estimates
 ```{r}
-movie_enet_final%>%
+movie_lasso_final%>%
   pull_workflow_fit()%>%
   tidy()%>%
   kable()
@@ -165,18 +174,16 @@ movie_enet_final%>%
 ## Prediction in the testing dataset
 
 ```{r}
-movie_enet_final%>%last_fit(split_data)%>%
+movie_lasso_final%>%last_fit(split_data)%>%
   collect_metrics()
 ```
-
 
 
 ## Model Tuning
 
 ```{r}
-enet_tune_fit<- 
-  linear_reg(penalty=tune(),
-             mixture=tune()) %>% 
+lasso_tune_fit<- 
+  linear_reg(penalty=tune(),mixture=mixture_spec)%>% 
   set_engine("glmnet")
 ```
 
@@ -184,25 +191,25 @@ enet_tune_fit<-
 ##  Update Workflow
 ```{r}
 movie_wf<-movie_wf%>%
-  update_model(enet_tune_fit)
+  update_model(lasso_tune_fit)
 ```
 
 ## Create Grid for Model Tuning
 ```{r}
-enet_grid<-grid_regular(parameters(enet_tune_fit,size=9))
+lasso_grid<-grid_regular(parameters(lasso_tune_fit) ,levels=10)
 ```
 
 ## Fit Using the Grid
 ```{r}
-movie_enet_tune_fit <- 
+movie_lasso_tune_fit <- 
   movie_wf %>%
-    tune_grid(mv_rs,grid=enet_grid)
+    tune_grid(mv_rs,grid=lasso_grid)
 ```
 
 ## Examine Results
 
 ```{r}
-movie_enet_tune_fit%>%
+movie_lasso_tune_fit%>%
   collect_metrics()%>%
   filter(.metric=="rmse")%>%
   arrange(mean)
@@ -211,11 +218,10 @@ movie_enet_tune_fit%>%
 ## Plot Results
 
 ```{r}
-movie_enet_tune_fit%>%
+movie_lasso_tune_fit%>%
 unnest(.metrics)%>%
   filter(.metric=="rmse")%>%
-  mutate(tune_id=paste0("penalty=",prettyNum(penalty,digits=4),
-                        ", mixture=",prettyNum(mixture,digits=4))) %>%
+  mutate(tune_id=paste0("penalty=",prettyNum(penalty,digits=4))) %>%
   select(tune_id,.estimate)%>%
   rename(RMSE=.estimate)%>%
   ggplot(aes(x=RMSE,color=tune_id,fill=tune_id))+
@@ -226,7 +232,7 @@ unnest(.metrics)%>%
 ```{r}
 movie_final<-
   finalize_workflow(movie_wf,
-                    select_best(movie_enet_tune_fit,
+                    select_best(movie_lasso_tune_fit,
                                 metric="rmse"))%>%
   fit(mv_train)
 ```
@@ -242,13 +248,6 @@ movie_final%>%
 ```
 
 
-```{r}
-movie_final%>%
-  pull_workflow_fit()%>%
-  glance()
-```
-
-
 ## Make Prediction
 
 ```{r}
@@ -260,14 +259,19 @@ pred_df<-movie_final%>%
 ```
 
 ```{r}
-rmse(pred_df,truth = `Actual Gross`,estimate = `Predicted Gross`)
+rmse_final<-yardstick::rmse(pred_df,truth = `Actual Gross`,estimate = `Predicted Gross`)
+
+rmse_final
 ```
 
 
 ```{r}
 gg<-pred_df%>%
   ggplot(aes(y=`Actual Gross`,x=`Predicted Gross`,text=title))+
-  geom_point(alpha=.25,size=.5)
+  geom_point(alpha=.25,size=.5)+
+  scale_x_continuous(trans="log",labels=label_dollar())+
+  scale_y_continuous(trans="log",labels=label_dollar()) 
+  
 
 ggplotly(tooltip = "text")
 
@@ -284,9 +288,9 @@ movie_final%>%last_fit(split_data)%>%
 ```{r}
 movie_final<-
   finalize_workflow(movie_wf,
-                    select_best(movie_enet_tune_fit,
+                    select_best(movie_lasso_tune_fit,
                                 metric="rmse"))%>%
-  fit(mv)
+  fit(mv) ## FULL dataset
 ```
 
 ```{r}
@@ -298,25 +302,24 @@ movie_final%>%
 ```
 
 This is what we would use for any incoming data.Let's say the proposal is to make either a horror 
-or adventure movie for 10 million
+or adventure movie for 10 million. We've also been pitched movies that will be rated R-- which of course better reflects the director's "artistic vision" and movies that will be rated PG-13. Let's see what our model says about these. 
 
 ```{r}
-
 newdata<-data_grid(mv,
           log_gross=1,         
           budget=1e7,
           rating=c("R","PG-13"),
           genre=c("Horror","Adventure"),
           runtime=100,
-          year=as_factor(2020))
+          year=as_factor(2020),
+          title="Data Science: The Tuning")
 
 movie_final%>%
   predict(newdata)%>%
   bind_cols(newdata)%>%
-  mutate(low_dollar_amount=dollar(exp(.pred-1.2)))%>%
+  mutate(low_dollar_amount=dollar(exp(.pred-rmse_final$.estimate)))%>%
   mutate(mean_dollar_amount=dollar(exp(.pred)))%>%
-  mutate(hi_dollar_amount=dollar(exp(.pred+1.2)))
+  mutate(hi_dollar_amount=dollar(exp(.pred+rmse_final$.estimate)))
   
-
 ```
 
