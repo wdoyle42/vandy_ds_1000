@@ -293,14 +293,45 @@ lf$.metrics
 
 As you can see we get the same RMSE from last fit as when we did it "by hand."
 
+```{r}
+movie_formula<-as.formula("log_gross~budget+score+rating+genre+runtime")
+```
+
+```{r}
+movie_rec<-recipe(movie_formula,mv_train)%>%
+  step_log(budget)%>%
+  step_other(rating, genre, threshold=.005)%>%
+  step_dummy(rating,genre)
+```
+
+```{r}
+movie_wf<-movie_wf%>%
+  update_recipe(movie_rec)
+```
+
+
+```{r}
+movie_wf<-movie_wf%>%
+  fit(mv_train)
+```
+
+```{r}
+
+movie_wf%>%
+  extract_fit_parsnip()%>%
+  tidy()
+```
+
+```{r}
+lf<-last_fit(movie_wf,split=split_data)
+lf$.metrics
+```
+
+
+*Add a  categorical and a continuous variable to the dataset and see what happens to model fit in the testing dataset.*
+
 
 ## Last Note
 
 Remember that we need to carefully distinguish between categorical variables and continuous variables when including them in our models. If we're using categorical variables we'll need to pre-process the data in order to let the model know that these variables should be included as categorical variables, with an excluded reference category. 
-
-
-```{r}
-mv%>%
-  summarize(across(c(rating,genre) ,.fns=tally))
-```
 

@@ -383,7 +383,7 @@ We can continue refining our model by adding more variables. Regression with mor
 
 I'm going to add IMDB score as a predictor. While this isn't a perfect reflection of critical reception, the basic idea here is that better-reviewed movies may be more likely to make more money back.
 
-Let's take a look at IMDB scores:
+Let's take a look at  IMDB scores:
 
 ```{r}
 mv%>%
