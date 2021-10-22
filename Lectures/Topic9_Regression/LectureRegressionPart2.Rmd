@@ -293,10 +293,20 @@ lf$.metrics
 
 As you can see we get the same RMSE from last fit as when we did it "by hand."
 
+
+
+## In class work
+
+*Add a  categorical and a continuous variable to the dataset and see what happens to model fit in the testing dataset.*
+
+
+New formula
 ```{r}
 movie_formula<-as.formula("log_gross~budget+score+rating+genre+runtime")
 ```
 
+
+Change recipe to reflect new variables
 ```{r}
 movie_rec<-recipe(movie_formula,mv_train)%>%
   step_log(budget)%>%
@@ -304,17 +314,19 @@ movie_rec<-recipe(movie_formula,mv_train)%>%
   step_dummy(rating,genre)
 ```
 
+Update recipe in workflow
 ```{r}
 movie_wf<-movie_wf%>%
   update_recipe(movie_rec)
 ```
 
-
+Fit model
 ```{r}
 movie_wf<-movie_wf%>%
   fit(mv_train)
 ```
 
+Take a look at coefficients
 ```{r}
 
 movie_wf%>%
@@ -322,13 +334,11 @@ movie_wf%>%
   tidy()
 ```
 
+Look at model fit
 ```{r}
 lf<-last_fit(movie_wf,split=split_data)
 lf$.metrics
 ```
-
-
-*Add a  categorical and a continuous variable to the dataset and see what happens to model fit in the testing dataset.*
 
 
 ## Last Note

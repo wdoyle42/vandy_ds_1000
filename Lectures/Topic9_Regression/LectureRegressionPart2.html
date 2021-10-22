@@ -201,7 +201,7 @@ pre code {
 ## x dplyr::lag()      masks stats::lag()
 ## x yardstick::spec() masks readr::spec()
 ## x recipes::step()   masks stats::step()
-## • Use suppressPackageStartupMessages() to eliminate package startup messages</code></pre>
+## • Search for functions across packages at https://www.tidymodels.org/find/</code></pre>
 <pre class="r"><code>library(plotly)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;plotly&#39;</code></pre>
@@ -475,6 +475,59 @@ mv_test&lt;-testing(split_data)</code></pre>
 ## 1 rmse    standard       1.26  Preprocessor1_Model1
 ## 2 rsq     standard       0.505 Preprocessor1_Model1</code></pre>
 <p>As you can see we get the same RMSE from last fit as when we did it “by hand.”</p>
+</div>
+<div id="in-class-work" class="section level2">
+<h2>In class work</h2>
+<p><em>Add a categorical and a continuous variable to the dataset and see what happens to model fit in the testing dataset.</em></p>
+<p>New formula</p>
+<pre class="r"><code>movie_formula&lt;-as.formula(&quot;log_gross~budget+score+rating+genre+runtime&quot;)</code></pre>
+<p>Change recipe to reflect new variables</p>
+<pre class="r"><code>movie_rec&lt;-recipe(movie_formula,mv_train)%&gt;%
+  step_log(budget)%&gt;%
+  step_other(rating, genre, threshold=.005)%&gt;%
+  step_dummy(rating,genre)</code></pre>
+<p>Update recipe in workflow</p>
+<pre class="r"><code>movie_wf&lt;-movie_wf%&gt;%
+  update_recipe(movie_rec)</code></pre>
+<p>Fit model</p>
+<pre class="r"><code>movie_wf&lt;-movie_wf%&gt;%
+  fit(mv_train)</code></pre>
+<pre><code>## Warning: There are new levels in a factor: NA</code></pre>
+<p>Take a look at coefficients</p>
+<pre class="r"><code>movie_wf%&gt;%
+  extract_fit_parsnip()%&gt;%
+  tidy()</code></pre>
+<pre><code>## # A tibble: 17 × 5
+##    term              estimate std.error statistic   p.value
+##    &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+##  1 (Intercept)       1.46       0.479       3.05  2.29e-  3
+##  2 budget            0.838      0.0246     34.0   3.97e-207
+##  3 score             0.421      0.0297     14.2   6.47e- 44
+##  4 runtime           0.000627   0.00183     0.343 7.32e-  1
+##  5 rating_Not.Rated -2.49       0.313      -7.95  2.85e- 15
+##  6 rating_PG        -0.222      0.187      -1.19  2.35e-  1
+##  7 rating_PG.13     -0.412      0.195      -2.11  3.47e-  2
+##  8 rating_R         -0.976      0.197      -4.96  7.46e-  7
+##  9 rating_other     -1.18       0.400      -2.95  3.22e-  3
+## 10 genre_Adventure  -0.175      0.119      -1.48  1.40e-  1
+## 11 genre_Animation  -0.0413     0.133      -0.311 7.56e-  1
+## 12 genre_Biography  -0.615      0.105      -5.83  6.15e-  9
+## 13 genre_Comedy     -0.126      0.0689     -1.82  6.87e-  2
+## 14 genre_Crime      -0.537      0.109      -4.95  7.94e-  7
+## 15 genre_Drama      -0.405      0.0807     -5.02  5.45e-  7
+## 16 genre_Horror      0.948      0.123       7.70  1.92e- 14
+## 17 genre_other      -0.217      0.231      -0.940 3.47e-  1</code></pre>
+<p>Look at model fit</p>
+<pre class="r"><code>lf&lt;-last_fit(movie_wf,split=split_data)</code></pre>
+<pre><code>## ! train/test split: preprocessor 1/1: There are new levels in a factor: NA</code></pre>
+<pre><code>## ! train/test split: preprocessor 1/1, model 1/1 (predictions): There are new levels in a fac...</code></pre>
+<pre class="r"><code>lf$.metrics</code></pre>
+<pre><code>## [[1]]
+## # A tibble: 2 × 4
+##   .metric .estimator .estimate .config             
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
+## 1 rmse    standard       1.23  Preprocessor1_Model1
+## 2 rsq     standard       0.534 Preprocessor1_Model1</code></pre>
 </div>
 <div id="last-note" class="section level2">
 <h2>Last Note</h2>
