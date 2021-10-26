@@ -72,10 +72,9 @@ We're going to cut our training dataset 75/25, and we'll repeat that 25 times. T
 mv_rs<-mc_cv(mv_train,times=25) ## More like 1000 in practice
 ```
 
-
 ## Lasso for Feature Selection
 
-One of the key decisions for an analyst is which variables to include. We can make decisions about this using theory, or our understanding of the context, but we can also rely on computational approaches. This is known as *regularization* and it involves downweighting the importance of coefficients from a model based on the contribution that a predictor makes. We're going to make use of a regularization penalty known as the "lasso." The lasso downweights variables mostly be dropping variables that are highly correlated with one another, leaving only one of the correlated variables as contributors to the model. 
+One of the key decisions for an analyst is which variables to include. We can make decisions about this using theory, or our understanding of the context, but we can also rely on computational approaches. This is known as *regularization* and it involves downweighting the importance of coefficients from a model based on the contribution that a predictor makes. We're going to make use of a regularization penalty known as the "lasso." The lasso downweights variables mostly be dropping variables that are highly correlated with one another, leaving only one of the correlated variables as contributors to the model. We set the degree to which this penalty will be implemented by setting the "penalty" variable in the model specification. 
 
 
 ```{r}
@@ -86,8 +85,9 @@ mixture_spec<-1
 lasso_fit<- 
   linear_reg(penalty=penalty_spec,
              mixture=mixture_spec) %>% 
-  set_engine("glmnet")
-
+  set_engine("glmnet")%>%
+  set_mode("regression")
+  
 ```
 
 ## Define the Workflow
@@ -299,13 +299,15 @@ rmse_final
 
 ```{r}
 gg<-pred_df%>%
-  ggplot(aes(y=`Actual Gross`,x=`Predicted Gross`))+
+  ggplot(aes(y=`Actual Gross`,x=`Predicted Gross`,text=paste(title,"<br>",
+                                                             `Actual Gross`,
+                                                             `Predicted Gross`)))+
   geom_point(alpha=.25,size=.5)+
   scale_x_continuous(trans="log",labels=label_dollar())+
   scale_y_continuous(trans="log",labels=label_dollar()) 
   
 
-ggplotly(gg)
+ggplotly(gg,tooltip="text")
 
 ```
 
