@@ -166,6 +166,10 @@ Movie Data: [mv.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures
 
 [Assignment 3 Key](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/03-assignment-key.Rmd)
 
+[Assignment 4, Due 11:59 pm Wednesday, November 3](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/04-assignment.Rmd)
+
+[Data for assignment 4: area_data.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/area_data.Rds)
+
 ### Guided Exercises
 
 [1st Guided Exercise, Due 11:59 pm Monday October 4](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/01-guided-exercise.html) [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/01-guided-exercise.pdf) [RMD](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Assignments/01-guided-exercise.Rmd) 
