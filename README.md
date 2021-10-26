@@ -204,7 +204,6 @@ Dataset: [Pres202.Pv.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/L
 [Testing dataset: movie_test.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/movie_test.Rds)
 
 
-
 ### Helpful Resources
 
 [Rstudio Cheat Sheet: Data Wrangling](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)

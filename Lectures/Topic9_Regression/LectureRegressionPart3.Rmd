@@ -25,7 +25,8 @@ mv<-readRDS("mv.Rds")%>%
   filter(!is.na(budget))%>%
   mutate(log_gross=log(gross))%>%
   mutate(year=as_factor(year))%>%
-  select(title,
+  select(
+    title,
     log_gross,
          budget,
          rating,
@@ -48,11 +49,24 @@ mv_test<-testing(split_data)
 
 ## Cross Validation
 
+The essence of prediction is discovering the extent to which our models can predict outcomes for data that does not come from our sample. Many times this process is temporal. We fit a model to data from one time period, then take predictors from a subsequent time period to come up with a prediction in the future. For instance, we might use data on team performance to predict the likely winners and losers for upcoming soccer games. 
 
+This process does not have to be temporal. We can also have data that is out of sample because it hadn't yet been collected when our first data was collected, or we can also have data that is out of sample because we designated it as out of sample.
+
+The data that is used to generate our predictions is known as 
+*training* data. The idea is that this is the data used to train our model, to let it know what the relationship is between our predictors and our outcome. So far, we have worked mostly with training data. 
+
+That data that is used to validate our predictions is known as *testing* data. With testing data, we take our trained model and see how good it is at predicting outcomes using out of sample data. 
+
+One very simple approach to this would be to cut our data in half. This is what we've done so far.  We could then train our model on half the data, then test it on the other half. This would tell us whether our measure of model fit (e.g. rmse, auc) is similar or different when we apply our model to out of sample data. 
+
+But this would only be a "one-shot" approach. It would be better to do this multiple times, cutting the data into two parts: training and testing, then fitting the model to the training data, and then checking its predictions against the testing data. That way, we could generate a large number of rmse's to see how well the model fits on lots of different possible out-of-sample predictions. 
+
+This process is called *cross validation*, and it involves two important decisions: first, how will the data be cut, and how many times will the validation run. 
+
+We're going to cut our training dataset 75/25, and we'll repeat that 25 times. This is so our code will run faster-- we would really want to do this more like 1,000 times in practice. 
 
 ## Monte Carlo Resampling
-
-Now we're going to do something pretty different. To facili
 
 ```{r}
 mv_rs<-mc_cv(mv_train,times=25) ## More like 1000 in practice
@@ -61,24 +75,11 @@ mv_rs<-mc_cv(mv_train,times=25) ## More like 1000 in practice
 
 ## Lasso for Feature Selection
 
-Adding/dropping variables
+One of the key decisions for an analyst is which variables to include. We can make decisions about this using theory, or our understanding of the context, but we can also rely on computational approaches. This is known as *regularization* and it involves downweighting the importance of coefficients from a model based on the contribution that a predictor makes. We're going to make use of a regularization penalty known as the "lasso." The lasso downweights variables mostly be dropping variables that are highly correlated with one another, leaving only one of the correlated variables as contributors to the model. 
 
-Upweighting/downweighting
-
-Lasso-- choosing one among many correlated variables
-
-Ridge-- "shrinking" estimates for many correlated variables
-
- Penalty<1, mixture=0 is Ridge
-
- Penalty<1, mixture=1 is Lasso
-
-Anything where mixture is not 0 or 1 is called elastic net, combining the two. 
-
-## Defining a Lasso Model
 
 ```{r}
-penalty_spec<-.25
+penalty_spec<-.1
 
 mixture_spec<-1
 
@@ -86,7 +87,6 @@ lasso_fit<-
   linear_reg(penalty=penalty_spec,
              mixture=mixture_spec) %>% 
   set_engine("glmnet")
-
 
 ```
 
@@ -105,7 +105,7 @@ movie_wf<-movie_wf%>%
 
 ## Set Formula
 
-Dot notation
+In setting the recipe for this model, we're now going to include ever variable in the dataset. This is very common in these kinds of applications. 
 
 ```{r}
 movie_formula<-as.formula("log_gross~.")
@@ -113,19 +113,27 @@ movie_formula<-as.formula("log_gross~.")
 
 ## Recipe
 
+Because we have so many predictors, we need to generalize our process for feature engineering. Instead of running steps on particular variables, we're going to use the capabilities of tidymodels to select types of variables. 
+
 
 ```{r}
 movie_rec<-recipe(movie_formula,mv)%>%
-  update_role(-title,new_role="predictor")%>% 
-  update_role(log_gross,new_role="outcome")%>%
   update_role(title,new_role="id variable")%>%
+  update_role(log_gross,new_role="outcome")%>%  ## specify dv
   step_log(budget)%>% 
-  step_other(all_nominal(),threshold = .01)%>%
-  step_dummy(all_nominal())%>%
-  step_normalize(all_predictors())%>%
-  step_naomit(all_predictors())
+  step_other(all_nominal_predictors(),threshold = .01)%>%
+  step_dummy(all_nominal_predictors())%>%
+  step_normalize(all_predictors())%>% ## Convert all to Z scores
+  step_naomit(all_predictors()) ## drop missing
 ```
 
+To see what this does, we can use the `prep` and `bake` commands
+
+```{r}
+mv_processed<-movie_rec%>%prep()%>%bake(mv_train)
+```
+
+Now we can add our model to the recipe. 
 
 ```{r}
 movie_wf<-movie_wf%>%
@@ -134,12 +142,16 @@ movie_wf<-movie_wf%>%
 
 ## Fit resamples
 
+To fit a model to resampled data, we use `fit_resamples.` It's now going to fit the model to the training data and then test the model against the testing data for all 25 of our resampled datasets. 
+
 ```{r}
 movie_lasso_fit<-movie_wf%>%
   fit_resamples(mv_rs)
 ```
 
 ## Examine resamples and fit
+
+Once we run this model, we get a measure of model fit from every testing dataset. `collect_metrics` will let us see the average. 
 
 ```{r}
 movie_lasso_fit%>%
@@ -159,13 +171,13 @@ movie_lasso_fit%>%
 ```{r}
 movie_lasso_final <- finalize_workflow(movie_wf,
                                       select_best(movie_lasso_fit,metric="rmse")) %>%
-  fit(mv)
+  fit(mv_test)
 ```
 
 ## Parameter Estimates
 ```{r}
 movie_lasso_final%>%
-  pull_workflow_fit()%>%
+  extract_fit_parsnip()%>%
   tidy()%>%
   kable()
 ```
@@ -181,6 +193,12 @@ movie_lasso_final%>%last_fit(split_data)%>%
 
 ## Model Tuning
 
+The problem with the above is that I arbitrarily set the value of penalty to be .1. Do I know this was correct? No!
+What we need to do is try out a bunch of different values of the penalty, and see which one gives us the best model fit. This
+process has the impressive name of "hyperparameter tuning" but it could just as easily be called "trying a bunch of stuff to see what works."
+
+Below I'm going to give the argument `tune()` for the value of penalty. This will allow us to "fill in" values later. 
+
 ```{r}
 lasso_tune_fit<- 
   linear_reg(penalty=tune(),mixture=mixture_spec)%>% 
@@ -195,6 +213,9 @@ movie_wf<-movie_wf%>%
 ```
 
 ## Create Grid for Model Tuning
+
+A tuning grid is a set of numbers we might want to use. I use the function `grid_regular` and ask it to give me 10 possible values of the penalty. 
+
 ```{r}
 lasso_grid<-grid_regular(parameters(lasso_tune_fit) ,levels=10)
 ```
@@ -208,6 +229,8 @@ movie_lasso_tune_fit <-
 
 ## Examine Results
 
+Lets' take a look and see which models fit better. 
+
 ```{r}
 movie_lasso_tune_fit%>%
   collect_metrics()%>%
@@ -215,7 +238,11 @@ movie_lasso_tune_fit%>%
   arrange(mean)
 ```
 
+It looks like using a very small penalty (like basically none) is the way to go. 
+
 ## Plot Results
+
+Let's confirm what we learned by plotting the results. 
 
 ```{r}
 movie_lasso_tune_fit%>%
@@ -228,7 +255,11 @@ unnest(.metrics)%>%
   geom_density(alpha=.1)
 ```
 
+What this is telling us is that big penalty values are a really bad idea, and that most of the lower penalty values fit the data just fine. 
+
 ## Choose best model and fit to training data
+
+We can choose the best model and then fit it to our training dataset. 
 ```{r}
 movie_final<-
   finalize_workflow(movie_wf,
@@ -241,12 +272,13 @@ movie_final<-
 
 ```{r}
 movie_final%>%
-  pull_workflow_fit()%>%
+  extract_fit_parsnip()%>%
   tidy()%>%
   mutate(penalty=prettyNum(penalty,digits=4))%>%
   kable()
 ```
 
+This is almost identical to what we would have gotten had we just used OLS, but we know now for certain!
 
 ## Make Prediction
 
@@ -267,13 +299,13 @@ rmse_final
 
 ```{r}
 gg<-pred_df%>%
-  ggplot(aes(y=`Actual Gross`,x=`Predicted Gross`,text=title))+
+  ggplot(aes(y=`Actual Gross`,x=`Predicted Gross`))+
   geom_point(alpha=.25,size=.5)+
   scale_x_continuous(trans="log",labels=label_dollar())+
   scale_y_continuous(trans="log",labels=label_dollar()) 
   
 
-ggplotly(tooltip = "text")
+ggplotly(gg)
 
 ```
 
@@ -285,6 +317,9 @@ movie_final%>%last_fit(split_data)%>%
 
 
 ## Choose best model and fit to full data
+
+Once we're sure that we at our very last model, we can get estimates from the full dataset. 
+
 ```{r}
 movie_final<-
   finalize_workflow(movie_wf,
@@ -306,13 +341,12 @@ or adventure movie for 10 million. We've also been pitched movies that will be r
 
 ```{r}
 newdata<-data_grid(mv,
-          log_gross=1,         
+          title="Data Science 3: The Tuning",         
           budget=1e7,
           rating=c("R","PG-13"),
           genre=c("Horror","Adventure"),
           runtime=100,
-          year=as_factor(2020),
-          title="Data Science: The Tuning")
+          year=as_factor(2020))
 
 movie_final%>%
   predict(newdata)%>%
@@ -323,3 +357,4 @@ movie_final%>%
   
 ```
 
+What should we recommend as a result?
