@@ -146,6 +146,8 @@ Regression notes, part 1: [.Rmd](https://raw.githubusercontent.com/wdoyle42/vand
 Regression notes, part 2:
 [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic9_Regression/LectureRegressionPart2.Rmd)
 [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic9_Regression/LectureRegressionPart2.html)
+
+Regression notes, part 3:
 [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic9_Regression/LectureRegressionPart3.Rmd)
 [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic9_Regression/LectureRegressionPart3.html)
 
