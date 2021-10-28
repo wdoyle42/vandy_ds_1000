@@ -151,6 +151,9 @@ Regression notes, part 3:
 [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic9_Regression/LectureRegressionPart3.Rmd)
 [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic9_Regression/LectureRegressionPart3.html)
 
+
+["Simpler" version of workflows](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic9_Regression/workflows_examples.Rmd)
+
 Movie Data: [mv.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic9_Regression/mv.Rds)
 
 [In case you're interested, code for accessing movie data, including the IMDB data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic9_Regression/access_movie_data.R)
