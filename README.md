@@ -216,6 +216,7 @@ Dataset: [Pres202.Pv.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/L
 
 [Testing dataset: movie_test.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/movie_test.Rds)
 
+[A Note on Wrangling in Training/Testing Data](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Assignments/prediction_testing.Rmd)
 
 ### Helpful Resources
 
