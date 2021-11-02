@@ -28,7 +28,7 @@ This is what dating sites (e.g., e-harmony) do when they try to figure out which
 
 One thing that will become quickly apparent is that how we measure something can have profound implications on what it means - especially if we have no theory to guide us in the organization/analysis of data.  Sometimes data exploration = measurement = discovery. 
 
-It is also important to note that nothing we are doing is causal -- the alogortjhm is silent as to why the relationships exist.  It is equally important to note that the analysis is descriptive, not predictive.  This is a critical point with profound implications -- if you identify segments in your data and they take proactive steps using that information, the steps you take make affect how future data is clusterd.  
+It is also important to note that nothing we are doing is causal -- the alogorithm is silent as to why the relationships exist.  It is equally important to note that the analysis is descriptive, not predictive.  This is a critical point with profound implications -- if you identify segments in your data and they take proactive steps using that information, the steps you take make affect how future data is clusterd.  
 
 - Clustering algorithm: discover groups of observations ``similar" to each other.
 - Unsupervised learning vs. Supervised learning.
@@ -42,7 +42,7 @@ The algorithm we are going to use is one of the earliest implementations of clus
 4. Given that assignment, the computer computes a new centroid for each cluster using the within-cluster mean of the corresponding variable.
 5. Repeat Steps 3 and 4 until the cluster assignments no longer change.
 
-So, if there are two variables, say $X$ and $Y$ and we are fitting 2 centroids, the computer will begin by randomly choosing a "centroid" for each cluster -- which is simply a point in $(x,y)$.  Say $(x_1,y_1)$ for cluster 1 and $(x_2,y_2)$ for cluster 2.  Then given this choice, the computer figures out which centroid is "closest" to each data point.  So for data point $i$ that is located at $(x_i,y_i$) the computer computers the distance from each.
+So, if there are two variables, say $X$ and $Y$ and we are fitting 2 centroids, the computer will begin by randomly choosing a "centroid" for each cluster -- which is simply a point in $(x,y)$.  Say $(x_1,y_1)$ for cluster 1 and $(x_2,y_2)$ for cluster 2.  Then given this choice, the computer figures out which centroid is "closest" to each data point.  So for data point $i$ that is located at $(x_i,y_i$) the computer computes the distance from each.
 
 Given this, the Euclidean distance to cluster 1 is simply:
 $$ (x_1 -x_i)^2 + (y_1 - y_i)^2 $$
@@ -295,7 +295,7 @@ Now implement this! What do you observe? Were you correct?
 
 ```{r}
 
-
+# INSERT CODE HERE
 
 ```
 
@@ -305,15 +305,17 @@ So what if we did cluster based on the number of votes cast?  How would that aff
 
 ```{r}
 
+# INSERT CODE HERE
 
 
 
 ```
 
-Now graph the new clusters, labelling the county names.
+Now graph the new clusters, labeling the county names.
 
 ```{r}
 
+# INSERT CODE HERE
 
 
 
@@ -325,10 +327,29 @@ And finally, how do the clusters compare to one another?  If you do a table of t
 ```{r}
 
 
+# INSERT CODE HERE
 
 
 ```
 
+The scale matters.  What if we do a clustering using `eligible voters`, `PctTrump` and `PctClinton`.  What do you observe for a clustering of these variabes using `k=2` clusters?
+
+```{r}
+
+
+# INSERT CODE HERE
+
+
+```
+
+
+Now rescale the data being fit using the `scale` function to normalize the data to have mean 0 and variance 1.  (Note that `scale` just normalizes a data.frame object.) Why is this important given the alogorithm being used?  Now cluster the rescaled data.  How do the resulting clusters compare to the unrescaled clusters and also our original scaling based on the percentages -- `fl.cluster1`? 
+
+```{r}
+
+# INSERT CODE HERE
+
+```
 
 
 # How many clusters?
