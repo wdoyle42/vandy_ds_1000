@@ -213,7 +213,7 @@ Dataset: [Pres2020.StatePolls.Rdata](https://github.com/wdoyle42/vandy_ds_1000/r
 
 Dataset: [Pres202.Pv.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/data/Pres2020.PV.Rdata)
 
-[3rd Guided Exercise, Due November 8, 11:59 pm](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/guided_exercise_3.html)
+[3rd Guided Exercise, Due November 11, 11:59 pm](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/guided_exercise_3.html)
 
 [RMD](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/guided_exercise_3.Rmd)
 
