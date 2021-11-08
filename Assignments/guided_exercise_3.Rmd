@@ -27,7 +27,9 @@ You may NOT use any other data sources to  supplement what we give you. Please s
 
 ### Submission
 
-You need to send us a .csv file (use `write_csv` to export it) containing only two elements. The first column should be `imdbid`, the second column-- predicted box office take--- should be `pred`. We will calculate the rmse for you and report your score on the dates listed below. Please email your results to the class email address. 
+You need to send us a .csv file (use `write_csv` to export it) containing only two elements. The first column should be `imdbid`, the second column-- predicted box office take--- should be `pred`. We will calculate the rmse for you and report your score on the dates listed below. Please email your results to the class email address: vu.dsci1000@gmail.com  
+
+In addition to the predictions contained in a CSV file, each group will need to turn in an .Rmd file that contains the code you use to generate your predictions. This .Rmd file is what will be graded. You should include both the code AND a description of your rationale for which variables were included, how your model was run, and what the outputs from the model (coefficients and measures of model fit) mean. The assignment will be evaluated based on the groups' demonstration of an ability to appropriately model the outcome and their ability to describe the outputs from the model clearly and accurately. 
 
 ### Reporting Scores
 
