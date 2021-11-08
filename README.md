@@ -218,6 +218,8 @@ Dataset: [Pres202.Pv.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/L
 
 [A Note on Wrangling in Training/Testing Data](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Assignments/prediction_testing.Rmd)
 
+[Leaderboard for predictions](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/leaderboard.html)
+
 ### Helpful Resources
 
 [Rstudio Cheat Sheet: Data Wrangling](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
