@@ -188,6 +188,10 @@ Federalist Papers Data - for part 2 \& 3: [FederalistPaperCorpusTidy.Rda](https:
 
 [Data for assignment 4: area_data.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/area_data.Rds)
 
+[Assignment 4 Key](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/04-assignment-key.Rmd)
+
+[Walkthrough for assignment 4](https://youtu.be/OpDlq81wZkA)
+
 ### Guided Exercises
 
 [1st Guided Exercise, Due 11:59 pm Monday October 4](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/01-guided-exercise.html) [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/01-guided-exercise.pdf) [RMD](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Assignments/01-guided-exercise.Rmd) 
