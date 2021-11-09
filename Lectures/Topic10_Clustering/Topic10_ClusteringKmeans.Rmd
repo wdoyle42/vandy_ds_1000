@@ -543,7 +543,16 @@ So how well does our classification compare to the one that was used by the netw
 ```{r}
 table(dat.cluster$cluster,dat.cluster$party_stratum_name)
 ```
-
 Interesting....
 
-We could also merge in county-level demographic data (using Census `fips_code`) and see how things change if we cluster counties based on their demographic features.  But the important thing to remember is that because this is an unsupervised method there is no way to determine if the clustering is what you want it to be.  The computer will always find the number of clusters you ask for, but whether those clusters mean anything is up to you, the data analyst to determine.  This is where critical thinking is essential -- what variables are appropriate to include?  And how do you interpret the meaning of the clusters given the distribution of data within those clusters?
+It is often also useful to summarize the distribution of key variables by the clusters we have found to try to interpret their meaning. Here we can use a boxplot to describe how the county clusters vary in terms of the average support for Presdent Trump.
+
+```{r}
+ggplot(dat.cluster, aes(x=cluster, y=PctTrump)) +
+  geom_boxplot() + 
+  labs(x="Cluster",
+       y="Pct Trump",
+       title="Support for Trump Across Counties in FL")
+```
+
+We could also merge in county-level demographic data (using Census `fips_code`) and see how things change if we cluster counties based on their demographic features.  But the important thing to remember is that because this is an unsupervised method there is no way to determine if the clustering is what you want it to be. ALso recall that the scale matters. The computer will always find the number of clusters you ask for, but whether those clusters mean anything is up to you, the data analyst to determine.  This is where critical thinking is essential -- what variables are appropriate to include?  And how do you interpret the meaning of the clusters given the distribution of data within those clusters?
