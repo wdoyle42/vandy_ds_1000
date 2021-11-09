@@ -167,6 +167,7 @@ Clustering notes, part 2: [.Rmd](https://raw.githubusercontent.com/wdoyle42/vand
 Clustering notes, part 2:  TBD
 
 Florida County Data - for part 1: [FloridaCountData.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/data/FloridaCountyData.Rda)
+
 Federalist Papers Data - for part 2: [FederalistPaperCorpusTidy.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/data/FederalistPaperCorpusTidy.Rda)
 
 
