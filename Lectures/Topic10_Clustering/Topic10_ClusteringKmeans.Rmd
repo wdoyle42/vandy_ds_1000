@@ -1,6 +1,6 @@
 ---
 title: "Topic 10. Clustering via `kmeans`"
-author: "Prof. Josh Clinton, Vanderbilt University"
+author: "Josh Clinton, Vanderbilt University"
 output: html_document
 fontsize: 10pt
 ---
@@ -77,16 +77,8 @@ So let's start simple and think about the task of predicting what is going to ha
 ```{r}
 library(tidyverse)
 library(tidymodels)
-dat <- read.csv(file = "data/FLCountyVote.csv",header=TRUE)
 
-dat <- tibble(dat) %>%
-  mutate(geo_strata = factor(dat$geo_stratum_name),
-         Total2012 = past_county_vote,
-         Total2016 = Total,
-         PctTrump = Trump/Total,
-         PctClinton = Clinton/Total) %>%
-  select(-c(geo_stratum,county_code,precincts,size_total,past_county_vote,Total)) 
-
+load("FloridaCountyData.Rda")
 glimpse(dat)
 ```
 
@@ -295,7 +287,11 @@ Now implement this! What do you observe? Were you correct?
 
 ```{r}
 
-# INSERT CODE HERE
+rawvote2 <- dat %>%
+  select(c(Trump,Clinton))
+
+fl.cluster1.count <- kmeans(rawvote2,centers=2,nstart=25)
+tidy(fl.cluster1.count)
 
 ```
 
@@ -305,18 +301,28 @@ So what if we did cluster based on the number of votes cast?  How would that aff
 
 ```{r}
 
-# INSERT CODE HERE
+dat.cluster2 <- augment(fl.cluster1.count,dat)
+clusters <- tidy(fl.cluster1.count)
 
-
-
+clusters
 ```
 
 Now graph the new clusters, labeling the county names.
 
 ```{r}
 
-# INSERT CODE HERE
+gg <- ggplot() +
+  geom_point(data=dat.cluster2, aes(x = Trump, y = Clinton, color = .cluster,
+                                   text=paste(county_name))) + 
+  geom_point(data=clusters, aes(x = Trump, y= Clinton), size = 10, shape = "+") + 
+  labs(color = "Cluster",
+       title = "Florida Counties",
+       x = "Votes for Trump",
+       y = "Votes for Clinton") +
+  scale_y_continuous(label=comma) + 
+  scale_x_continuous(label=comma) 
 
+ggplotly(gg,tooltip = "text")
 
 
 ```
@@ -325,10 +331,8 @@ Now graph the new clusters, labeling the county names.
 And finally, how do the clusters compare to one another?  If you do a table of the clusters against one another what do you observe?
 
 ```{r}
-
-
-# INSERT CODE HERE
-
+table(ByPct = fl.cluster1$cluster,
+      ByVote= fl.cluster1.count$cluster)
 
 ```
 
@@ -336,9 +340,11 @@ The scale matters.  What if we do a clustering using `eligible voters`, `PctTrum
 
 ```{r}
 
+rawvote3 <- dat %>%
+  select(c(eligible_voters,PctClinton,PctTrump))
 
-# INSERT CODE HERE
-
+cluster.mix <- kmeans(rawvote3,centers=2,nstart=25)
+tidy(cluster.mix)
 
 ```
 
@@ -346,10 +352,25 @@ The scale matters.  What if we do a clustering using `eligible voters`, `PctTrum
 Now rescale the data being fit using the `scale` function to normalize the data to have mean 0 and variance 1.  (Note that `scale` just normalizes a data.frame object.) Why is this important given the alogorithm being used?  Now cluster the rescaled data.  How do the resulting clusters compare to the unrescaled clusters and also our original scaling based on the percentages -- `fl.cluster1`? 
 
 ```{r}
+rawvote3.scale <- scale(rawvote3)
+summary(rawvote3.scale)
+cluster.mix2 <- kmeans(rawvote3.scale,centers=2,nstart=25)
+tidy(cluster.mix2)
+```
 
-# INSERT CODE HERE
+How compare?
+```{r}
+table(Normalized = cluster.mix2$cluster, 
+      Unnormalized = cluster.mix$cluster)
+```
+
+```{r}
+table(Normalized = cluster.mix2$cluster, 
+      ByPct = fl.cluster1$cluster)
 
 ```
+
+This means...
 
 
 # How many clusters?
@@ -370,9 +391,9 @@ kcluster.fl <-
 
 The above code uses the `map` function which is how we can apply a function across an index.  So in line 337 we are going to take `map` to apply the sequence of `K` values we defined running from 1 to 10 the `kmeans()` algorithm applied to the `rawvotes` tibble.  The `.x` in the line reveals where we are going to substitute the value being mapped.  So the object `kcluster` is going to be a list of 10 elements -- each list element being a `kmeans` object associated with the choice of `K` centers.
 
-Line 338 then maps the `tidy` function to the list of `kcluster` we just created -- creating a list called `tidysummary` where each element is the summary associated with the kth clustering.  Line 191 creates a tibble that augments the original data being clustered -- `rawvotes` with the cluster label associated with the kth clustering.  (But remember that the meaning of those labels is not fixed!)
+We then map the `tidy` function to the list of `kcluster` we just created -- creating a list called `tidysummary` where each element is the summary associated with the kth clustering. We next create a tibble that augments the original data being clustered -- `rawvotes` with the cluster label associated with the kth clustering.  (But remember that the meaning of those labels is not fixed!)
 
-So let's give in to see what we have just done.  If we take a look at the first row of `kcluster.fl` we can see that it consists of a vector of the sequence of k's we defined (from line 187), and then the three list objects we created -- `kcluster`, `tidysummary`, and `augmented`.
+So let's give in to see what we have just done.  If we take a look at the first row of `kcluster.fl` we can see that it consists of a vector of the sequence of k's we defined, and then the three list objects we created -- `kcluster`, `tidysummary`, and `augmented`.
 
 ```{r}
 kcluster.fl[1,]
@@ -522,7 +543,16 @@ So how well does our classification compare to the one that was used by the netw
 ```{r}
 table(dat.cluster$cluster,dat.cluster$party_stratum_name)
 ```
-
 Interesting....
 
-We could also merge in county-level demographic data (using Census `fips_code`) and see how things change if we cluster counties based on their demographic features.  But the important thing to remember is that because this is an unsupervised method there is no way to determine if the clustering is what you want it to be.  The computer will always find the number of clusters you ask for, but whether those clusters mean anything is up to you, the data analyst to determine.  This is where critical thinking is essential -- what variables are appropriate to include?  And how do you interpret the meaning of the clusters given the distribution of data within those clusters?
+It is often also useful to summarize the distribution of key variables by the clusters we have found to try to interpret their meaning. Here we can use a boxplot to describe how the county clusters vary in terms of the average support for Presdent Trump.
+
+```{r}
+ggplot(dat.cluster, aes(x=cluster, y=PctTrump)) +
+  geom_boxplot() + 
+  labs(x="Cluster",
+       y="Pct Trump",
+       title="Support for Trump Across Counties in FL")
+```
+
+We could also merge in county-level demographic data (using Census `fips_code`) and see how things change if we cluster counties based on their demographic features.  But the important thing to remember is that because this is an unsupervised method there is no way to determine if the clustering is what you want it to be. ALso recall that the scale matters. The computer will always find the number of clusters you ask for, but whether those clusters mean anything is up to you, the data analyst to determine.  This is where critical thinking is essential -- what variables are appropriate to include?  And how do you interpret the meaning of the clusters given the distribution of data within those clusters?

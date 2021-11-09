@@ -1,0 +1,331 @@
+---
+title: "Clustering & Text"
+author: "Josh Clinton"
+date: "11/8/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Text As Data
+
+One prominent example of unsupervised learning is in terms of the analysis of text-as-data.  We see this when using data science methods to describe and understand the "sentiments" being expressed on Twitter, or the content and bias in reporting, and even questions related to prediction: e.g., who wrote a piece of text (and was it plagarized)?
+
+In what follows we are going to expand our focus on unsupervised learning methods -- `kmeans` applying it to text data to give you a sense of how the basic algorithm has applicability beyond what you might typically think of as data.  It also helps illustrate how much of what we do as data scientists depends on the choices that we make in terms of measurement.
+
+The text we are going to focus on is the text of what are called "The Federalist" papers -- a set of 85 essays promoting the ratification of the United States Constitution to the people of NY State written by Alexander Hamilton, James Madison, and John Jay between 1787-1788.
+
+![](figs/HMJ.png)
+
+The underlying story was partially recounted in the much more interesting depiction on Broadway
+
+![](figs/HamiltonBroadway.png)
+
+There are two basic questions that we can use data science methods to engage.  
+
+First, what are the federalist papers about?  What did the authors think that they needed to say to convince the delegates to the New York State Constitutional Convention?  How much of what issues and concerns?  This is an application of unsupervised learning because we are going to use the algorithm to learn about the patterns in the data rather than to tell the algorithm which patterns to predict.
+
+Second, there is a debate about the authorship of 11 Federalist papers. The author of every Federalist Paper wrote under a pseudo-name to protect their identity -- and also try to protect their identity in case they changed their mind. Perhaps Caesar was not the best choice for someone writing about the benefits of democracy? Just saying....
+
+![](figs/HamiltonCaesar.png)
+
+But Hamilton's duel and his desire to claim ownership over his legacy meant that he "leaked" a copy of the papers with a list of who he claimed had written each paper.  Madison disagreed with Hamilton's claim on 8 of the 85 papers and it was impossible for the two to reconcile due to Hamilton's death. But can we use the authorship of known and uncontested Federalist Papers to predict the authorship of contested papers?  This pivots from unsupervised learning to the issue of supervised learning.  How can we use known information to "supervise" the creation of a prediction model and make a prediction about an unknown variable.  To do so we are going to use a very basic supervised learning algorithm - the liner regression.
+
+
+# Learning about text using data
+
+Text data is called a "corpus".  Let's load the complete set of Federalist Papers that are saved as a tidy-format corpus.
+
+```{r}
+library("SnowballC")
+library("tidyverse")
+library("tidytext")
+
+load(file="FederalistPaperCorpusTidy.Rda")
+glimpse(corpus.tidy)
+```
+
+So there are 85 observations -- one for each Federalist paper (indexed by `document`) and each document has an associated `author` as well as a `text` containing the entire text of the document.  So if we look at the first observation of the `text` variable we can see the entirity of Federalist Paper 1 (with line breaks denotes by `\n`).  Note that we have preprocessed the document to remove all numbers, punctuations, and capitalizations so that the entry contains only the words contained in each.
+
+```{r}
+corpus.tidy$text[1]
+```
+
+To analyze this we need to convert the text into `tokens` that we can analyze by breaking apart the characters in each `text` into the separate words.  To do so we are going to do the following manipulation:
+
+```{r, warning=FALSE}
+tokens <- corpus.tidy %>%
+  # tokenizes into words and stems them
+  unnest_tokens(word, text, token = "word_stems") %>%
+  # remove any numbers in the strings
+  mutate(word = str_replace_all(word, "\\d+", "")) %>%
+  # drop any empty strings
+  filter(word != "")
+```
+
+So the `unnest_tokens` breaks the document up into words and extracts the "stem" - i.e, the portion of the work with lexical meaning (e.g., not suffixes or prefixes) -- which we then `mutate` to replace all numbers in the string with an empty string and then we conclude by filtering out the empty strings.
+
+So what did this give us?
+
+```{r}
+tokens
+```
+
+So this `tidy` tibble has every observation in a word in a document.  There are therefore 187,105 words that are used in the 85 federalist papers.  
+
+But what are the Federalist Papers about?  Can we deduce the meaning based on the words being used?  To start, what if we look at the distributions of words to characterize meaning. To do so let's create a table of the frequency of each word sorted in decreasing order (i.e., `arrange(-n)`):
+
+```{r}
+tokens %>% 
+  count(word) %>%
+  arrange(-n)
+```
+
+Hmm.  So the Federalist Papers are about "the" and "of" and "to"?  It makes sense that the transition words are most-frequently used, but let's strip out these words that are not useful for understanding content.  To do so we are going to read in the dataframe `stop_words` that is contained in the package `tidytext`.  This is a predefined dictonary of commonly used ords in the English language that provides a standard set of words that can be used to prune the text and remove them from the analysis.
+
+Note that the `anti_join` is essentially going thru the tibble `tokens` to remove (i.e., "anti_join") any observations contained in the tibble `stop_words.`  (The `by` defines how we are going to try to match the tibble `tokens` to `stop_words` -- here we are going to look word-by-word for matches to remove.)
+
+```{r}
+data("stop_words", package = "tidytext")
+tokens <- anti_join(tokens, stop_words, by = "word")
+```
+
+So now let us see what is left and how that compares to the table we created before removing the "stop words"  - i.e., all of the little words we use in English to combine ideas (e.g., the, and, or, all).  Basically words that are used in nearly every expression of written English regardless of topic or content.  
+
+```{r}
+tokens %>% 
+  count(word) %>%
+  arrange(-n)
+```
+
+Much better, and much different!
+
+Now lets use this tibble to create a new tibble that is a count by document and word stem.  The tibble resulting `dtm` -- document-term matrix, not "dead-to-me" -- has each observation as a word-stem in a document with the variable `n` denoting the frequency with which each word stem appears.
+
+```{r}
+dtm <- tokens %>%
+  count(document, word)
+
+glimpse(dtm)
+```
+
+So using this we can then try to visualize the most-frequently used words using a `wordcloud.`  To produce a wordcloud we need to provide a list of potential words and the frequency which which each word appears (`freq`) and then we can also limit the visualization to include words that are mentioned at least `min.freq` times such that no more than `max.words` are plotted in the resulting word cloud.
+
+So if we did not like the table we produced earlier of the most frequently used words we could also depict this graphically. So what are the federalist papers about?
+
+```{r, warning=FALSE}
+library(wordcloud)
+wordcloud(words = dtm$word,
+          freq = dtm$n,
+          min.freq = 20,
+          max.words = 200,
+          random.order=FALSE, 
+          rot.per=0.35)
+```
+
+NOTE: How does your understanding/impression/characterization change as you change these parameters?  Try it out.  What does that mean in terms of the usefulness of a wordcloud?
+
+```{r}
+
+# INSERT CODE HERE
+
+```
+
+As an aside, if you wanted to use piping, you could do the same using the following code -- here using only the top 20 words. Note that the `{}` is required to deal with the fact that we are passing `wordcloud` thru `dtm` and making an internal reference being reflected in the use of `.`
+
+```{r}
+dtm %>% 
+    { wordcloud(.$word, .$n, max.words = 20) }
+```
+
+
+So what if we wanted to focus on a particular paper -- say Federalist 10?  One way is to create a new tibble containing just Federalist 10.  This may be useful if you were going to do a lot of subsequent work focusing on Federalist 10 and you wanted to avoid having to filter every time.
+
+```{r}
+dtm10 <- dtm %>% 
+  filter(document == 10)  %>%
+  arrange(-n)
+
+wordcloud(words = dtm10$word,
+          freq = dtm10$n,
+          min.freq = 3,
+          max.words = 50,
+          random.order=FALSE, 
+          rot.per=0.35)
+```
+
+But we could also produce a `wordcloud` of the top 20 words in Federalist 10 by applying it to the appropriately `filter`ed `dtm` tibble:
+
+```{r}
+dtm %>% 
+  filter(document == 10) %>% {
+    wordcloud(.$word, .$n, max.words = 20)
+  }
+```
+
+So what are the 10 most frequently used words?
+
+```{r}
+dtm10 %>%
+  top_n(10,
+        wt=n)
+```
+
+
+# Summarizing/Classifying Content
+
+How else can we summarize/describe data? Cluster Analysis via `kmeans`? 
+
+But using what data?  Should we focus on the number of words being used?  The proportion of times a word is used in a particular document?  Or some other transformation that tries to account for how frequently a word is used in a particular document relative to how frequently it is used in the overall corpus?  
+
+We are going to use the text analysis function `bind_tf_idf` that will take a document-term matrix and compute the fraction of times each word is used in each document (`tf` = "term frequency").  It also computes a transformation called tf-idf that balances how frequently a word is used relative to its uniqueness in a document. 
+
+For word `w` in document `d` we can compute the tf-idf using:
+\[
+tf-idf(w,d) = tf(w,d) \times log \left( \frac{N}{df(w)}\right) 
+\]
+where `tf` is the term frequency (word count/total words), `df(w)` is the number of documents in the corpus that contain the word, and `N` is the number of documents in the corpus.  The inverse-document-frequency `idf` for each word `w` is thereore the number of documents in the corpus `N` over the number of documents containing the word.
+
+NOTE: In what follows we are going to focus on the `tf` as it is easier to grasp conceptually, but if you are interested you should replicate the analyses using the `tf_idf` transformation to see how measurement choices can matter (i.e., replace `tf` with `tf_idf`).
+
+So let us create an new document-term-matrix object that also includes the `tf`, `idf` and `tf_idf` associated with each word.  Using the resulting tibble -- `dtm.tfidf` let us look at the values associated with Federalist 10 written by Madison: 
+
+```{r}
+dtm.tfidf <- bind_tf_idf(dtm, word, document, n)
+
+dtm.tfidf  %>%
+  filter(document == 10) %>%
+    top_n(10,
+          wt=tf_idf)
+```
+
+
+So `kmeans` took a matrix where each column was a different variable that we were interested in using to characterize patterns but the data we have is arranged in a one-term-per-document-per-row.  To transform the data into the format we require we need to "recast" the data so that each word is a separate variable -- meaning that the number of variables is the number of of unique word stems.  H
+
+
+```{r}
+cast_dtm(dtm.tfidf, document, word, tf)
+```
+
+So now let us create this recasted object for reach and use it for analysis. 
+
+
+```{r}
+castdtm <- cast_dtm(dtm.tfidf, document, word, tf)
+
+set.seed(42)
+km_out <- kmeans(castdtm, 
+                 centers = 4, 
+                 nstart = 25)
+```
+
+So how many documents are associated with each cluster?
+
+```{r}
+table(km_out$cluster)
+```
+
+So let's tidy it up to see the centroids -- here mean frequency-- associated with each word in each cluster.
+
+```{r}
+tidy(km_out)
+```
+
+Very hard to summarize given that there are 4677 columns!  (Good luck trying to graph that!)
+
+How can we summarize?  Can we `augment`?  No because `augment` does not work for DocumentTermMatrix objects.  So let's do it by hand.
+
+First we are going to create a new tibble containing all of the unique words in the document-term-matrix object we analyzed called `words_kmean`.  Then we are ging to `bind_cols` this to the matrix of centers (i.e., the mean frequency with which each term appears in documents associated with each cluster).  So we can see that we have effectively flipped the rows and columns.
+
+```{r}
+words_kmean <- tibble(word = colnames(castdtm))
+words_kmean <- bind_cols(words_kmean, as_tibble(t(km_out$centers)))  # Binding the transpose of the matrix of centers
+words_kmean
+```
+So now let us see what the top words are by gathering the words in each cluster according to their value (i.e., average document frequency) and then reporting the top 10 words in each cluster organized in descending overall average document frequency.  (TEST: Can you make it report in descending average document frequency by cluster?)
+
+```{r}
+top_words_cluster <-
+  gather(words_kmean, cluster, value, -word) %>%
+  group_by(cluster) %>%
+  top_n(10, 
+        wt=value) %>%
+  arrange(-value)
+
+top_words_cluster
+```
+
+So let's take a look at each cluster and what the top 10 words might imply about the content of each cluster.
+
+
+```{r}
+top_words_cluster %>%
+  filter(cluster==1) %>%
+  arrange(-value)
+```
+Seems to be about power, govenance, federalism and the nature of the union proposed by the constitution. Big picture themes and concepts about the role of government and the power of the nation versus states.
+
+
+```{r}
+top_words_cluster %>%
+  filter(cluster==2) %>%
+  arrange(-value)
+```
+Looks like papers about representation and governance.  The connections between people and their elected Representatives and (at the time) appointed Senators.  Basically the way that the democratic part would work.
+
+
+```{r}
+top_words_cluster %>%
+  filter(cluster==3) %>%
+  arrange(-value)
+```
+This looks like it is about separation of powers issues.  How the executive, legislative and judicial branches were related.  Executive appointments and senate confirmation.  Within-government relations.
+
+
+```{r}
+top_words_cluster %>%
+  filter(cluster==4) %>%
+  arrange(-value)
+```
+The last set look to be about courts, laws, jurisdictions and power.  It looks like they are related to the power and role of the judiciary in the new proposed government.
+
+Can we make this list a bit easier to follow? Of course.  Lets summarize and then use `kable` (invoked via `knitr`) to make the resulting list of words more attractive to look at.
+
+
+```{r}
+gather(words_kmean, cluster, value, -word) %>%
+  group_by(cluster) %>%
+  top_n(10, value) %>%
+  summarise(top_words = str_c(word, collapse = ", ")) %>%
+  knitr::kable()
+```
+
+
+Really cool.  So we have used nothing more than the `kmeans` clustering to uncover the meaning of the Federalist Papers!  (Or at least the meaning in terms of the explicit language being used.)
+
+But recall that there were 9 papers were the authorship was unknown because both Hamilton and Madison claimed authorship.  Can we use the clusters to identify authorship?  Put differently, do the topics we uncover covary with the authors of the papers in ways that would let us use the former to infer the latter?  Did the authors separate their writing based on topic content?
+
+Well, let's see how well the clusters correspond to the various authors?
+
+```{r}
+table(Cluster = km_out$cluster, Author = corpus.tidy$author)
+```
+
+Not very well.  A majority of Hamilton and Madison's known writings were classified in Cluster so it is hard to know how to interpret the 3 contested papers that were similarly classified.  Nor does a similar cluster imply authorship -- e.g., 4 of the papers written by Jay are in Cluster 1 but it would be wrong to attribute those papers to Hamilton or Madison!
+
+Perhaps the 8 contested paper in Cluster 2 are more suggestive given that the other papers in that cluster were primarily written by Hamilton (19) rather than Jay (1) or Madison (1).  However, `kmeans` is intended to summarize within-sample, not predict out-of-sample.  So while we might be tempted to make a prediction based on similar content, realize that this is an interpretation that goes beyond what we have used the data to do.  We will return to this later.
+
+Before the we can use the same tools and processes to look at what specific authors are writing about.  For example, if we wanted to look at Hamilton's topics and Madison's topics we can separately analyze the writings of each.  Creating a index to identify the authorship of each doucment we can then filter the `dtm.tdidf` tibble defined about to extract only the papers known to be written by Hamilton (or Madison).  We can then replicate what we just did to this subset of Federalist Papers.
+
+```{r}
+hamilton <- c(1, 6:9, 11:13, 15:17, 21:36, 59:61, 65:85)
+madison <- c(10, 14, 37:48, 58)
+
+dtm_hamilton <- filter(dtm.tfidf, document %in% hamilton)
+castHamilton <- cast_dtm(dtm_hamilton, document, word, tf)
+```
+
+Can you use this to summarize the 4 main topics that Hamilton wrote about?  How many papers are in each cluster?  What is the primary themes of each?  And how does the emphaisis of Hamiliton compare to Madison in terms of focus and content?
+

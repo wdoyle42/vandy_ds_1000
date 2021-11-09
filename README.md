@@ -158,11 +158,16 @@ Movie Data: [mv.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures
 
 [In case you're interested, code for accessing movie data, including the IMDB data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic9_Regression/access_movie_data.R)
 
-#### 10\.  Clustering
+#### 10\.  Clustering (UPDATED!)
 
 Clustering notes, part 1: [.Rmd](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic10_Clustering/Topic10_ClusteringKmeans.Rmd) [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic10_Clustering/Topic10_ClusteringKmeans.html)
 
-Florida County Data: [FLCountyVote.csv](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/data/FLCountyVote.csv)
+Clustering notes, part 2: [.Rmd](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic10_Clustering/Topic10_ClusteringKmeansText.Rmd) [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic10_Clustering/Topic10_ClusteringKmeansText.html)
+
+Clustering notes, part 2:  TBD
+
+Florida County Data - for part 1: [FloridaCountData.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/data/FloridaCountyData.Rda)
+Federalist Papers Data - for part 2 \& 3: [FederalistPaperCorpusTidy.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/data/FederalistPaperCorpusTidy.Rda)
 
 
 ### Assignments
@@ -208,7 +213,7 @@ Dataset: [Pres2020.StatePolls.Rdata](https://github.com/wdoyle42/vandy_ds_1000/r
 
 Dataset: [Pres202.Pv.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/data/Pres2020.PV.Rdata)
 
-[3rd Guided Exercise, Due November 8, 11:59 pm](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/guided_exercise_3.html)
+[3rd Guided Exercise, Due November 11, 11:59 pm](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/guided_exercise_3.html)
 
 [RMD](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/guided_exercise_3.Rmd)
 
