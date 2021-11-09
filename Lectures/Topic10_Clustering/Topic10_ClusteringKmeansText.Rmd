@@ -39,6 +39,7 @@ But Hamilton's duel and his desire to claim ownership over his legacy meant that
 Text data is called a "corpus".  Let's load the complete set of Federalist Papers that are saved as a tidy-format corpus.
 
 ```{r}
+library("tm")
 library("SnowballC")
 library("tidyverse")
 library("tidytext")
