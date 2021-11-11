@@ -158,18 +158,19 @@ Movie Data: [mv.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures
 
 [In case you're interested, code for accessing movie data, including the IMDB data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic9_Regression/access_movie_data.R)
 
-#### 10\.  Clustering (UPDATED!)
+#### 10\.  Clustering, Text, and Twitter...
 
 Clustering notes, part 1: [.Rmd](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic10_Clustering/Topic10_ClusteringKmeans.Rmd) [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic10_Clustering/Topic10_ClusteringKmeans.html)
 
 Clustering notes, part 2: [.Rmd](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic10_Clustering/Topic10_ClusteringKmeansText.Rmd) [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic10_Clustering/Topic10_ClusteringKmeansText.html)
 
-Clustering notes, part 2:  TBD
+Predicting with Text, part 3: [.Rmd](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic10_Clustering/Topic10_ClusteringTextPredict.Rmd) [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic10_Clustering/Topic10_ClusteringTextPredict.html)
+
+Sentiment Analysis with Twttter Text, part 4: FORTHCOMING
 
 Florida County Data - for part 1: [FloridaCountData.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/FloridaCountyData.Rda)
 
-Federalist Papers Data - for part 2: [FederalistPaperCorpusTidy.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/FederalistPaperCorpusTidy.Rda)
-
+Federalist Papers Data - for part 2 and 3: [FederalistPaperCorpusTidy.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/FederalistPaperCorpusTidy.Rda)
 
 ### Assignments
 

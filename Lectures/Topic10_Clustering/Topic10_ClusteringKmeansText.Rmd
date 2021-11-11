@@ -39,12 +39,12 @@ But Hamilton's duel and his desire to claim ownership over his legacy meant that
 Text data is called a "corpus".  Let's load the complete set of Federalist Papers that are saved as a tidy-format corpus.
 
 ```{r}
-library("tm")
 library("SnowballC")
 library("tidyverse")
 library("tidytext")
+library("tm")
 
-load(file="FederalistPaperCorpusTidy.Rda")
+load(file="data/FederalistPaperCorpusTidy.Rda")
 glimpse(corpus.tidy)
 ```
 
@@ -170,8 +170,7 @@ So what are the 10 most frequently used words?
 
 ```{r}
 dtm10 %>%
-  top_n(10,
-        wt=n)
+  top_n(10,wt=n)
 ```
 
 
@@ -299,7 +298,9 @@ Can we make this list a bit easier to follow? Of course.  Lets summarize and the
 gather(words_kmean, cluster, value, -word) %>%
   group_by(cluster) %>%
   top_n(10, value) %>%
+  arrange(-value) %>%
   summarise(top_words = str_c(word, collapse = ", ")) %>%
+  mutate(NumPapers = table(km_out$cluster)) %>%
   knitr::kable()
 ```
 
@@ -328,5 +329,19 @@ dtm_hamilton <- filter(dtm.tfidf, document %in% hamilton)
 castHamilton <- cast_dtm(dtm_hamilton, document, word, tf)
 ```
 
-Can you use this to summarize the 4 main topics that Hamilton wrote about?  How many papers are in each cluster?  What is the primary themes of each?  And how does the emphaisis of Hamiliton compare to Madison in terms of focus and content?
+Can you use `castHamilton` to summarize the 4 main topics that Hamilton wrote about?  How many papers are in each cluster?  What is the primary themes of each?  
+
+```{r}
+
+# INSERT CODE
+
+```
+
+And how does the emphasis of Hamilton compare to Madison in terms of focus and content?? (Requires creating the equivalent `castMadison` object.) 
+
+```{r}
+
+# INSERT CODE
+
+```
 
