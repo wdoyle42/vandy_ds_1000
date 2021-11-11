@@ -170,7 +170,10 @@ Sentiment Analysis with Twttter Text, part 4: FORTHCOMING
 
 Florida County Data - for part 1: [FloridaCountData.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/FloridaCountyData.Rda)
 
-Federalist Papers Data - for part 2 and 3: [FederalistPaperCorpusTidy.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/FederalistPaperCorpusTidy.Rda)
+Federalist Papers Data - for part 2: [FederalistPaperCorpusTidy.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/FederalistPaperCorpusTidy.Rda)
+
+Federalist Papers Data - for part 3: [FederalistPaperDocumentTermMatrix.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/FederalistPaperDocumentTermMatrix.Rda)
+
 
 ### Assignments
 

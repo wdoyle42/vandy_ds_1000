@@ -62,7 +62,7 @@ Let's load in the data and libraries we need for this unit.
 ```{r, message=FALSE}
 library("tidyverse")
 library("tidymodels")
-load(file="data/FederalistPaperDocumentTermMatrix.Rda")
+load(file="FederalistPaperDocumentTermMatrix.Rda")
 ```
 
 Now create the outcome variable -- the vector of authors associated with each of the 85 Federalist Papers.
@@ -409,7 +409,7 @@ for (i in 1:nrow(train.dat)){   # Loop over every observation in our training se
 
 Now we can simply plot this
 
-```{r}
+```{r,  warning=FALSE}
 ggplot(tidy(tmp),aes(x =x)) + 
   geom_histogram(bins=15) + 
   labs(title = "Cross-Validation Estimates for `Whilst` Effect",
