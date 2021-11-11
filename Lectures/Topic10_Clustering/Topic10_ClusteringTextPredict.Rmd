@@ -62,7 +62,7 @@ Let's load in the data and libraries we need for this unit.
 ```{r, message=FALSE}
 library("tidyverse")
 library("tidymodels")
-load(file="FederalistPaperDocumentTermMatrix.Rda")
+load(file="data/FederalistPaperDocumentTermMatrix.Rda")
 ```
 
 Now create the outcome variable -- the vector of authors associated with each of the 85 Federalist Papers.
