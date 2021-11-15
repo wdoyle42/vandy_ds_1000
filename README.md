@@ -166,13 +166,16 @@ Clustering notes, part 2: [.Rmd](https://raw.githubusercontent.com/wdoyle42/vand
 
 Predicting with Text, part 3: [.Rmd](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic10_Clustering/Topic10_ClusteringTextPredict.Rmd) [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic10_Clustering/Topic10_ClusteringTextPredict.html)
 
-Sentiment Analysis with Twttter Text, part 4: FORTHCOMING
+Sentiment Analysis with Twttter Text, part 4:  [.Rmd](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic10_Clustering/Topic10_TrumpTweetSentiment.Rmd) [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic10_Clustering/Topic10_TrumpTweetSentiment.html)
 
 Florida County Data - for part 1: [FloridaCountData.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/FloridaCountyData.Rda)
 
 Federalist Papers Data - for part 2: [FederalistPaperCorpusTidy.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/FederalistPaperCorpusTidy.Rda)
 
 Federalist Papers Data - for part 3: [FederalistPaperDocumentTermMatrix.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/FederalistPaperDocumentTermMatrix.Rda)
+
+Tweet-Level Data on Trump Tweets - for part 4: [Trumptweets.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/Trumptweets.Rda)
+Word-Level Data on Trump Tweets - for part 4: [Trump_tweet_words.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/Trump_tweet_words.Rda)
 
 
 ### Assignments
