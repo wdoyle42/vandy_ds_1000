@@ -175,6 +175,7 @@ Federalist Papers Data - for part 2: [FederalistPaperCorpusTidy.Rda](https://git
 Federalist Papers Data - for part 3: [FederalistPaperDocumentTermMatrix.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/FederalistPaperDocumentTermMatrix.Rda)
 
 Tweet-Level Data on Trump Tweets - for part 4: [Trumptweets.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/Trumptweets.Rda)
+
 Word-Level Data on Trump Tweets - for part 4: [Trump_tweet_words.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/Trump_tweet_words.Rda)
 
 
