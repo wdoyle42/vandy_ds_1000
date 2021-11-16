@@ -105,7 +105,7 @@ tweets %>%
   labs(x="Date",y="Average Retweets",title="Tweeting by Trump") +
   scale_y_continuous(label=comma)
 ```
-Clearly there is a lot of variation here. Which tweets were re-tweeted the most?
+Clearly there is a lot of variation here. Which tweets were re-tweeted the most?  
 
 ```{r}
 tweets %>% 
@@ -114,13 +114,12 @@ tweets %>%
   arrange(-retweets)
 ```
 
-Now can you do the same to identify the tweets that were selected as a favorite?  How does this list compare to the tweets that were most likely to be retweeted?  
+Now can you do the same to identify the tweets that were selected as a favorite?  How does this list compare to the tweets that were most likely to be retweeted?  Can you write this code?
 
 ```{r}
-tweets %>% 
-  select(content,favorites) %>%
-  top_n(favorites,n=10) %>%
-  arrange(-favorites)
+
+# INSERT CODE HERE
+
 ```
 
 In general, how should we measure influence/impact?  Favorites or retweets?  Does the choice matter?  Let's look at the relationship to see how consequential the determination is.
@@ -133,9 +132,10 @@ tweets %>%
   scale_y_continuous(label=comma) +
   labs(x= "Number of Retweets", y = "Number of Times Favorited",title="Trump Tweets: Relationship between Retweets and Favorites")
 ```
-In general they seem pretty related, but there are a handful of tweets that are retweeted far more than they are favorited. (Can you figure out which ones these are?)
 
-We can also use `plotly` to create an HTML object with each point being a labelled point. We can use this to label the tweets to get a better sense of what tweets were most re-tweeted?  (This will be a very large plot!  To keep things manageable let's focus on the top 75th-percentile of tweets.)
+In general they seem pretty related, but there are a handful of tweets that are retweeted far more than they are favorited. (On your own, can you figure out which ones these are?)
+
+We can also use `plotly` to create an HTML object with each point denoting how many retweets each tweet receieved and the date of the tweet. We can use this to label the tweets to get a better sense of what tweets were most re-tweeted?  (This will be a very large plot given the number of tweets and the length of the content being pasted into the object!  To keep things manageable let's focus on the top 75th-percentile of tweets.)
 
 ```{r}
 library(plotly)
@@ -149,7 +149,7 @@ gg <- tweets %>%
 ggplotly(gg,tooltip = "text")
 ```
 
-Can you do the same for the most favorited tweets?
+On your own, can you do the same for the most favorited tweets?
 
 ```{r}
 
@@ -157,7 +157,7 @@ Can you do the same for the most favorited tweets?
 
 ```
 
-In addition to looking at the change over time we can also look at the hour at whichTrump was tweeting using the `hour` variable we created.  To start let's do the total number of tweets at each hour across the entire corpus.
+In addition to looking at the change over time we can also look at the hour at which Trump was tweeting using the `hour` variable we created.  To start let's do the total number of tweets at each hour across the entire corpus.
 
 ```{r}
 tweets %>% 
@@ -170,7 +170,7 @@ tweets %>%
 
 Did Trump's use to twitter change after he was elected President?  Certainly we would think that the content might change -- as well as how likely it was to be favorited and retweeted -- but how about the frequency and timing of the tweets?   
 
-Let's create a variable `PostPresident` using the `date` variable to define whether the date is before of after his election as president (we could also use the inauguration date, but some claimed that his behavior would change once he was officially projected.)
+Let's create an indicator variable `PostPresident` using the `date` variable to define whether the date is before (`FALSE`) or after (`TRUE`)  his election as president (we could also use the inauguration date, but some claimed that his behavior would change once he was officially projected.)
 
 ```{r}
 tweets %>% 
@@ -184,7 +184,9 @@ tweets %>%
 
 What do you observe?  
 
-But is it right to use the overall frequency? Do we prefer the proportion of tweets that were set at each hour pre/post presidency? Let's use `mutate` to compute the proportion of tweets that occur at each hour in each period and then plot those using `color` to denote the pre/post time period.
+But is it right to use the overall frequency? Do we prefer the proportion of tweets that were set at each hour pre/post presidency?
+
+Let's use `mutate` to compute the proportion of tweets that occur at each hour in each period and then plot those using `color` to denote the pre/post time period.
 
 ```{r}
 tweets %>% 
@@ -259,6 +261,9 @@ Now see if you can pull this together by plotting the time of tweeting by year b
 
 
 # [OPTIONAL] Data Wrangling Text
+
+You can skip this section and just load in the data in the next section, but this is if you want to know what I did to get the data from above ready for the analyses we do below.  It invovles working with the string variable `content` and deleting elements of that string to leave us only word "tokens."
+
 OK so that is what we can do at the level of the tweet.  To analyze the content of the tweet we need to transform the string of each tweet into "tokens" (words) that we can then analyze. The first part is often the hardest -- data-wrangling is typically 85\% of the issue in data science. Rather than give you the cleaned data, here is a sense of what you need to do to make it work.  Do not worry about understanding the content at this point.
 
 The following is included for the interested student to get a sense of what is required to convert the `content` into tokens.  Recall that our "data" looks like this:
@@ -323,7 +328,7 @@ clean_tweets <- function(x) {
 tweets$content <- clean_tweets(tweets$content)
 ```
 
-Now that we have pre-processed the `content` string lets do some more more wrangling to extract word "tokens" and remove the tokens that are not meaningful words.  Let's also define the object `reg` containing all the various characters that an be used.
+Now that we have pre-processed the `content` string lets do some more more wrangling to extract word "tokens" from this string and then also remove the tokens that are not meaningful words.  Let's also define the object `reg` containing all the various characters that an be used.
 
 ```{r}
 reg <- "([^A-Za-z\\d#@']|'(?![A-Za-z\\d#@]))"
@@ -372,6 +377,7 @@ tweet_words %>%
   count(word) %>%
   arrange(-n)
 ```
+
 Let's plot the 20 most frequently used words in descending order using a barplot.
 
 ```{r}
@@ -417,7 +423,7 @@ tweet_words %>%
   arrange(-n) 
 ```
 
-Putting together in a nicer table.
+Putting together in a nicer table using `group_by`.
 
 ```{r}
 tweet_words %>%
@@ -429,7 +435,7 @@ tweet_words %>%
   summarise(top_words = str_c(word, collapse = ", ")) 
 ```
 
-And graphing them using a `wordcloud`.
+And now graphing them using a `wordcloud`.  (Why are we setting a seed?)
 
 ```{r}
 library(wordcloud)
@@ -466,14 +472,9 @@ tweet_words %>%
 An now, how about by hour?  What is on President Trump's mind, on average, at every hour of the day?
 
 ```{r}
-tweet_words %>%
-  group_by(Tweeting.hour) %>%
-  select(word) %>%
-  count(word) %>%
-  top_n(10, wt= n) %>%
-  arrange(-n)   %>%
-  summarise(top_words = str_c(word, collapse = ", ")) %>%
-  knitr::kable()
+
+# INSERT CODE HERE
+
 ```
 
 Pushing ahead, we could also do hour by pre/post presidency (or year) to see how the content changed.  Or perhaps how activity varies across parts of the day by creating periods of time based on the hours (e.g., "late-night", "early morning", "normal work-day").  Here is where you as a data-scientist can propose (and defend!) categorizations that are useful for understanding the variation in the data.
@@ -808,5 +809,5 @@ And now summarize the top 4 words associated with each of the 5 clusters.
 
 ```
 
-
+How does that compare?  How does the content and emphasis of we find vary over time?  And how do those isights compare to the insights we get from analyzing sentiments?  
 
