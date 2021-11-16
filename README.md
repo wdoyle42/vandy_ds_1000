@@ -250,3 +250,5 @@ Dataset: [Pres202.Pv.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/L
 
 [... And the full list of Rstudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/)
 
+[Tidymodels Resources](https://www.tidymodels.org/learn/)
+
