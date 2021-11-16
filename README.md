@@ -238,6 +238,8 @@ Dataset: [Pres202.Pv.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/L
 
 [Leaderboard for predictions](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/leaderboard.html)
 
+[Some Ideas on 3rd Guided Exercise](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/ge3_ideas.Rmd)
+
 ### Helpful Resources
 
 [Rstudio Cheat Sheet: Data Wrangling](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
