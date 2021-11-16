@@ -240,6 +240,8 @@ Dataset: [Pres202.Pv.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/L
 
 [Some Ideas on 3rd Guided Exercise](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/ge3_ideas.Rmd)
 
+[Video on Guided Exercise 3 Ideas](https://youtu.be/vLxLS-K36uw)
+
 ### Helpful Resources
 
 [Rstudio Cheat Sheet: Data Wrangling](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
