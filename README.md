@@ -181,8 +181,11 @@ Word-Level Data on Trump Tweets - for part 4: [Trump_tweet_words.Rda](https://gi
 
 #### 11\. Classification: Or, Become an Admissions Dean for Fun and Profit!
 Lecture 1: The Admissions "Funnel" and the Problem of Classification
+
 [Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/college_admissions.Rmd)
+
 [HTML Notes](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic11Classification/college_admissions.html)
+
 [Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/admit_data.rds)
 
 
