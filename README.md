@@ -179,6 +179,14 @@ Tweet-Level Data on Trump Tweets - for part 4: [Trumptweets.Rda](https://github.
 Word-Level Data on Trump Tweets - for part 4: [Trump_tweet_words.Rda](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic10_Clustering/Trump_tweet_words.Rda)
 
 
+#### 11\. Classification: Or, Become an Admissions Dean for Fun and Profit!
+Lecture 1: The Admissions "Funnel" and the Problem of Classification
+[Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/college_admissions.Rmd)
+[HTML Notes](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic11Classification/college_admissions.html)
+[Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/admit_data.rds)
+
+
+
 ### Assignments
 
 [Assignment 1, Due 11:59 pm Monday August 30](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/01-assignment.html)
