@@ -20,7 +20,7 @@ Colleges aren't powerless in this process. Instead, they execute a careful strat
 We're going to focus on the very last step: from admitted students to what's called a yield: a student who actually shows up and sits down for classes in the fall.
 
 The stakes are large: if too few students show up, then the institutions will not have enough revenues to operate. If too many show up the institution will not have capacity for all of them. On top of this, enrollment managers are also tasked with the combined goals of increasing academic prestige (usually through test scores and GPA) and increasing the socioeconomic diversity of the entering class. As we'll see, these are not easy tasks.
-n
+
 
 ## The Data
 
@@ -33,7 +33,7 @@ library(scales)
 ```
 
 ```{r}
-ad<-read_rds("admit_data.Rds")
+ad<-read_rds("admit_data.Rds")%>%ungroup()
 ```
 
 Codebook for admit_data.rds
@@ -179,6 +179,11 @@ So, it looks like yield steadily increases with SAT scores-- a good sign for the
 *Quick Exercise* calculate yield by quintiles of net price: what do you see?
 
 ```{r}
+ad%>%
+  mutate(net_price_quintie=ntile(net_price,n=5))%>%
+  group_by(net_price_quintie)%>%
+  summarize(amount=min(net_price),
+            pr_attend=mean(yield))
 
 ```
 
@@ -188,11 +193,11 @@ Let's look at yield rates by both sat quintile and legacy status.
 
 ```{r}
 ad%>%
-  mutate(sat_quintile=ntile(sat,n=10))%>%
-  group_by(sat_quintile,legacy)%>%
+  mutate(sat_decile=ntile(sat,n=10))%>%
+  group_by(sat_decile,legacy)%>%
   summarize(min_sat=min(sat),
   pr_attend=mean(yield))%>%
-  ggplot(aes(y=as_factor(sat_quintile),x=as_factor(legacy),fill=pr_attend))+
+  ggplot(aes(y=as_factor(sat_decile),x=as_factor(legacy),fill=pr_attend))+
   geom_tile()+
   scale_fill_viridis_c()+
   ylab("SAT Score Decile")+xlab("Legacy Status")
