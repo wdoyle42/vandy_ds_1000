@@ -225,7 +225,7 @@ Lecture 4: Changing Policy
 
 [Walkthrough for assignment 4](https://youtu.be/OpDlq81wZkA)
 
-[Assignment 5](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/05-assignment.Rmd)
+[Assignment 5, Due 11:59 pm December 7](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/05-assignment.Rmd)
 
 ### Guided Exercises
 
