@@ -188,6 +188,19 @@ Lecture 1: The Admissions "Funnel" and the Problem of Classification
 
 [Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/admit_data.rds)
 
+Lecture 2: Logistic Regression and the AUC
+
+[Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/college_admissions_2.Rmd)
+
+[HTML Notes](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic11Classification/college_admissions_2.html)
+
+[Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/admit_data.rds)
+
+Lecture 3: Cross Validation and Feature Selection for Classifiers
+
+Lecture 4: Changing Policy
+
+
 
 
 ### Assignments
