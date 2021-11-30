@@ -1,0 +1,25 @@
+---
+title: "Assignment 5"
+author: "Will Doyle"
+date: "11/30/2021"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+```
+
+```{r}
+ad<-read_rds("admit_data.rds")
+```
+
+
+Complete the following steps:
+
+1. Plot yield as a function of income
+1. Calculate the proportion who yielded as a function of income decile and comment briefly on the results. 
+2. Run a regression with yield as a function of income and sent scores. Comment on the coefficients. 3. Run a logistic regression with yield as a function of income and sent scores. Again comment on the coefficients. 
+4. Calculate the acccuracy, specificity and sensitivity of the predictions from your logistic regression above. Comment briefly on each. 
+5. Calculate the AUC from the logistic regression and state whether you have achieved good model fit. 
+
