@@ -454,7 +454,7 @@ mv_test%>%
 
 That . . . didn't do much! We're not getting a big increase in model fit as a result of including score, even though it IS related to the outcome.
 
-What does this rmse *actually* mean? We can get a sense by using the parameeters of the model to calculate the predicted gross for a 10 million dollar movie with average IMDB scores, then add or subtract the rmse.
+What does this rmse *actually* mean? We can get a sense by using the parameters of the model to calculate the predicted gross for a 10 million dollar movie with average IMDB scores, then add or subtract the rmse.
 
 ```{r}
 mv_sum<-mv%>%

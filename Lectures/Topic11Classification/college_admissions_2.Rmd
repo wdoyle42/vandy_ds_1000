@@ -119,9 +119,9 @@ If we use this link function on our data, it would look like this:
 ## Plotting Predictions from Logistic Regression
 
 ```{r}
-glm(yield ~ distance, family = binomial(link = "logit"), data = ad) %>% ## Run a glm
+glm(yield ~ sat, family = binomial(link = "logit"), data = ad) %>% ## Run a glm
   augment(type.predict = "response") %>% ## generate predictions on the prob scale
-  ggplot(aes(x = distance, y = yield)) + 
+  ggplot(aes(x = sat, y = yield)) + 
   geom_jitter(
     width = .01,
     height = .05,
@@ -129,7 +129,7 @@ glm(yield ~ distance, family = binomial(link = "logit"), data = ad) %>% ## Run a
     color = "blue"
   ) +
   geom_smooth(method = "lm", se = FALSE, color = "black")+
-  geom_smooth(aes(x=distance,y=.fitted,color="red"))+ ## Show pred probs
+  geom_smooth(aes(x=sat,y=.fitted,color="red"))+ ## Show pred probs
   theme(legend.position = "none")+
   ggtitle("Linear Prediction  in Black, Logistic in Red")
 
@@ -193,7 +193,7 @@ The formula for a logit model looks just like the formula for a linear model.
 We'll add that formula to the recipe in the standard way.
 
 ```{r}
-admit_formula<-as.formula("yield_f~sat+net_price+legacy+visit+sent_scores")
+admit_formula<-as.formula("yield_f~sat+net_price+legacy")
 
 admit_recipe<-recipe(admit_formula,ad_train)
 ```
@@ -328,19 +328,19 @@ And here's the proportion of the area in the graph (AUC) covered by the curve dr
 ad_wf%>%
   predict(ad_test,type="prob")%>%
   bind_cols(ad_test)%>%
-  roc_auc(truth=yield_f,estimate=.pred_Yes,event_level="second")
+  roc_auc(truth=yield_f,estimate=.pred_Yes,event_level="first")
 ```
 
 The nice thing is that interpreting AUC is just like interpreting academic grades:
 
 Below .6= bad (F)
 
-.6--.7= still not great (D)
+.6-.7= still not great (D)
 
-..7--.8= Ok . .. (C)
+.7-.8= Ok . .. (C)
 
 .8-.9= Pretty good (B)
 
 .9-1= Very good fit (A)
 
-*Quick Exercise: Rerun the model with vist added: does it improve model fit?*
+*Quick Exercise: Rerun the model with sent_scores added: does it improve model fit?*
