@@ -7,15 +7,19 @@ editor_options:
     wrap: 80
 ---
 
-```{r}
+
+
+```{r,echo=FALSE,message=FALSE}
+
 library(tidyverse)
 library(tidymodels)
 library(probably)
 ```
 
-```{r}
+```{r,echo=FALSE}
 ad<-read_rds("admit_data.rds")
 ```
+
 
 ## Logistic Regression
 
@@ -32,6 +36,7 @@ Let's take a look at a simple plot of our dependent variable as a function of
 one indpendent variable: SAT scores. I'm using `geom_jitter` to allow the points
 to "bounce" around a bit on the y axis so we can actually see them, but it's
 important to note that they can only be 0s or 1s.
+
 
 ## Yield as a Function of SAT Scores
 
@@ -114,9 +119,9 @@ If we use this link function on our data, it would look like this:
 ## Plotting Predictions from Logistic Regression
 
 ```{r}
-glm(yield ~ sat, family = binomial(link = "logit"), data = ad) %>% ## Run a glm
+glm(yield ~ distance, family = binomial(link = "logit"), data = ad) %>% ## Run a glm
   augment(type.predict = "response") %>% ## generate predictions on the prob scale
-  ggplot(aes(x = sat, y = yield)) + 
+  ggplot(aes(x = distance, y = yield)) + 
   geom_jitter(
     width = .01,
     height = .05,
@@ -124,7 +129,7 @@ glm(yield ~ sat, family = binomial(link = "logit"), data = ad) %>% ## Run a glm
     color = "blue"
   ) +
   geom_smooth(method = "lm", se = FALSE, color = "black")+
-  geom_smooth(aes(x=sat,y=.fitted,color="red"))+ ## Show pred probs
+  geom_smooth(aes(x=distance,y=.fitted,color="red"))+ ## Show pred probs
   theme(legend.position = "none")+
   ggtitle("Linear Prediction  in Black, Logistic in Red")
 
@@ -149,7 +154,8 @@ variable has to be a factor, so we need to do some . . .
 
 ```{r}
 ad<-ad%>%
-  mutate(yield_f=as_factor(ifelse(yield==1,"Yes","No")))
+  mutate(yield_f=as_factor(ifelse(yield==1,"No","Yes")))%>%
+  mutate(yield_f=fct_relevel(yield_f,"Yes","No"))
 ```
 
 As usual, we're going to use the "tidymodels" approach to running this model,
@@ -187,7 +193,7 @@ The formula for a logit model looks just like the formula for a linear model.
 We'll add that formula to the recipe in the standard way.
 
 ```{r}
-admit_formula<-as.formula("yield_f~sat+net_price+legacy")
+admit_formula<-as.formula("yield_f~sat+net_price+legacy+visit+sent_scores")
 
 admit_recipe<-recipe(admit_formula,ad_train)
 ```
@@ -204,16 +210,20 @@ ad_wf<-workflow()%>%
 
 ## Train Model
 
-And we're ready to fit the model and add the results to our
+And we're ready to fit the model and add the results to our workflow. 
 
 ```{r}
 ad_wf<-ad_wf%>%
   fit(ad_train)
 ```
 
+
+We can print out the coefficients using `tidy`
 ```{r}
 ad_wf%>%tidy()
 ```
+
+What this is telling us is that controlling for net price, SAT scores have a negative relationship with yield, that net price also has a negative relationship with yield, and that controlling for SAT and net price, legacy has a negative relationship with yield. 
 
 *Quick Exercise: add a campus visit to the model and see what the results tell you.*
 
@@ -223,9 +233,9 @@ We previously explored the concepts of accuracy, sensitivity and specificity.
 
 - Accuracy represents the proportion of cases correctly classified. 
 - Sensitivity represents the proportion of "1s" or  positive outcomes correctly classified
-- Specificty represents the proportion of "0s" or negative outcomes correctly classified
+- Specificity represents the proportion of "0s" or negative outcomes correctly classified
 
-All of these are dependent on our choice of threshold: at what probability do we say that something should be classified as a 1 or a 0? We many times use .5 as a "default" threshold, but there's nothing mathematicaly proven  that says that .5 is a correct threshold. 
+All of these are dependent on our choice of threshold: at what probability do we say that something should be classified as a 1 or a 0? We many times use .5 as a "default" threshold, but there's nothing mathematically proven  that says that .5 is a correct threshold. 
 
 ## Accuracy
 
@@ -235,7 +245,7 @@ Remember that accuracy must always be evaluated relative to the baseline rate. L
 ad_test%>%summarize(mean(yield))
 ```
 
-So, by simply guessing "Yes" for everyone, we could get a an accuracy of .68 or so. Let's check and see how our model is doing:
+So, by simply guessing "Yes" for everyone, we could get a an accuracy of .7 or so. Let's check and see how our model is doing:
 
 ```{r}
 ad_wf%>%
@@ -244,7 +254,7 @@ ad_wf%>%
  accuracy(truth=yield_f,estimate=.pred_class,event_level="first")
 ```
 
-Okay, so baseline is .678 while our model has an overall accuracy of .768: better!
+Okay, so baseline is about .7  while our model has an overall accuracy of .78: better!
 
 
 ## Sensitivity
@@ -282,7 +292,7 @@ At this point, our overall judgment on the predictions from this model is that i
 
 ## Varying Thresholds
 
-As mentioned before, the calculted sensitivity and specificity depend on the threshold we use. We can vary this threshold to get a sense of what difference it might make. Below. I use the `threshold_perf` command to vary the threshold from 0 to 1, calculating both sensitivity and specificity at each threshold. 
+As mentioned before, the calculated sensitivity and specificity depend on the threshold we use. We can vary this threshold to get a sense of what difference it might make. Below. I use the `threshold_perf` command to vary the threshold from 0 to 1, calculating both sensitivity and specificity at each threshold. 
 
 ```{r}
 
@@ -318,13 +328,19 @@ And here's the proportion of the area in the graph (AUC) covered by the curve dr
 ad_wf%>%
   predict(ad_test,type="prob")%>%
   bind_cols(ad_test)%>%
-  roc_auc(truth=yield_f,estimate=.pred_Yes,event_level="first")
+  roc_auc(truth=yield_f,estimate=.pred_Yes,event_level="second")
 ```
 
 The nice thing is that interpreting AUC is just like interpreting academic grades:
 
 Below .6= bad (F)
+
 .6--.7= still not great (D)
+
 ..7--.8= Ok . .. (C)
+
 .8-.9= Pretty good (B)
+
 .9-1= Very good fit (A)
+
+*Quick Exercise: Rerun the model with vist added: does it improve model fit?*
