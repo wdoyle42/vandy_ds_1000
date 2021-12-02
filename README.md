@@ -198,9 +198,9 @@ Lecture 2: Logistic Regression and the AUC
 
 Lecture 3: Cross Validation and Feature Selection for Classifiers
 
-[Rmd Notes]((https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/college_admissions_3.Rmd)
+[Rmd Notes](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/college_admissions_3.Rmd)
 
-[HTML Notes]((https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic11Classification/college_admissions_3.html)
+[HTML Notes](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic11Classification/college_admissions_3.html)
 
 
 [Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/admit_data.rds)
