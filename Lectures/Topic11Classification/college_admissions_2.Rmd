@@ -10,7 +10,6 @@ editor_options:
 
 
 ```{r,echo=FALSE,message=FALSE}
-
 library(tidyverse)
 library(tidymodels)
 library(probably)
@@ -154,7 +153,7 @@ variable has to be a factor, so we need to do some . . .
 
 ```{r}
 ad<-ad%>%
-  mutate(yield_f=as_factor(ifelse(yield==1,"No","Yes")))%>%
+  mutate(yield_f=as_factor(ifelse(yield==1,"Yes","No")))%>%
   mutate(yield_f=fct_relevel(yield_f,"Yes","No"))
 ```
 
@@ -251,10 +250,11 @@ So, by simply guessing "Yes" for everyone, we could get a an accuracy of .7 or s
 ad_wf%>%
   predict(ad_test)%>%
   bind_cols(ad_test)%>%
- accuracy(truth=yield_f,estimate=.pred_class,event_level="first")
+  accuracy(truth=yield_f,estimate=.pred_class,event_level="first")
+
 ```
 
-Okay, so baseline is about .7  while our model has an overall accuracy of .78: better!
+Okay, so baseline is about.7   while our model has an overall accuracy of .78: better!
 
 
 ## Sensitivity

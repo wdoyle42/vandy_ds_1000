@@ -6,9 +6,9 @@ output: html_document
 ---
 
 ```{r}
-library(modelr)
 library(tidyverse)
 library(tidymodels)
+library(knitr)
 ```
 
 
@@ -19,36 +19,52 @@ ad<-read_rds("admit_data.rds")
 
 ## Data Wrangling
 ```{r}
-ad<-ad%>%
-  mutate(yield_f=as_factor(ifelse(yield==1,"Yes","No")))%>%
-  mutate(yield_f=relevel(yield_f,ref="No"))
+ad_sub <- ad %>%
+  mutate(yield_f = as_factor(ifelse(yield == 1, "Yes", "No"))) %>%
+  mutate(yield_f = relevel(yield_f, ref = "No")) %>% ## This is what I forgot last time
+  select(ID,
+         yield_f,
+         legacy,
+         visit,
+         registered,
+         sent_scores,
+         sat,
+         income,
+         gpa,
+         distance,
+         net_price)
+```
+
+
+## Set Resamples
+```{r}
+ad_rs<-mc_cv(ad_sub,times=100)
 ```
 
 
 ## Settting the Model
 
 ```{r}
-logit_mod<-logistic_reg()%>%
-  set_engine("glm")%>%
+penalty_spec<-.1
+
+mixture_spec<-1
+
+lasso_logit_mod<- 
+  logistic_reg(penalty=penalty_spec,
+             mixture=mixture_spec) %>% 
+  set_engine("glmnet")%>%
   set_mode("classification")
+  
 ```
 
 
 ## Formula and Recipe
 ```{r}
 admit_formula <- as.formula(
-                  "yield_f~
-                           legacy+
-                           visit+
-                          registered+
-                          sent_scores+
-                          sat+
-                          income+
-                          gpa+
-                          distance+
-                          net_price")
+                        "yield_f~.")
 
-admit_recipe<-recipe(admit_formula,ad)%>%
+admit_recipe<-recipe(admit_formula,ad_sub)%>%
+  update_role(ID, new_role = "id variable")%>%
   step_log(distance)
 ```
 
@@ -56,76 +72,76 @@ admit_recipe<-recipe(admit_formula,ad)%>%
 ## Workflow
 ```{r}
 ad_wf<-workflow()%>%
-  add_model(logit_mod)%>%
+  add_model(lasso_logit_mod)%>%
   add_recipe(admit_recipe)
 ```
 
-## Fit the Model
+## Fit the Model: THIS WILL TAKE A FEW SECONDS, JUST BREATHE . . . 
 ```{r}
-ad_result<-ad_wf%>%
-  fit(ad)
+ad_lasso_fit<-ad_wf%>%
+  fit_resamples(ad_rs)
 ```
 
 ```{r}
-tidy(ad_result)
+ad_lasso_fit%>%
+  collect_metrics()
 ```
 
 
 ```{r}
-ad_fit<-ad_result%>%extract_fit_parsnip(ad_result)
-
-hypo_data <- ad %>%
-  data_grid(sat = seq_range(sat, n = 100),
-            legacy=c(0,1),
-            .model=ad_fit$fit)
-
-plot_data<-ad_result%>%
-  predict(hypo_data,type="prob")%>%
-  bind_cols(hypo_data)
-
-plot_data%>%
-ggplot(aes(x=sat,y=.pred_Yes,color=as_factor(legacy)))+
-  geom_line()+
-  ylab("Prob(Attend)")
+ad_lasso_fit%>%
+  unnest(.metrics)%>%
+  filter(.metric=="roc_auc")%>%
+  ggplot(aes(x=.estimate))+
+  geom_density()
 ```
 
-##  Changing policy
+
+## Finalize Workflow
 ```{r}
-ad_result%>%
-  predict(ad)%>%
-  bind_cols(ad)%>%
-  group_by(sent_scores,.pred_class)%>%
-  count()
+ad_lasso_final <- finalize_workflow(ad_wf,
+                                      select_best(ad_lasso_fit,metric="roc_auc")) %>%
+  fit(ad_sub)
+```
 
-ad%>%
-  filter(yield==1)%>%
-  summarize(dollar(sum(net_price)))
+## Parameter Estimates
+```{r}
+ad_lasso_final%>%
+  extract_fit_parsnip()%>%
+  tidy()%>%
+  kable()
+```
 
-  
-ad_np<-ad%>%
-  mutate(net_price=ifelse(sent_scores==1,
-                              net_price+5000,
-                              net_price))
-
-ad_np<-ad_result%>%
-  predict(ad_np,type="prob")%>%
-  bind_cols(ad_np)%>%
-  mutate(pred_yield=ifelse(.pred_Yes>.5,1,0))
+## Hyperparameter Tuning
 
 
-ad_np%>%
-  group_by(sent_scores,pred_yield)%>%
-  count()
+## Set Up Lasso Model
+
+```{r}
+lasso_logit_mod<- 
+  logistic_reg(penalty=tune(),
+             mixture=mixture_spec) %>% 
+  set_engine("glmnet")%>%
+  set_mode("classification")
+```
 
 
-ad_np%>%
-  filter(pred_yield==1)%>%
-  summarize(dollar(sum(net_price)))
+## Set Grid
+```{r}
+lasso_grid<-grid_regular(parameters(lasso_tune_fit) ,levels=10)
+```
 
-ad_np%>%
-  group_by(pred_yield)%>%
-  count()
-  
+
+
+## Update Model
+
+```{r}
+ad_wf<-ad_wf%>%
+  update_model(lasso_logit_mod)
+```
+
+```{r}
+
 
 ```
 
