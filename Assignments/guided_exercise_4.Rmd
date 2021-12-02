@@ -23,8 +23,8 @@ You'll need to incorporate the following elements into your two page memo for th
 
 1. Use conditional means to describe the probability of enrolling once admitted (yield) for different groups of students. 
 2. Create a  model that accurately predicts the yield for admitted students. Describe the accuracy of this model and its key findings clearly.
-3. Adjust the current pricing strategy to induce other students to enroll, given the above constraints.Describe your approach clearly.  
-4. Predict the results of your change in pricing strategy. 
+3. Use the estimates from this model to adjust the current pricing strategy to induce other students to enroll, given the above constraints.Describe your approach clearly.  
+4. Predict the results of your change in pricing strategy.  
 
 There are lots of ways to accomplish all of the above. Remember that you need to write up your findings in a nice narrative, including charts and tables to make your key points. If you think there are some ethical implications to your approach, describe those as well. 
 
