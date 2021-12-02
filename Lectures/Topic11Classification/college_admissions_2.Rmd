@@ -301,7 +301,7 @@ threshold_example<-ad_wf%>%
   bind_cols(ad_test)%>%
    threshold_perf(truth=yield_f,
                  estimate=.pred_Yes,
-                 thresholds=seq(0,1,by=.1),metrics=c("sens","spec"))
+               thresholds=seq(0,1,by=.1),metrics=c("sens","spec"))
 
 ggplot(filter(threshold_example,.metric%in%c("sens","spec")),
        aes(x=.threshold,y=.estimate,color=.metric))+
