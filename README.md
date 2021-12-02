@@ -198,6 +198,14 @@ Lecture 2: Logistic Regression and the AUC
 
 Lecture 3: Cross Validation and Feature Selection for Classifiers
 
+[Rmd Notes]((https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/college_admissions_3.Rmd)
+
+[HTML Notes]((https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic11Classification/college_admissions_3.html)
+
+
+[Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/admit_data.rds)
+
+
 Lecture 4: Changing Policy
 
 
@@ -267,6 +275,11 @@ Dataset: [Pres202.Pv.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/L
 [Some Ideas on 3rd Guided Exercise](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/ge3_ideas.Rmd)
 
 [Video on Guided Exercise 3 Ideas](https://youtu.be/vLxLS-K36uw)
+
+
+[4th Guided Exercise, Due December 16, 11:59 pm](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/guided_exercise_4.html)
+
+
 
 ### Helpful Resources
 
