@@ -1,0 +1,32 @@
+---
+title: "Guided Exercise 4"
+date: "12/2/2021"
+output: html_document
+---
+
+## The Case
+
+You've been hired as the data science team for a liberal arts college. The college currently has an entering class of about 1,500 students, and collects 32 million in tuition revenue from those students. Recent increases in endowment income mean that the college can forego some of its tuition  revenue in order to change the profile of admitted students. 
+
+The college president and the board of trustees have two strategic goals:
+
+1.  Increase the average SAT score to 1300
+2.  Admit at least 200 more students with incomes less than \$50,000
+
+Here's the rub: they want to do this without allowing tuition revenues to drop below \$30 million and without changing the size of the entering class, which should be about 1,500 students (plus or minus 50, nobody minds sleeping in the study lounge, right?).
+
+##  Your Job
+
+Your job is to come up with a strategy to accomplish the administration's goals. 
+
+You'll need to incorporate the following elements into your two page memo for the president and the board of trustees.
+
+1. Use conditional means to describe the probability of enrolling once admitted (yield) for different groups of students. 
+2. Create a  model that accurately predicts the yield for admitted students. Describe the accuracy of this model and its key findings clearly.
+3. Adjust the current pricing strategy to induce other students to enroll, given the above constraints.Describe your approach clearly.  
+4. Predict the results of your change in pricing strategy. 
+
+There are lots of ways to accomplish all of the above. Remember that you need to write up your findings in a nice narrative, including charts and tables to make your key points. If you think there are some ethical implications to your approach, describe those as well. 
+
+## What to Submit
+ The document describing the above should be 2-4  pages. You can "knit" the document in html or pdf from Rmarkdown, or you can create a separate Word (google doc) or pdf document. You need to submit BOTH your Rmd file AND your written summary. 

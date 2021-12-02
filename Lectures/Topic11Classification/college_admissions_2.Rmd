@@ -154,7 +154,7 @@ variable has to be a factor, so we need to do some . . .
 ```{r}
 ad<-ad%>%
   mutate(yield_f=as_factor(ifelse(yield==1,"Yes","No")))%>%
-  mutate(yield_f=fct_relevel(yield_f,"Yes","No"))
+  mutate(yield_f=fct_relevel(yield_f,ref="No"))
 ```
 
 As usual, we're going to use the "tidymodels" approach to running this model,
@@ -250,7 +250,7 @@ So, by simply guessing "Yes" for everyone, we could get a an accuracy of .7 or s
 ad_wf%>%
   predict(ad_test)%>%
   bind_cols(ad_test)%>%
-  accuracy(truth=yield_f,estimate=.pred_class,event_level="first")
+  accuracy(truth=yield_f,estimate=.pred_class,event_level="second")
 
 ```
 
@@ -265,7 +265,7 @@ Sensitivity is the proportion of positive outcomes correctly predicted. For us i
 ad_wf%>%
   predict(ad_test)%>%
   bind_cols(ad_test)%>%
- sens(truth=yield_f,estimate=.pred_class,event_level="first")
+ sens(truth=yield_f,estimate=.pred_class,event_level="second")
 ```
 
 So, out of all of the enrolled students, our model correctly predicted 93 percent.
@@ -280,7 +280,7 @@ Specificity is the probability of correctly classifying negative responses, in o
 ad_wf%>%
   predict(ad_test)%>%
   bind_cols(ad_test)%>%
- spec(truth=yield_f,estimate=.pred_class,event_level="first")
+ spec(truth=yield_f,estimate=.pred_class,event_level="second")
 ```
 
 This means that our model only correctly classified 42 percent of those who did not enroll. 
@@ -318,7 +318,7 @@ The Receiver-Operator Characteristic (ROC) curve shows the combination of sensit
 ad_wf%>%
   predict(ad_test,type="prob")%>%
   bind_cols(ad_test)%>%
-  roc_curve(truth=yield_f,.estimate=.pred_Yes,event_level="first")%>%
+  roc_curve(truth=yield_f,.estimate=.pred_Yes,event_level="second")%>%
   autoplot()
 ```
 
@@ -328,7 +328,7 @@ And here's the proportion of the area in the graph (AUC) covered by the curve dr
 ad_wf%>%
   predict(ad_test,type="prob")%>%
   bind_cols(ad_test)%>%
-  roc_auc(truth=yield_f,estimate=.pred_Yes,event_level="first")
+  roc_auc(truth=yield_f,estimate=.pred_Yes,event_level="second")
 ```
 
 The nice thing is that interpreting AUC is just like interpreting academic grades:

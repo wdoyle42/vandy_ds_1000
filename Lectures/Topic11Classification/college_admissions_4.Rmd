@@ -1,0 +1,132 @@
+---
+title: "Estimating Impacts of Policy Changes"
+author: "Will Doyle"
+date: "r Sys.Date()"
+output: html_document
+---
+
+```{r}
+library(modelr)
+library(tidyverse)
+library(tidymodels)
+```
+
+
+```{r}
+ad<-read_rds("admit_data.rds")
+```
+
+
+## Data Wrangling
+```{r}
+ad<-ad%>%
+  mutate(yield_f=as_factor(ifelse(yield==1,"Yes","No")))%>%
+  mutate(yield_f=relevel(yield_f,ref="No"))
+```
+
+
+## Settting the Model
+
+```{r}
+logit_mod<-logistic_reg()%>%
+  set_engine("glm")%>%
+  set_mode("classification")
+```
+
+
+## Formula and Recipe
+```{r}
+admit_formula <- as.formula(
+                  "yield_f~
+                           legacy+
+                           visit+
+                          registered+
+                          sent_scores+
+                          sat+
+                          income+
+                          gpa+
+                          distance+
+                          net_price")
+
+admit_recipe<-recipe(admit_formula,ad)%>%
+  step_log(distance)
+```
+
+
+## Workflow
+```{r}
+ad_wf<-workflow()%>%
+  add_model(logit_mod)%>%
+  add_recipe(admit_recipe)
+```
+
+## Fit the Model
+```{r}
+ad_result<-ad_wf%>%
+  fit(ad)
+```
+
+```{r}
+tidy(ad_result)
+```
+
+
+```{r}
+ad_fit<-ad_result%>%extract_fit_parsnip(ad_result)
+
+hypo_data <- ad %>%
+  data_grid(sat = seq_range(sat, n = 100),
+            legacy=c(0,1),
+            .model=ad_fit$fit)
+
+plot_data<-ad_result%>%
+  predict(hypo_data,type="prob")%>%
+  bind_cols(hypo_data)
+
+plot_data%>%
+ggplot(aes(x=sat,y=.pred_Yes,color=as_factor(legacy)))+
+  geom_line()+
+  ylab("Prob(Attend)")
+```
+
+##  Changing policy
+```{r}
+ad_result%>%
+  predict(ad)%>%
+  bind_cols(ad)%>%
+  group_by(sent_scores,.pred_class)%>%
+  count()
+
+ad%>%
+  filter(yield==1)%>%
+  summarize(dollar(sum(net_price)))
+
+  
+ad_np<-ad%>%
+  mutate(net_price=ifelse(sent_scores==1,
+                              net_price+5000,
+                              net_price))
+
+ad_np<-ad_result%>%
+  predict(ad_np,type="prob")%>%
+  bind_cols(ad_np)%>%
+  mutate(pred_yield=ifelse(.pred_Yes>.5,1,0))
+
+
+ad_np%>%
+  group_by(sent_scores,pred_yield)%>%
+  count()
+
+
+ad_np%>%
+  filter(pred_yield==1)%>%
+  summarize(dollar(sum(net_price)))
+
+ad_np%>%
+  group_by(pred_yield)%>%
+  count()
+  
+
+```
+
+
