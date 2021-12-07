@@ -133,6 +133,15 @@ ad_lasso_fit%>%
   geom_density()
 ```
 
+```{r}
+ad_lasso_fit%>%
+  unnest(.metrics)%>%
+  filter(.metric=="accuracy")%>%
+  ggplot(aes(x=.estimate))+
+  geom_density()
+```
+
+
 This shows us that in general this model has an AUC of .9, which is fairly high. At it's lowest it's around .8, and it maxes out close to 1. 
 
 *Quick Exercise: Plot the Accuracy of the model across resamples*
@@ -219,6 +228,28 @@ This tells us that smaller penalties are generally yielding better AUC.
 
 *Quick Exercise: Output the results for the other measures of model fit (accuracy, sensitivity, specificity). What do these tell you?*
 
+```{r}
+ad_tune_fit%>%
+  collect_metrics()%>%
+  filter(.metric=="accuracy")%>%
+  arrange(-mean)
+
+ad_tune_fit%>%
+  collect_metrics()%>%
+  filter(.metric=="sens")%>%
+  arrange(-mean)
+
+
+ad_tune_fit%>%
+  collect_metrics()%>%
+  filter(.metric=="spec")%>%
+  arrange(-mean)
+
+
+```
+
+
+
 
 We can plot the results and confirm that suspicion:
 
@@ -232,7 +263,6 @@ unnest(.metrics)%>%
   ggplot(aes(x=AUC,color=tune_id,fill=tune_id))+
   geom_density(alpha=.1)
 ```
-
 
 
 ## Choose best model and fit to training data
