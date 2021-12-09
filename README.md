@@ -213,7 +213,7 @@ Lecture 4: Changing Policy
 [What happened to Zillow Offers?, part 2](https://www.cnet.com/personal-finance/mortgages/what-happened-at-zillow-how-a-prized-real-estate-site-lost-at-ibuying/)
 
 
-[Rmd Notes](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/college_admissions_3.Rmd)
+[Rmd Notes](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/college_admissions_4.Rmd)
 
 [HTML Notes](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic11Classification/college_admissions_4.html)
 
