@@ -10,6 +10,7 @@ select those features which are most closely associated with a student yielding,
 
 
 ```{r}
+library(modelr)
 library(tidyverse)
 library(tidymodels)
 library(knitr)
@@ -278,6 +279,7 @@ ad_final <-
 ```
 
 
+The object `ad_final` is a final fitted workflow, which we can use to examine parameter estimates and generate predicted probabilities. 
 
 ## Examine Parameter Estimates
 
@@ -297,4 +299,45 @@ Notice how SAT has been downweighted to 0, while income is a strong predictor.
 
 To improve model fit from here, we could examine the data a bit more carefully and see if there are 
 other ways we might structure it, including other transformations of the variables. 
+
+## Extension: Predicting from the fitted model
+
+To make out-of-sample predictions from the final fit, we need 
+to specify specific values of the variables of interest. Here 
+I'm going to allow net price to vary from its minimum to its maximum to  in 100 steps.
+
+```{r}
+hypo_data <- ad %>%
+  data_grid(ID="1",
+            legacy=0,
+            visit=1,
+            registered=1,
+            sent_scores=1,
+            sat=14,
+            income=95,
+            gpa=3.9,
+            distance=.1,
+            net_price=seq_range(net_price,n=100)
+            )
+
+```
+
+Then I can predict from the final fitted workflow `ad_final`
+
+```{r}
+pred_prob<-ad_final%>%
+  predict(hypo_data,type="prob")%>%
+  bind_cols(hypo_data)
+```
+
+
+... and plot the result
+```{r}
+pred_prob%>%
+  ggplot(aes(x=net_price,y=.pred_Yes))+
+  geom_line()
+
+
+
+```
 
