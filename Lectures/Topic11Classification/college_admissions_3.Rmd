@@ -337,7 +337,19 @@ pred_prob%>%
   ggplot(aes(x=net_price,y=.pred_Yes))+
   geom_line()
 
+```
 
+Predicting for a change of policy
+```{r}
+## Add 10k if student sent scores
+ad_np<-ad%>%
+  mutate(net_price=ifelse(sent_scores==1,net_price+10,net_price))
 
+```
+
+```{r}
+pred_np<-ad_final%>%
+  predict(ad_np,type="prob")%>%
+  bind_cols(ad_np)
 ```
 
