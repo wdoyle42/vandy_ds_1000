@@ -208,16 +208,21 @@ Lecture 3: Cross Validation and Feature Selection for Classifiers
 
 Lecture 4: Changing Policy
 
-[What happened to Zillow Offers? part 1](https://www.businessinsider.com/zillow-offers-pause-ibuyers-homes-atlanta-phoenix-dallas-houston-minneapolis-2021-10)
-
-[What happened to Zillow Offers?, part 2](https://www.cnet.com/personal-finance/mortgages/what-happened-at-zillow-how-a-prized-real-estate-site-lost-at-ibuying/)
-
-
 [Rmd Notes](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/college_admissions_4.Rmd)
 
 [HTML Notes](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic11Classification/college_admissions_4.html)
 
 [Data](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic11Classification/admit_data.rds)
+
+
+
+ ### Our Last Day! 
+ 
+[What happened to Zillow Offers? part 1](https://www.businessinsider.com/zillow-offers-pause-ibuyers-homes-atlanta-phoenix-dallas-houston-minneapolis-2021-10)
+
+[What happened to Zillow Offers?, part 2](https://www.cnet.com/personal-finance/mortgages/what-happened-at-zillow-how-a-prized-real-estate-site-lost-at-ibuying/)
+
+[Leaderboard from Movies!]()
 
 [Google form for feedback](https://forms.gle/1U6FPZ1tRATsTS8Z8)
 
@@ -244,6 +249,10 @@ Lecture 4: Changing Policy
 [Walkthrough for assignment 4](https://youtu.be/OpDlq81wZkA)
 
 [Assignment 5, Due 11:59 pm December 7](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/05-assignment.Rmd)
+
+[Assignment 5 Key](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/05-assignment-key.Rmd)
+
+[Assignment 5 Key Walkhrough](https://youtu.be/iuK9pRrT2zw)
 
 ### Guided Exercises
 
