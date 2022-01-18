@@ -1,0 +1,358 @@
+---
+title: "GE3_ides"
+author: "Will Doyle"
+date: "11/4/2021"
+output: html_document
+---
+
+```{r}
+library(tidymodels)
+library(tidyverse)
+library(tidytext)
+```
+
+```{r}
+fix_na<-function(x){
+  ifelse(x=="N/A",NA,x)
+}
+```
+
+
+```{r}
+
+mv_train<-readRDS("movie_train.Rds")%>%
+  mutate(across(where(is.character),fix_na))%>%
+  mutate(across(.cols=c(boxoffice_a,metascore,imdbrating,imdbvotes),as.numeric))%>%
+  filter(across(where(is.numeric), ~!is.na(.x)))%>%
+  filter(!is.na(rated))%>%
+  filter(!is.na(boxoffice_a))%>%
+  mutate(log_box_office=log(boxoffice_a))
+
+mv_test<-readRDS("movie_test.Rds")%>%
+  mutate(across(where(is.character),fix_na))%>%
+  mutate(across(.cols=c(metascore,imdbrating,imdbvotes),as.numeric))%>%
+  filter(across(where(is.numeric), ~!is.na(.x)))%>%
+  filter(!is.na(rated))
+
+```
+
+
+## Idea 1: Using words in plot summaries
+
+There may be certain terms that are used in movie plots that are 
+associated with better box office earnings. One might imagine that "exciting" would 
+sell better than "epistemology." Below, I select the most commonly occurring words and create a series of dummy variables for each word. 
+
+```{r}
+
+## Select common words from plots in _testing_ data
+
+mv_plot_words_test<-mv_test%>%
+select(imdbid,plot)%>%
+  group_by(imdbid)%>%
+  unnest_tokens(input=plot,output=word,token="words")%>%
+  anti_join(stop_words,by="word")%>%
+  ungroup()
+
+common_words_test<-mv_plot_words_test%>%
+  group_by(word)%>%
+  count()%>%
+  arrange(-n)%>%
+  ungroup()%>%
+  filter(n>=10)%>%
+  select(word)%>%
+  as_vector()
+
+
+mv_plot_words_train<-mv_train%>%
+select(imdbid,plot)%>%
+  group_by(imdbid)%>%
+  unnest_tokens(input=plot,output=word,token="words")%>%
+  anti_join(stop_words,by="word")%>%
+  ungroup()
+
+common_words_train<-mv_plot_words_train%>%
+  group_by(word)%>%
+  count()%>%
+  arrange(-n)%>%
+  ungroup()%>%
+  filter(n>=10)%>%
+  select(word)%>%
+  as_vector()
+
+common_words<-common_words_train[common_words_train%in%common_words_test]
+
+for (word in common_words){  
+
+word_name<-paste0(word,"_wd")
+  
+mv_train<-mv_train%>%
+  mutate(temp =ifelse(str_detect(plot,word),1,0))
+  
+mv_train[word_name]<-mv_train$temp
+}
+  
+
+for (word in common_words){  
+
+word_name<-paste0(word,"_wd")
+  
+mv_test<-mv_test%>%
+  mutate(temp =ifelse(str_detect(plot,word),1,0))
+  
+mv_test[word_name]<-mv_test$temp
+}
+```
+
+
+## Actors: Who's REALLY an A-Lister?
+
+The same could be true of actors-- are there certain actors that are a box office draw? Below
+I select the most common actors and create a binary variable for their presence or absence in
+the movie. 
+
+```{r}
+actors_test<-mv_test%>%
+  group_by(actor1)%>%
+  count()%>%
+  arrange(-n)%>%
+  ungroup()%>%
+  slice(1:50)%>%
+  select(actor1)%>%
+  as_vector()
+  
+
+actors_train<-mv_train%>%
+  group_by(actor1)%>%
+  count()%>%
+  arrange(-n)%>%
+  ungroup()%>%
+  slice(1:50)%>%
+  select(actor1)%>%
+  as_vector()
+
+actor_list<-actors_test[actors_test%in%actors_train]
+
+for (actor in actor_list){  
+
+actor_name<-paste0(str_remove_all(actor, " "),"_ac")
+  
+mv_train<-mv_train%>%
+  mutate(temp =ifelse(str_detect(actor1,actor),1,0))
+  
+mv_train[actor_name]<-mv_train$temp
+
+mv_train<-mv_train%>%select(-temp)
+}
+  
+
+
+for (actor in actor_list){  
+
+actor_name<-paste0(str_remove_all(actor, " "),"_ac")
+  
+mv_test<-mv_test%>%
+  mutate(temp =ifelse(str_detect(actor1,actor),1,0))
+  
+mv_test[actor_name]<-mv_test$temp
+
+mv_test<-mv_test%>%select(-temp)
+}
+
+```
+
+## Run time
+
+Run time was not originally in numeric format, but with a bit of work we can get it there. 
+
+```{r}
+mv_train<-mv_train%>%
+  mutate(runtime=parse_number(runtime))
+
+mv_test<-mv_test%>%
+  mutate(runtime=parse_number(runtime))
+
+```
+
+
+## Timing of Release
+
+Movies released at different times of year might do better. Below I include the month of the release as a nominal variable to include in the model.
+
+```{r}
+mv_train<-mv_train%>%
+  mutate(rel_date=lubridate::ymd(released))%>%
+  mutate(rel_month=as.character(lubridate::month(rel_date)))
+
+
+mv_test<-mv_test%>%
+  mutate(rel_date=lubridate::ymd(released))%>%
+  mutate(rel_month=as.character(lubridate::month(rel_date)))
+
+```
+
+
+```{r}
+mv_train<-mv_train%>%
+  mutate(year=as.character(year))
+
+mv_test<-mv_test%>%
+  mutate(year=as.character(year))
+```
+
+
+## Select desired features
+
+I'm going to now subset to just the variables I want in the analysis. 
+
+```{r}
+mv_train_select<-mv_train%>%
+  select(imdbid,
+         log_box_office,
+         imdbrating,
+         imdbvotes,
+         runtime,
+         metascore,
+         matches("_wd"),
+         matches("_ac"),
+          language1,
+          production1,
+         year,
+          rated,
+          oscar_winner,
+         country1,
+         writer1,
+          genre1,
+          rel_month
+          )%>%
+  drop_na()%>%
+  mutate(year=as.character(year))%>%
+  mutate(rel_month=as.character(rel_month))
+
+
+mv_test_select<-mv_test%>%
+  select(imdbid,
+         imdbrating,
+         imdbvotes,
+         runtime,
+         metascore,
+         matches("_wd"),
+         matches("_ac"),
+         language1,
+         production1,
+         year,
+         rated,
+         oscar_winner,
+         genre1,
+         country1,
+         writer1,
+         rel_month
+         )%>%
+  drop_na()%>%
+  mutate(year=as.character(year))%>%
+  mutate(rel_month=as.character(rel_month))
+
+```
+
+
+## Set Recipe
+
+```{r}
+mv_formula<-as.formula("log_box_office~.")
+
+mv_rec<-recipe(mv_formula,mv_train_select)%>%
+  update_role(imdbid,new_role = "id variable")%>%
+  update_role(log_box_office,new_role="outcome")%>%
+  step_naomit(all_predictors())%>%
+  step_other(all_nominal_predictors() )%>%
+  step_dummy(all_nominal_predictors())%>%
+  step_log(imdbvotes)%>%
+  step_zv(all_predictors())%>%
+  step_normalize(all_predictors())
+```
+
+## Check Prepped Training Data
+
+```{r}
+prep_data<-prep(mv_rec)%>%bake(mv_train)
+```
+
+## Structure Data for Resampling
+
+```{r}
+mv_train_select_rs<-mc_cv(mv_train_select)
+```
+
+## Set Model
+```{r}
+lasso_fit<-linear_reg(penalty = tune(),
+                     mixture=1)%>%
+  set_engine("glmnet")%>%
+  set_mode("regression")
+```
+
+
+## Create Workflow
+```{r}
+mv_wf<-workflow()%>%
+  add_model(lasso_fit)%>%
+  add_recipe(mv_rec)
+```
+
+
+## Create the Tuning Grid
+```{r}
+lasso_grid<-grid_regular(parameters(lasso_fit) ,levels=10)
+```
+
+
+
+## Tune the Model
+```{r}
+movie_lasso_tune_fit <- 
+  mv_wf %>%
+    tune_grid(mv_train_select_rs,grid=lasso_grid)
+```
+
+## Check Model Fit 
+```{r}
+movie_lasso_tune_fit%>%
+  collect_metrics()%>%
+  filter(.metric=="rmse")%>%
+  arrange(mean)
+```
+
+
+## Select Best Fit
+```{r}
+movie_final<-
+  finalize_workflow(mv_wf,
+                    select_best(movie_lasso_tune_fit,
+                                metric="rmse"))%>%
+  fit(mv_train_select)
+```
+
+
+## Examine Coefficients in Model of Best Fit
+```{r}
+movie_final%>%
+  tidy()%>%
+  filter(estimate>.01)%>%
+  arrange(-estimate)%>%
+  View()
+```
+
+## Predict in Testing Dataset
+```{r}
+mv_test_select<-
+  movie_final%>%predict(mv_test_select)%>%
+  bind_cols(mv_test_select)%>%
+  rename(pred=.pred)%>%
+  select(imdbid,pred)
+```
+
+```{r}
+write_csv(mv_test_select,"group_prof.csv")
+```
+
+

@@ -1,0 +1,387 @@
+---
+title: 'DS 1000: How Data Shape Our World'
+author: "Josh Clinton and Will Doyle"
+date: "August, 2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+We have entered a time in which vast amounts of data are more widely available than ever before. At the same time, a new set of tools has been developed to analyze this data and provide decision makers with information to help them accomplish their goals. Those who engage with data and interpret it for organizational leaders have taken to calling themselves data scientists, and their craft data science. Other terms that have come into vogue are big data, predictive analytics, and data mining. 
+
+This course will teach students how data science is used to make key decisions across multiple domains. Data science involves bringing together programming and high powered computing to analyze data using statistics. Data scientists provide insights that allow leaders in business, government and other institutions to make decisions. Students will engage directly with problems in data science, with hands-on work with real world data. Each topic area will also engage with leading intellectuals who are working in a given area. 
+
+We assume you know _nothing_ about data, statistics, or programming.  This is an introductory level class aimed at introducing and motivating the study of data in a way that focuses on both technical and critical thinking skills.  Both are essential.
+
+This class will focus on using various real-world examples to teach important topics in data science and we will attempt to motivate the tools we learn via motivating questions. Students will learn about the following key concepts in data science:
+
+- Structuring and Manipulating Data
+- Data Visualization
+- Making Predictions from Data
+- Understanding Error in Predictions
+- Training and Testing Models
+
+The examples are mostly drawn from the social sciences given our backgrounds and expertise, but hopefully of interest:
+
+- Predicting elections using polls: become your own [538.com](https://fivethirtyeight.com/) or [The Upshot](https://www.nytimes.com/section/upshot)
+
+- Understanding college admissions - become a Dean of Admissions?
+
+- Textual forensics - using words to predict authorship?
+
+- COVID-19 and public health.
+
+NOTE: This is the first time this class been taught so things will assuredly change once we are underway as we gauge the pace and understanding level of class.
+
+## Evaluation
+
+Students will complete ten assignments individually. These assignments will ask you to implement the skills covered in a given week. 
+
+In addition, students will work in groups on five guided exercises. These exercise will challenge you to implement the skills we discuss in class. The focus of these reports will be explaining an applied data analysis to an external audience, and will include both text and data visualizations.
+
+Finally, students must  participate in class. The final grade will also be based on student participation, which includes attending course meetings and completing in-class prompts. 
+
+Summary of Evaluation:
+
+Assignments: 10%
+Participation: 10%
+Guided Exercises: 80%
+
+## Required Texts
+
+There is not really a required book for this course as no book really combines the critical thinking and technical skills we aspire to teach. As a result we are not requiring you to purchase or read anything, but there are a few recommendations we could make
+
+The closest book in terms of _technical content_ is: 
+
+Wickham, Hadley and Garrett Grolemund. _R for Data Science_. It is freely available to Vanderbilt students [here](https://learning-oreilly-com.proxy.library.vanderbilt.edu/home/). The associated web page with the book is [here](https://r4ds.had.co.nz/).  The book is terse -- focusing on making R "work" rather than how to think about working with data (and R).
+
+_Critical thinking_ will also be important and there are many interesting books about how to think about data (and the analysis of data). An extremely small set includes:
+
+O'Neil, Cathy. _Weapons of Math Destruction_ 
+Silver, Nate. _The Signal and The Noise_.
+Tufte, Edwards. _The Visual Display of Quantitative Information_
+
+Also stay attuned to news about issues and controversies involving data science.
+
+## Software
+ 
+We will use only free, open-source software in this course.
+
+We will use R, an open-source data analytic platform for all analysis. R appears to be the most widely used data analysis software in data science. 
+
+We will utilize RStudio as our integrated development environment (IDE) for R.
+
+## Honor Code Statement
+
+All assignments for this class, including weekly problem sets and the final project, are to be conducted under the obligations set out in Vanderbilt's Honor Code. [Please click here to review the Honor Code](https://www.vanderbilt.edu/student_handbook/the-honor-system/).
+
+If you have any questions at all about the Honor Code or how it will be applied, ask us right away.
+
+## Health and Safety
+
+[Vanderbilt's Guidelines for Covid Precautions are Here](https://www.vanderbilt.edu/coronavirus/)
+
+TL;DR:
+
+- Don't come to class sick-- if you feel a tiny bit unwell, do not come to class. These absences will ALWAYS be excused.
+
+- Proper masks must be worn at all times. "Proper" means multilayer masks held in place with elastic. Buffs and bandanas are not appropriate and are likely worse than nothing. 
+
+- Masks cannot be taken off in class for any reason. Pulling down one's mask to speak kind of defeats the whole purpose.
+
+- No food or drink in class. Your laptop will thank you for this rule. 
+
+## Communication
+
+Email: please put the phrase "DS 1000" in any email you send to us. While we try to respond to emails in a timely manner, don't expect a response in less than 24 hours. Our office hours are below:
+
+
+Office Hours: Clinton - Tuesday & Thursday 9AM -11AM [Please Use My Booking Page](https://calendly.com/josh-clinton/office-hours-meeting)
+
+
+
+Office Hours: Doyle: Tuesday & Thursday 12PM -2PM [Please Use My Booking Page](https://outlook.office365.com/owa/calendar/WillDoyle@Vanderbilt365.onmicrosoft.com/bookings/)
+
+Office Hours: Mellissa Meisels [Mondays, 4-5 pm](https://calendly.com/mellissa-b-meisels/officehours?month=2021-08)
+
+Office Hours: Qi Xu [Mondays, 3-4 pm](https://calendly.com/qi-xu/ds1000-office-hours-qi-xu?month=2021-08) 
+
+
+## Schedule
+
+### Intro: The wonderful world of data science
+
+*Readings/Resources*
+
+[Download R](https://cran.r-project.org/)
+
+[Download RStudio](https://www.rstudio.com/products/rstudio/download/) You want the Desktop version, free license
+
+[RStudio Introduction and Resources](https://education.rstudio.com/learn/beginner/)
+
+*Lesson Notes*
+
+Lecture notes:  [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture1_IntroMotivation/Lecture1_Motivation.pdf) [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture1_IntroMotivation/Lecture1_Motivation.Rmd)
+
+### Intro:	Hello, World: The basics of interacting with statistical programming languages
+
+*Readings/Resources*
+
+[Basic Basics from R Ladies Sydney](https://rladiessydney.org/courses/ryouwithme/01-basicbasics-3/)
+
+*Lesson Notes*
+
+Lecture notes: [HTML](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.html) [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.pdf) [.Rmd](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Lectures/Lecture2_HelloWorld/Lecture2_HelloWorld.Rmd)
+
+### Intro:	Data wrangling
+
+*Readings/Resources*
+
+["The Gender gap was expected to be historic."](https://www.washingtonpost.com/dc-md-va/2020/11/06/election-2020-gender-gap-women/)
+
+["Exit polls, election surveys and more"](https://www.pewresearch.org/fact-tank/2018/11/01/exit-polls-election-surveys-and-more-a-guide-for-the-2018-midterms/)
+
+Wickham \& Grolemund, Chapter 3
+
+*Lesson Notes*
+
+
+
+### Univariate Data Analysis: Descriptives
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+
+
+###  Univariate Data Visualization Using `ggplot`
+
+Thursday, September 9, 2021^[Note, this lecture and the next may take 3 lectures.]
+
+*Readings/Resources*
+
+Wickham \& Grolemund, Chapter 1
+
+*Lesson Notes*
+
+
+
+###  Bivariate Data: More `ggplot`, Smoothing, and Conditional Means
+
+
+*Readings/Resources*
+
+[Latest Polls - 538](https://projects.fivethirtyeight.com/polls/president-general/national/)
+
+[Forecasting the US Elections - _Economist_](https://projects.economist.com/us-2020-forecast/president)
+
+
+*Lesson Notes*
+
+
+
+### Sampling, Resampling, and Measuring (Some) Uncertainty: Two Amazing Results
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+### Application: Predicting Elections Using Conditional Means and Maps
+
+*Readings/Resources*
+
+[Electoral College](https://www.archives.gov/electoral-college/about)
+
+You are not expected to understand all of what is being discussed, but the explanations raise questions about what to do.
+
+[538 Model](https://fivethirtyeight.com/features/how-fivethirtyeights-2020-presidential-forecast-works-and-whats-different-because-of-covid-19/)
+
+[270 to Win Presidential Election Forecast](https://www.270towin.com/2020-election-forecast-predictions/)
+
+*Lesson Notes*
+
+
+### Description, Prediction, \& Causality: What are we doing?
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+
+### Conditional Means: application 1
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+
+### Conditional Means: application 2
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+
+### Conditional Means: workshop day
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+### Regression	Linear regression: graphics
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+
+### Regression	Regression: intro
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+*Assignments*
+
+
+
+### Regression: multiple regression
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+### Regression	Regression application
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+
+### Regression	Regression: workshop day
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+
+
+### Regression	Regression: uncertainty
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+
+
+### Binary Outcomes: intro
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+
+
+### Binary Outcomes: Uncertainty
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+
+
+### Binary Outcomes: cross validation
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+
+
+### Binary Outcomes: Model Tuning and Comparison
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+
+
+### Binary Outcomes: application
+
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+
+
+### Binary Outcomes: workshop
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+### Unsupervised Learning: introduction
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+### Unsupervised Learning: uncertainty
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+### Unsupervised Learning: models selection and comparison
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+### Unsupervised Learning	Unsupervised: application 1
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+
+
+### Unsupervised Learning	Unsupervised: application 2
+
+
+*Readings/Resources*
+
+*Lesson Notes*
+

@@ -1,0 +1,96 @@
+---
+title: "Workflows"
+author: "Will Doyle"
+date: "10/28/2021"
+output: html_document
+---
+
+This guide will provide the quickest "through line" when using workflows.
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+```
+
+```{r}
+mv_df<-read_rds("mv.Rds")%>%
+  filter(!is.na(budget))%>%
+  mutate(log_gross=log(gross))
+```
+
+## Example 1: Simple linear regression
+
+First, we'll split the data into training and testing sets:
+
+```{r}
+split_data<-initial_split(mv_df)
+
+mv_train<-training(split_data)
+
+mv_test<-testing(split_data)
+```
+
+
+## Define Model
+
+Next, let's define the model we want to use: OLS regression
+
+```{r}
+lm_fit <- 
+  linear_reg() %>% 
+  set_engine("lm")%>%
+  set_mode("regression")
+```
+
+## Define Recipe
+
+A recipe is a set of steps that gets the data ready for analysis. A recipe requires a formula that defines the outcomes and the predictors, and a dataset. We'll do two: take the log of budget, and create a series of dummy variables for rating. 
+```{r}
+mv_formula<-as.formula("log_gross~budget+rating")
+
+mv_recipe<-recipe(mv_formula,mv_train)%>%
+  step_log(budget)%>%
+  step_dummy(rating)
+
+```
+
+
+## Create workflow
+
+A workflow contains all of these steps, allowing us to put them together in a unified framework. Our workflow will start with the model and the recipe.
+
+```{r}
+movie_wf<-workflow()%>%
+  add_model(lm_fit)%>%
+  add_recipe(mv_recipe)
+```
+
+## Fit workflow to training data
+
+Now, we can run this model on our training data,
+establishing the relationship between our predictors (budget and rating) and the outcome (log of gross).
+
+```{r}
+movie_wf<-movie_wf%>%
+  fit(mv_train)
+```
+
+## Check model fit in testing data
+
+We want to check our predictions against the testing dataset. Since we have the full testing dataset in hand, we can do it using last_fit. 
+```{r}
+movie_lf<-last_fit(movie_wf,split_data)
+movie_lf$.metrics
+```
+
+For your exercise, you'll need to use the testing dataset we gave you, which will work like this:
+```{r}
+mv_test<-
+  movie_wf%>%
+  predict(new_data=mv_test)%>%
+  bind_cols(mv_test)
+
+mv_test
+```
+
+The `mv_test` file now contains a new prediction for ever case in the testing dataset. 

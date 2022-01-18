@@ -1,0 +1,230 @@
+---
+title: "Most of the Functions We Have Talked About"
+date: "10/4/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+Here is a document to get you started.  You should add to this as the course goes along. `ggplot` functions are not listed.  Note that there are often other toggles that can be used in each function.  When in doubt you can either use `help(FUNCTION)` where `FUNCTION` is the name of what you are trying to use or else use the internet.  There are literally hundreds of guides, e.g., https://www.rstudio.com/resources/cheatsheets/
+
+# `load`
+
+- Syntax: `load(FILE)`
+- This will load an R-formatted dataframe/tibble into the Global Environment.  Note that the name of the object being loaded is the object that it was saved as, not the filename being loaded.
+```{r}
+load(file="data/Pres2020.PV.Rdata")
+```
+
+# `arrange`
+- Syntax `arrange(TIBBLE,VARIABLE)`
+- Reorders the rows of the `TIBBLE` according to the values of `VARIABLE` from smallest to largest.  Does not change any of the values.
+- NOTE: `-VARIABLE` arranges from largest to smallest
+- NOTE: that if we run `arrange` in a "pipe" then we do not need to explicitly name `TIBBLE` as the pipe will identify its' relationship.
+
+```{r}
+arrange(Pres2020.PV,SampleSize)
+
+Pres2020.PV %>%
+    arrange(-SampleSize)
+```
+
+# `count`
+- Syntax: `count(TIBBLE,VARIABLE1)`
+- Produces a count of the number of elements in each value of the named variable.  
+- NOTE: that if we run `count` in a "pipe" then we do not need to explicitly name `TIBBLE` as the pipe will identify its' relationship.
+
+
+```{r}
+count(Pres2020.PV,Mode)
+
+Pres2020.PV %>%
+    count(Mode) %>%
+    arrange(-n) # Arrange in decreasing order
+```
+
+# `filter`
+- Syntax `filter(TIBBLE,CONDITION)`
+- Selects the rows of the TIBBLE according to whether `CONDITION` is satisfied.
+- NOTE: `CONDITION1 & CONDITION2` means both conditions must be satisfied (AND) ;  `CONDITION1 | CONDITION2` means either conditions must be satisfied (OR) 
+- NOTE: that if we run `filter` in a "pipe" then we do not need to explicitly name `TIBBLE` as the pipe will identify its' relationship.
+
+```{r}
+filter(Pres2020.PV, Mode=="Online" & !is.na(MoE))
+
+OnlinePolls <- Pres2020.PV %>%
+                filter(Mode == "Online" & !is.na(MoE))
+```
+
+# `group_by`
+- Syntax `group_by(VARIABLE1,VARIABLE2)`
+- Defines the grouping on which a set of subsequent computations will be done on.
+- Groups are defined in the TIBBLE sorting by `VARIABLE1`, then by `VARIABLE2`, etc.
+- NOTE: To stop calculations being done done within the grouping we defined we need to `ungroup`  
+
+```{r}
+Pres2020.PV %>%
+    group_by(Mode,SampleSize) %>%
+    count() %>%
+    ungroup()
+```
+
+
+# `ifelse`
+- Syntax: `ifelse(CONDITION,OUTPUT1,OUTPUT2)`
+- Creates a variable that takes on the value `OUTPUT1` if `CONDITION` is true, and `OUTPUT2` if it is not.
+
+
+```{r}
+DATA.VECTOR <- seq(1,8)
+ifelse(DATA.VECTOR > 5, "Greater than 5", "Less than or equal to 5")
+```
+
+#  `length`
+- Syntax: `length(DATA.VECTOR)` 
+- `length` returns the number of observations in the vector `DATA.VECTOR`.  It is a number.
+
+```{r}
+length(DATA.VECTOR)
+```
+
+
+# `mean`
+
+- Syntax: `mean(DATA.VECTOR, na.rm=FALSE)` 
+-  Calculates the sample average of the vector `DATA.VECTOR`. It is a number.  
+- `na.rm=FALSE` means that missing values will cause a failure to compute the means.
+- `na.rm=TRUE` calculates the mean after removing missing data.
+
+```{r}
+DATA.VECTOR <- c(1,2,3,NA,3)
+mean(DATA.VECTOR)
+mean(DATA.VECTOR, na.rm = TRUE)
+```
+
+# `sample`
+
+- Syntax: `sample(x = DATA.VECTOR, size = N)` is a function that samples `size =N` observations from the vector named by `x=DATA.VECTOR`. 
+- `replace = TRUE` : observations that are selected are returned to the vector and can be selected again
+- `prob =` : a vector of the same length as the object being sampled `DATA.VECTOR` that gives the probability (0-1) of selecting each item.
+
+```{r}
+DATA.VECTOR <- seq(1,8)
+sample(x= DATA.VECTOR, size = 8, replace = TRUE, prob = DATA.VECTOR/sum(DATA.VECTOR))
+```
+
+# `seq`
+
+- Syntax: `seq(A,B,by=C)`
+- Creates a sequence starting at `A` and ending at `B` incrementing by `C`.  Default is that `by=1`.
+
+```{r}
+seq(2,10,by=2)
+seq(-5,-1)
+```
+
+
+# `tibble`
+- Syntax `tibble(OBJECT)`
+- Converts an object (usually a vector?) to a tibble for use with tidyverse.
+
+```{r}
+dat <- rbinom(n=1000, size=25, prob=.75)
+is_tibble(dat)
+dat <- tibble(dat)
+is_tibble(dat)
+```
+
+# `unique`
+- Syntax: `unique(DATA.VECTOR)` 
+- Returns the set of unique values from the vector `DATA.VECTOR`.  It is a vector of length equal to the number of unique values.
+
+```{r}
+DATA.VECTOR <- c(1,2,3,4,3)
+DATA.VECTOR
+unique(DATA.VECTOR)
+```
+
+# `sample_n`
+- Syntax: `sample_n(TIBBLE, size = SAMPLESIZE, replace = FALSE)`
+- This will draw a random sample from the tibble `TIBBLE` of size `SAMPLESIZE` without replacement unless `replace=TRUE`.
+- NOTE: that if we run `sample_n` in a "pipe" then we do not need to explicitly name `TIBBLE` as the pipe will identify its' relationship.
+
+```{r}
+sample.data1 <- sample_n(Pres2020.PV, size = 100, replace = TRUE)
+
+sample.data2 <- Pres2020.PV %>%
+               sample_n(size = 100, replace = TRUE)
+```
+
+# `mutate`
+- Syntax: `mutate(TIBBLE, NEWVAR1 = MANIPULATION1, NEWVAR2 = MANIPULATION2)
+- Updates or creates new variables/columns in a tibble in a specified way
+- NOTE: that if we run `sample_n` in a "pipe" then we do not need to explicitly name `TIBBLE` as the pipe will identify its' relationship.
+- NOTE: assigning the `TIBBLE` being mutated to the same `TIBBLE` will update/replace `TIBBLE`.  You could also create a new tibble.
+
+```{r}
+Pres2020.PV <- mutate(Pres2020.PV, 
+                      margin = Biden - Trump,
+                      AbsBidenError = abs(Biden - DemCertVote))
+
+Pres2020.PV.new <- Pres2020.PV %>% 
+                      mutate(
+                        isOnlinePoll = ifelse(Mode == "Online",1,0),
+                        AbsTrumpError = abs(Trump - RepCertVote))
+```
+
+
+# `summarize`
+- Syntax: `summarize(TIBBLE, OBJNAME1 = FUNCTION1(VARIABLE1), OBJNAME1 = FUNCTION1(VARIABLE1))`
+- Applies a function to a variable in `TIBBLE` and produces the object being assigned that function.
+- NOTE: that if we run `summarize` in a "pipe" then we do not need to explicitly name `TIBBLE` as the pipe will identify its' relationship.
+- NOTE: we can define the summarize as a new object to save it.
+
+```{r}
+summarize(Pres2020.PV, 
+              AvgBiden = mean(Biden, na.rm=TRUE),
+              BidenPct05 = quantile(Biden,.05),
+              PctBidenLead = mean(Biden > Trump))
+
+PollSummary <- Pres2020.PV %>%
+                summarize(AvgBiden = mean(Biden, na.rm=TRUE),
+                    BidenPct05 = quantile(Biden,.05),
+                    PctBidenLead = mean(Biden > Trump))
+```
+
+# `rbinom`
+- Syntax: `rbinom(n=N, size=SIZE, prob=PROB)
+- Draws `N` samples of size `SIZE` from the binomial distribution where the probability of a 1 (Success) is given by `PROB`.  
+- `PROB` can be either a value if the every draw in the `SIZE` has the same probability of occurring (e.g. flipping the same coin `SIZE` times), or it can vary in which case `PROB` is a vector of length `SIZE`
+- NOTE: The output of this function is the number of 1's that are produced. To convert to a proportion you need to divide by `SIZE`.
+
+```{r}
+rbinom(n=10, size=100, prob=.75)
+rbinom(n=10, size=100, prob=.75)/100
+```
+
+# `sum`
+- Syntax: `sum(DATA.VECTOR)`
+- Computes the sum of the numeric variable `DATA.VECTOR`
+```{r}
+DATA.VECTOR <- seq(1,8)
+sum(DATA.VECTOR)
+```
+
+# `quantile`
+- Syntax `quantile(VARIABLE, probs=PROBS)`
+- For the variable named `VARIABLE` it computes the empirical quantiles of the variable given in the value (or vector!) `PROBS`
+
+```{r}
+quantile(Pres2020.PV$Biden, probs=.5) # calculate the 50th percentile (Median)
+quantile(Pres2020.PV$Biden, probs=c(.025,.975)) # calculate the points containing 95% of the values
+quantile(Pres2020.PV$Biden, probs=seq(0,1,by=.10)) # calculate the deciles
+```
+
+
+
+

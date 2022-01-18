@@ -1,0 +1,153 @@
+---
+title: "Topic 8. Electoral College Predictions"
+author: "YOUR NAME"
+output: html_document
+fontsize: 10pt
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width = 10, fig.height = 5)
+library(tidyverse)
+```
+
+Load the data of all state-level polls for the 2020 presidential election.
+
+```{r}
+load(file="data/Pres2020.StatePolls.Rdata")
+glimpse(Pres2020.StatePolls)
+```
+
+
+Variables of potential interest include:
+
+- _Biden_ : Percentage of respondents supporting Biden, the Democrat, in poll (0-100)
+- _Trump_ : Percentage of respondents supporting Trump, the Republican, in poll (0-100)
+- _BidenCertVote_ : Percentage of vote Biden, the Democrat, actually received in the election (0-100)
+- _TrumpCertVote_ : Percentage of vote Trumo, the Democrat, actually received in the election (0-100)
+- _Winner_ : whether Biden won ("Dem") or Trump won ("Rep")
+- _poll.predicted_ : Indicator for whether the poll correctly predicted who won (1) or not (0)
+- _State_ & _StateName_ : the state where the poll was conducted
+- _EV_ : the number of Electoral College Votes the state is worth for the winning candidate
+
+# Overall Task:  
+
+- How do we use this data to calculate the probability that Biden will win the presidency of the United States by winning the Electoral College?
+
+### Task 1: How should we translate a poll result into a predicted probability?
+
+Suppose that I give you 10 polls from a state.  How can you use them to create a probability?  Discuss!  (I can think of 3 ways.)
+
+
+### Task 2: Start "simple" -- calculate the probability that Biden wins PA
+
+- Create a tibble with just polls from PA.
+
+```{r}
+
+```
+
+- Now compute the three probabilities.  What functions do we need?
+
+```{r}
+
+```
+
+- What do you think about the differences?
+
+### Task 3: Given those probabilities, how do we change the code to compute the expected number of Electoral College Votes `EV` for Biden?
+
+- Keep the code from above and copy and paste so you can understand how each step changes what we are doing.
+
+```{r}
+
+
+```
+### Task 3B: How get expected Electoral College votes for Trump?
+
+
+- NOTE: There are at least 2 ways to do this because this is a 2 candidate race
+
+
+### Task 4:  Now generalize to every state by applying this code to each set of state polls.
+
+- What do we need to do this calculation for every state in our tibble?
+- First, compute probability of winning a state. (How?)
+- Second, compute expected Electoral College Votes. (How?)
+
+```{r}
+
+```
+
+### Task 5:  Now compute total expected vote by adding to that code
+
+- NOTE: Actually 306 - 232
+- What do we need to do to the tibble we created in Task 4 to get the overall number of Electoral College Votes?
+
+```{r}
+```
+
+
+- You could also do this for just polls conducted in the last X days.  How?
+
+
+# So far we have taken polls as fixed. What if we allow randomnesss via resampling?
+
+###  Start "simple": probability that Biden wins PA
+
+Write a loop that, for each iteration....
+
+- Draws a sample of the same number of polls as were done in PA using `sample_n`
+- Calculates the probability of a win using measures just discussed
+
+But before you start, how does this differ from what we did previously with the PA data?  What do we need to add to the code?
+
+```{r}
+ProbBidenWin.PA <- NULL
+NSamples <- 1000
+
+for(i in 1:NSamples){
+
+  }
+```
+
+### Compute probability that Biden wins and the range containing 95% of the expected means (if we were to redo everything exactly as is).
+
+```{r}
+
+```
+
+### Can you do this for Wisconsin?
+
+- Take it from start to finish for a different state
+
+```{r}
+
+```
+
+## Now do this for all the states!
+
+- Let us draw a new sample of 1545 state-level polls and go...
+
+```{r}
+ElectoralCollegeVotes <- NULL
+B <- 1000
+
+for(i in 1:B){
+
+  }
+```
+
+### So what is the probability Biden gets at least 270 Electoral College Votes?
+
+```{r}
+ 
+```
+### Now plot?
+
+```{r}
+
+```
+
+### Thinking
+
+- There are lots of things we could change here!
