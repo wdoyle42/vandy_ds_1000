@@ -1,0 +1,81 @@
+---
+title: "Guided Exercise 3: Box Office Predictions"
+output: html_document
+---
+
+## Your First Kaggle Competition
+
+[Kaggle](<https://www.kaggle.com/>) is a data science community that hosts competitions. We're going to host our very own Kaggle style competition for this assignment. 
+
+### Outcome
+
+Your goal is to predict _log_ inflation-adjusted box office take, `box_office_a`, from a dataset containing information on movies released since 2000.  
+
+### Criteria
+
+We will use log root mean square error for this competition. This is the same rmse we've been using in class. 
+
+### Prize
+
+The prize will be the best one we can possible give you: the respect of your peers. 
+
+### How it works
+
+We will give you two datasets. The first `movie_train.Rds` contains complete information on 4,338 movies. The second, `movie_test.Rds` will have data on 482 movies, but will not contain any informatin on the outcomes. You need to train a model on the `movie_train` data and then generate predictions from the `movie_test` data. We will compare your predictions with the actual box office take of the movies in the testing dataset, then report your rmse back to you. 
+
+You may NOT use any other data sources to  supplement what we give you. Please stick with this rule, this is just for fun in any case. 
+
+### Submission
+
+You need to send us a .csv file (use `write_csv` to export it) containing only two elements. The first column should be `imdbid`, the second column-- predicted box office take--- should be `pred`. We will calculate the rmse for you and report your score on the dates listed below. Please email your results to the class email address: vu.dsci1000@gmail.com  
+
+In addition to the predictions contained in a CSV file, each group will need to turn in an .Rmd file that contains the code you use to generate your predictions. This .Rmd file is what will be graded. You should include both the code AND a description of your rationale for which variables were included, how your model was run, and what the outputs from the model (coefficients and measures of model fit) mean. The assignment will be evaluated based on the groups' demonstration of an ability to appropriately model the outcome and their ability to describe the outputs from the model clearly and accurately. 
+
+### Reporting Scores
+
+We will report your score to you on the following dates, provide we have a submission at that time:
+
+November 1, November 3, November 5, November 7
+
+
+## Codebook for Movie Dataset
+
+|        *Variable*        |             *Description*        |
+|--------------|---------------------------------------------|
+| imdbid       | id                                          |
+| title        | title                                       |
+| year         | year                                        |
+| rated        | rated                                       |
+| released     | Date of release                             |
+| runtime      | Running time in minutes                     |
+| genre1       | Genre                                       |
+| genre2       | Genre                                       |
+| genre3       | Genre                                       |
+| director1    | Director                                    |
+| director2    | Director                                    |
+| director3    | Director                                    |
+| writer1      | Writer                                      |
+| writer2      | Writer                                      |
+| writer3      | Writer                                      |
+| actor1       | Actor                                       |
+| actor2       | Actor                                       |
+| actor3       | Actor                                       |
+| plot         | Plot Summary                                |
+| language1    | Language                                    |
+| language2    | Language                                    |
+| language3    | Language                                    |
+| country1     | Country                                     |
+| country2     | Country                                     |
+| country3     | Country                                     |
+| awards       | Text descriptiono of nominations and awards |
+| metascore    | Meta Score from Rotten Tomatoes             |
+| imdbrating   | IMDB Rating (1:10)                          |
+| imdbvotes    | Number of Votes on IMDB                     |
+| production1  | Production Company                          |
+| production2  | Production Company                          |
+| production3  | Production Company                          |
+| boxoffice_a  | Inflation adjusted boxoffice take           |
+| oscar_winner | Did movie win any Oscar awards (1=yes,0=no) |
+|              |                                             |
+
+## 

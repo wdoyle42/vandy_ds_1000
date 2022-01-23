@@ -1,0 +1,60 @@
+## Guided Exercise Rubric
+
+There are five areas we look at in evaluating exercises.  Each are equally weighted on a 3 point scale (C,B,A) and each part is equally weighted.
+
+1.  Data Analysis
+
+2.  Graphical Presentation
+
+3.  Written Description
+
+4.  Organization and Clarity
+
+5.  Coding
+
+## Data Analysis
+
+The data analysis for an excellent (A) assignment will be carried out correctly, with some extensions and insights not directly taken from the class notes.  Quantities of interest will be reported using appropriate language, terms, and explanation.  Answers will reveal that you know what the importance and relevance of the analysis.  
+
+The data analysis for an acceptable assignment (B) will be done correctly, but there may be some mistakes or inaccuracies in how the analysis is conducted.
+
+The data analysis for a weak assignment will not be done correctly (C) or will be missing major steps. It will produce incorrect or partial results. 
+
+## Graphical Presentation
+
+An excellent exercise (A) includes nicely labeled, easy to understand graphics that describe exactly what is happening with the patterns in the data. The graphics will be appropriately complex without being distracting.  Graphics are explained in understandable ways. Axes are labelled using words and descriptions, not variable names.  Graphs are self-contained and understood without additional discussion.
+
+An acceptable exercise (B) includes graphics, but they are easy to read or understand because they are insufficiently detailed.  It may be unclear exactly what is being plotted.  Graphs are not clearly explained and labels are unclear.  Graphs cannot be understood without text.
+
+A weak exercise (C) include graphics that are poorly labeled and don't make much sense.  Graphs are not explained or, if they are, the explanations are mistaken.  Graphs are more confusing than helpful.
+
+## Written Description
+
+A strong exercise (A) will include a description that is easily understandable by an interested layperson. Pay attention to the audience described in the prompt and write for that audience.  Terms should be defined and jargon avoided.  Coding decisions that are made are explained and justified in understandably ways. Results are correctly characterized and explained.
+
+e.g., "To measure typical values we compute the average value of support for Biden in the 1234 public opinion polls being analyzed after removing all missing data (in this case there were 4 observations that were missing). After confirming that there were not any outlying values from polls that might affect the overall average, we used the sample mean to characterize a typical value of Biden support."
+
+An acceptable exercise (B) will be written well, but technical details may be poorly described or not described at all, and sentences will be hard to follow.
+
+e.g., "The mean of the variable was 2.3453424."
+
+A weak exercise (C) will be poorly written.  There are mistakes in both the analysis and good writing practices.
+
+e.g., "mean(Biden) = NA".
+
+
+## Organization, Clarity, Formatting
+
+A strong exercise (A) will be suitable for professional presentation.  Well structured around questions and understandable to a supervisor. The organization should be clear and easy to understand.  Graphs are explained and interpreted in text.
+
+An acceptable exercise (B) will have some formatting problems and may not look very nice.   e.g., a few paragraphs but no road-mapping or transitions.  The argument is unclear.
+
+A weak exercise (C) will include poor formatting, and will just be messy.  e.g., a single paragraph.
+
+## Coding
+
+A strong exercise (A) will have code that can generate results from the raw data in an easy to understand way. The code will be well commented and explain the steps being done and it will run on any computer without adjustment (aside from installing packages). Code is concise, efficient, and replicable.  
+
+An acceptable exercise (B) will have code that is relatively clear, but has some problems, and may not be commented in a way that makes sense -- e.g., the comments are describing things that the code is not doing.
+
+A weak exercise (C) will have code that is messy, hard to understand and not commented. It will not run on my computer, and cannot be easily debugged because it is unclear what the code is trying to do.

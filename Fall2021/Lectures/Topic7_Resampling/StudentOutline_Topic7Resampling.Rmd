@@ -1,0 +1,297 @@
+---
+title: "Resampling Unit"
+author: "YOUR NAME HERE"
+date: "9/27/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+```
+
+## Two Amazing Statistical Results are
+
+
+
+# Two ways to sample
+
+Whether we replace or not is important becasue....
+
+```{r}
+Z <- seq(1,8)
+set.seed(42)
+## Randomly draw 8 samples from Z, with replacement
+sample(Z, 8, replace = TRUE) 
+## Randomly draw 8 samples from Z, without replacement
+sample(Z, 8, replace = FALSE) 
+## Randomly draw 8 samples from Z, with replacement
+sample(Z, 8, replace = TRUE, prob = Z/sum(Z))
+``` 
+
+
+# Birthday Problem: Solving via Simulation
+
+What does each line do?  
+
+To get larger class sizes what do you change?
+
+To get more simulations what do you need to change?
+
+Why does this look different than the one we saw in class?
+
+Advanced: If you wanted to change the probability of sampling each day, what would you change?
+
+
+```{r}
+sims <- 10 ## number of sims
+bday <- 1:365 ## possible bdays
+answer <- NULL ## placeholder
+
+for (k in 1:25) {
+  count <- 0  ## counter
+  for (i in 1:sims) {
+    class <- sample(bday, k, replace = TRUE) 
+    
+    if (length(unique(class)) < length(class)) {
+      count <- count + 1
+    }}  
+  ## printing the estimate
+  cat("The estimated probability for", k,"people is:", 
+      count/sims, "\n")
+  answer[k] <- count/sims # store the answers
+}
+```
+
+
+# Birthday Problem: Visualize
+
+Why do we need to `bind_cols`?  What does that do?
+
+```{r}
+dat <- bind_cols(npeople=seq(1,25),answer)
+
+ggplot(dat,aes(x=npeople,y=answer)) + 
+  geom_line() +
+  labs(x = "Number of People") +
+  labs(y="Probability") + 
+  labs(title = "Prob. of shared bday for each size") +
+  geom_hline(yintercept=.5)
+```
+
+
+# Pennsylvania Voter File
+```{r}
+load("data/pa.sample.select.Rdata")
+glimpse(pa.sample)
+```
+
+What does this do?  How differ from `transmute`?
+
+
+```{r}
+pa.sample <- pa.sample %>%
+    mutate(likely.dem = ifelse(likely.party == "D",1,0), 
+          likely.rep = ifelse(likely.party == "R",1,0), 
+          likely.ind = ifelse(likely.party == "I",1,0))
+```
+
+Partisan composition in voter file
+
+```{r}
+PA.pty.breakdown <- pa.sample %>%
+          summarize(pct.dem = mean(likely.dem), 
+                    pct.rep = mean(likely.rep), 
+                    pct.ind = mean(likely.ind))
+
+PA.pty.breakdown
+```
+
+What is the difference between `sample` and `sample_n`?
+
+What does this do?
+
+How does `rand.dat` change over iterations?
+
+If I wanted larger samples, how could you make that happen?
+
+
+```{r}
+samplesize <- seq(1,10)
+
+for(i in seq_along(samplesize)){
+  rand.dat <- sample_n(pa.sample, i , replace= TRUE)
+}
+dim(rand.dat)
+```
+
+Samples in a loop?  What am I looping over now?
+
+What does `samplesize` do?
+
+```{r}
+dem.pty.est <- NULL
+samplesize <- c(3,10,34,567,4762)
+
+for(i in seq_along(samplesize)){
+  rand.dat <- sample_n(pa.sample,
+                samplesize[i],replace= TRUE)
+  dem.pty.est[i] <- mean(rand.dat$likely.dem)
+}
+```
+
+What does this show?
+
+```{r}
+samplesize <- seq(1,1000)
+for(i in seq_along(samplesize)){
+  rand.dat <- sample_n(pa.sample,i,replace= TRUE)
+  dem.pty.est[i] <- mean(rand.dat$likely.dem)
+}
+
+dat <- bind_cols(samplesize,dem.pty.est)
+
+pasample.plot <- dat %>% ggplot(aes(x=samplesize,y=dem.pty.est)) +
+  geom_line() + 
+  geom_point() +
+  labs(x = "Number of Observations") + 
+  labs(y = "Pct. Dem in Sample") 
+```
+
+
+# Thinking about error
+
+```{r}
+dat <- dat %>% 
+  mutate(Absolute.Error = 
+           abs(dem.pty.est - PA.pty.breakdown[[1]]),
+         Squared.Error = 
+           (dem.pty.est - PA.pty.breakdown[[1]])^2,
+         cut = cut(samplesize,breaks = 10))
+
+table(dat$cut)
+
+dat %>% 
+  group_by(cut) %>%
+  summarize(avgae = mean(Absolute.Error),
+            sdae = sd(Absolute.Error))
+```
+
+What does this do? Why are we doing this?
+
+```{r}
+# Fix Sample Size, Vary number of Samples
+n.samplesize <- 1000
+n.samples <- 5
+
+est.sample5 <- NULL
+for(i in 1:5){
+    rand.dat <- sample_n(pa.sample,n.samplesize,replace= TRUE)
+    est.sample5[i] <- mean(rand.dat$likely.dem)
+}
+
+est.sample5 <- tibble(est.sample5)
+```
+
+What does this show?
+
+```{r}
+est.sample5 %>% ggplot(aes(x=est.sample5)) + 
+  geom_histogram(bins=5) +
+  labs(title="Means for 5 samples") +
+  xlim(.42,.53)
+```
+
+What does this do?
+
+```{r}
+est.sample5000 <- NULL
+for(i in 1:5000){
+  rand.dat <- sample_n(pa.sample,n.samplesize,replace= TRUE)
+  est.sample5000[i] <- mean(rand.dat$likely.dem)
+}
+
+est.sample5000 <- tibble(est.sample5000)
+```
+
+# Central Limit Theorem
+
+What is the Central Limit Theorem?
+
+Why is it important?
+
+```{r}
+est.sample5000 %>% ggplot(aes(x=est.sample5000)) + 
+  geom_histogram(bins=50) +
+  labs(title="Means for 5000 samples") +
+  xlim(.42,.53)
+```
+
+# Margin of Error
+
+What does this do?
+
+```{r}
+n.samplesize <- 1000
+my.sample <- sample_n(pa.sample,n.samplesize,
+                      replace= TRUE)
+
+B <- 5000
+resample5000 <- NULL
+for(i in 1:B){
+  rand.dat <- sample_n(my.sample,n.samplesize,
+                       replace= TRUE)
+  resample5000[i] <- mean(rand.dat$likely.dem)
+}
+```
+
+What does this do? What does it mean?
+
+```{r}
+quantile(resample5000,c(.25,.75)) 
+quantile(resample5000,c(.05,.95)) 
+quantile(resample5000,c(.025,.975)) 
+
+```
+
+What does this do? What does it mean?
+
+```{r}
+quantile(resample5000,c(.025,.975)) - mean(my.sample$likely.dem)
+```
+
+
+How many randomly sampled data points do you need to get a good estimate?
+
+```{r}
+samplesizes <- c(10,100,200,300,400,500,600,700,800,900,1000,5000,10000)
+moe <- rep(NA,length(samplesizes))
+
+for(i in seq_along(samplesizes)){
+  my.sample <- sample_n(pa.sample,samplesizes[i],
+                        replace= TRUE)
+  
+  resample1000 <- rep(NA,times=1000)
+  for(j in 1:1000){
+    rand.dat <- sample_n(my.sample,samplesizes[i],
+                         replace= TRUE)
+    resample1000[j] <- mean(rand.dat$likely.dem)
+  }
+  moe[i] <- quantile(resample1000,c(.975)) - mean(my.sample$likely.dem)
+}
+```
+
+What does this do?  What does it mean?
+
+
+```{r}
+dat <- bind_cols(samplesizes,moe)
+
+ggplot(dat) +
+  geom_point(aes(x=samplesizes,y=moe)) +
+  labs(x="Sample Size") + 
+  labs(title = "Relationship Between Random Sample Size and Margin of Error") +
+  scale_y_continuous(breaks=seq(0,.3,by=.02)) +
+  labs(y="% Margin of Error (+/-)")
+```
