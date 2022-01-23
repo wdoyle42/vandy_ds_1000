@@ -13,9 +13,6 @@ Prof. Doyle: _w.doyle@vanderbilt.edu_
 
 Teaching Assistants:
 
-Mellissa Meisels: _mellissa.b.meisels@vanderbilt.edu_
-[Office Hours: Mondays 4-5](https://calendly.com/mellissa-b-meisels/officehours?month=2021-08)
-
 Qi Xu: _qi.xu.1@vanderbilt.edu_ 
 [Office Hours Mondays 3-4](https://calendly.com/qi-xu/ds1000-office-hours-qi-xu?month=2021-08) 
 
@@ -225,80 +222,6 @@ Lecture 4: Changing Policy
 [Leaderboard from Movies!]()
 
 [Google form for feedback](https://forms.gle/1U6FPZ1tRATsTS8Z8)
-
-### Assignments
-
-[Assignment 1, Due 11:59 pm Monday August 30](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/01-assignment.html)
-
-[Assignment 2, Due 11:59 pm Monday September 6](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/02-assignment.html)
-
-[Assignment 2 Walkthrough](https://youtu.be/GjhLjdI8Slc)
-
-[Assignment 2 Key](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/02-assignment-key.Rmd)
-
-[Assignment 3, Due 11:59 pm Monday September 13](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/03-assignment.html)
-
-[Assignment 3 Key](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/03-assignment-key.Rmd)
-
-[Assignment 4, Due 11:59 pm Wednesday, November 3](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/04-assignment.Rmd)
-
-[Data for assignment 4: area_data.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/area_data.Rds)
-
-[Assignment 4 Key](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/04-assignment-key.Rmd)
-
-[Walkthrough for assignment 4](https://youtu.be/OpDlq81wZkA)
-
-[Assignment 5, Due 11:59 pm December 7](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/05-assignment.Rmd)
-
-[Assignment 5 Key](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/05-assignment-key.Rmd)
-
-[Assignment 5 Key Walkhrough](https://youtu.be/iuK9pRrT2zw)
-
-### Guided Exercises
-
-[1st Guided Exercise, Due 11:59 pm Monday October 4](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/01-guided-exercise.html) [PDF](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/01-guided-exercise.pdf) [RMD](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Assignments/01-guided-exercise.Rmd) 
-
-Dataset:[game_summary.rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/game_summary.Rds)
-
-[Codebook for game_summary.rds](https://github.com/wdoyle42/vandy_ds_1000/blob/main/Assignments/game_summary_codebook.md)
-
-Key for Guided Exercise 1: [.Rmd File](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/01-guided_exercise_key.Rmd) ["Knitted"" HTML version](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/01-guided_exercise_key.html)
-
-[Walkthrough for Guided Exercise 1](https://youtu.be/MNcfzel7_F8)
-
-[2nd Guided Exercise, Due 11:59 pm Monday October 25](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/04-guided-exercise2.html)
-[.Rmd](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Assignments/04-guided-exercise2.Rmd) 
-
-Grading Rubric:  [.Rmd File](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/04-guided-exercise2-rubric.rmd)
-
-Dataset:[Pres2016.PV.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/Pres2016.PV.Rdata)
-
-Dataset:[Pres2016.StatePolls.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/Pres2016.StatePolls.Rdata)
-
-Dataset: [Pres2020.StatePolls.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic8_Predictions/data/Pres2020.StatePolls.Rdata)
-
-Dataset: [Pres202.Pv.Rdata](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Topic5_UnivariateVisualization/data/Pres2020.PV.Rdata)
-
-[3rd Guided Exercise, Due November 11, 11:59 pm](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/guided_exercise_3.html)
-
-[RMD](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/guided_exercise_3.Rmd)
-
-[Training dataset: movie_train.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/movie_train.Rds)
-
-[Testing dataset: movie_test.Rds](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/movie_test.Rds)
-
-[A Note on Wrangling in Training/Testing Data](https://raw.githubusercontent.com/wdoyle42/vandy_ds_1000/main/Assignments/prediction_testing.Rmd)
-
-[Leaderboard for predictions](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/leaderboard.html)
-
-[Some Ideas on 3rd Guided Exercise](https://github.com/wdoyle42/vandy_ds_1000/raw/main/Assignments/ge3_ideas.Rmd)
-
-[Video on Guided Exercise 3 Ideas](https://youtu.be/vLxLS-K36uw)
-
-
-[4th Guided Exercise, Due December 16, 11:59 pm](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Assignments/guided_exercise_4.html)
-
-
 
 ### Helpful Resources
 

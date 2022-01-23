@@ -31,13 +31,19 @@ When we work with R, we communicate via the command line. To help automate this 
 
 If you haven't already, you need to download RStudio here: <https://rstudio.com/products/rstudio/download/>. You need the free RStudio desktop version.
 
+
+## Accessing Files and Using Directories
+
+In each class, we're going to include some code and text in one file, and data in another file. You'll need 
+to download both of these files to your computer. You need to have a particular place to put these files. Computers are organized using named directories (sometimes called folders).  Don't just put the files in your Downloads directory. One common solution is to created a directory on your computer named after the class: `ds_1000`. Each time you access the files, you'll want to place them in that directory.  
+
 ## Yes We Code! Running R Code
 
-The following code chunks will be our first use of R in this class. We're going to grab some data that's part of the [college scorecard](https://collegescorecard.ed.gov/data/documentation/) and do a bit of analysis on it.
+ We're going to grab some data that's part of the [college scorecard](https://collegescorecard.ed.gov/data/documentation/) and do a bit of analysis on it.
 
 ## .Rmd files
 
-Open the `Lecture2_HelloWorld.Rmd` file. In RStudio, go to File--\>Open, then find the `Lecture2_HelloWorld.Rmd`  file in the directory.
+Open the `HelloWorld.Rmd` file. In RStudio, go to File--\>Open, then find the `HelloWorld.Rmd`  file in the directory.
 
 .Rmd files will be the only file format we work in this class. .Rmd files contain three basic elements:
 
@@ -49,9 +55,14 @@ From a .Rmd file you can generate html documents, pdf documents, word documents,
 
 In the `.Rmd` file you'll notice that there are three open single quotes in a row, like so: ```` ``` ```` This indicates the start of a "code chunk" in our file. The first code chunk that we load will include a set of programs that we will need all semester long.
 
+## Outputting results
+
+I like to see results in the Console. By default Rstudio will output results from an Rmd file inline-- meaning in the document itself. To change this, go to Tools-->global Options-->R Markdown, and uncheck the box for "show output inline for all Rmarkdown documents."
+
+
 ## Using R Libraries
 
-When we say that R is extensible, we mean that people in the community can write programs that everyone else can use. These are called "packages." In these first few lines of code, I load a set of packages using the library command in R. The set of packages, called `tidyverse` were written by Hadley Wickham and others and play a key role in his book. To install this set of packages, simply type in `install.packages("tidyverse")` at the R command prompt.
+When we say that R is extensible, we mean that people in the community can write programs that everyone else can use. These are called "packages." In these first few lines of code, I load a set of packages using the library command in R. The set of packages, called `tidyverse` were written by Hadley Wickham and others and play a key role in his book. To install this set of packages, simply type in `install.packages("tidyverse")` at the R command prompt. Alternatively, you can use the "Packages" pane in the lower right hand corner of your Rstudio screen. Click on Packages, then click on install, then type in "tidyverse."
 
 To run the code below in R, you can:
 
@@ -64,16 +75,32 @@ To run the code below in R, you can:
 library(tidyverse)
 ```
 
+Here's the thing about packages. There's a difference between *installing* a package and *calling* a package. *Installing* means that the package is on your computer and available to use. *Calling* a package means that the commands in the package will be used in this session. A "session" is basically when R has been opened up on your computer. As long as R/Rstudio are open and running, the session is active. 
+
+It's a good practice to shutdown R/Rstudio once you're no longer working on it, and then to restart it when you begin working again. Otherwise, the working environment can get pretty crowded with data and packages. 
+
 ## Loading Datasets
 
-Now we're ready to load in data. The data frame will be our basic way of interacting with everything in this class. The ` ` data frame contains information from the college scorecard on different colleges and universities.
+Now we're ready to load in data. The data frame will be our basic way of interacting with everything in this class. The `sc_debt.Rds ` data frame contains information from the college scorecard on different colleges and universities.
 
-However, we first need to make sure that R is looking in the right place. When you opened up your project, RStudio automagically took you to the directory for that project. But because we keep lessons in a separate directory, we need to point R to the right place. This is called setting the working directory, and can be done either by using the command `setwd` or in RStudio by going to "Session--\>Set Working Directory--\>Choose Directory." Choose the directory where the file currently resides on your computer. Make sure to always set the working directory at the beginning of each session---not doing so causes a lot of headaches for new users.
+However, we first need to make sure that R is looking in the right place. Because we keep our files in a particular directory, we need to point R to the right place. This is called setting the working directory, and can be done either by using the command `setwd` or in RStudio by going to "Session--\>Set Working Directory--\>Choose Directory." Choose the directory where the file currently resides on your computer. Make sure to always set the working directory at the beginning of each session---not doing so causes a lot of headaches for new users.
 
 ```{r}
 df<-readRDS("sc_debt.Rds") 
+```
+
+You'll notice that the code above starts with `df`. This is just an arbitrary name for an object. Then there's an arrow `<-`. This is an assignment operator. Then there's a  function, `readRDS`, with parentheses, and an argument "sc_debt.Rds". Here's how to think about this.
+
+- Functions in R always have arguments within parentheses. This function. `readRDS` opens a type of data-- rds data. This function has one argument which is the name of the file I want to open. 
+- Assignment operators take the result of a function and assign it to an object name.
+- Objects in R store information locall so that it can be accessed again. 
+
+
+```{r}
 names(df)
 ```
+
+Here is the codbeook for this dataset. Because we use very short names for variables, it's useful to have some more information (fancy name: metadata) that tells us about those variables. Below you'll see the `R` name for each variable next to a description of each variable. 
 
 | Name           | Definition                                                                                                                                                                                             |
 |----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -102,7 +129,7 @@ We can look at the first few rows and columns of `df` by typing in the data name
 df
 ```
 
-We can look at the whole dataset using View. Just delete the `#` sign below to make the code work. That `#` sign is a comment in R code, which indicates to the computer that everything on that line should be ignored. To get it to run, we need to drop the `#`. 
+We can also look at the whole dataset using View. Just delete the `#` sign below to make the code work. That `#` sign is a comment in R code, which indicates to the computer that everything on that line should be ignored. To get it to run, we need to drop the `#`. 
 
 ```{r, eval=FALSE}
 #View(df)
@@ -179,7 +206,7 @@ df%>%
 
 ## Summarizing Data
 
-To summarize data, we use the summarize command. Inside that command, we tell R two things: what to call the new object (a data frame, really) that we're creating, and what numerical summary we would like. The code below summarizes median debt for the colleges in the dataset by calculating the average of median debt for all institutions.
+To summarize data, we use the `summarize` command. Inside that command, we tell R two things: what to call the new variable that we're creating, and what numerical summary we would like. The code below summarizes median debt for the colleges in the dataset by calculating the average of median debt for all institutions.
 
 ```{r summarize}
 df%>%
@@ -213,82 +240,5 @@ df%>%
 *Quick Exercise* Calculate average earnings for schools where SAT\>1200
 
 
-```{r}
-df%>%
-  filter(sat_avg>1200)%>%
-  summarize(avg_earnings=mean(md_earn_wne_p6,na.rm=TRUE))
-
-```
 
 
-```{r}
-df%>%
-  filter(sat_avg<1200&sat_avg>1000)%>%
-  summarize(avg_earnings=mean(md_earn_wne_p6,na.rm=TRUE))
-
-```
-
-
-## Plotting Data
-
-The last basic tool for looking at a dataset is plotting the data. The code below creates a scatterplot of admission rates by average SAT scores
-
-```{r plotting}
-## Plotting: bivariate
-gg<-ggplot(data=df,aes(x=sat_avg,y=adm_rate))
-gg<-gg+geom_point()
-gg<-gg+geom_smooth()
-gg
-```
-
-
-```{r}
-df%>%
-  ggplot(aes(x=sat_avg,y=adm_rate))+
-  geom_point()+
-  geom_smooth()
-```
-
-
-```{r}
-gg<-ggplot(data=df,aes(x=sat_avg,y=grad_debt_mdn))
-gg<-gg+geom_point()
-gg<-gg+geom_smooth()
-gg
-```
-
-
-*Quick exercise* Replicate the above plots, but put debt level on the y axis.
-
-
-*How would we calculate expected debt in the middle range of SAT?*
-
-```{r}
-df%>%
-  filter(sat_avg>1000&sat_avg<1200)%>%
-  summarize(median_debt=median(grad_debt_mdn,na.rm=TRUE))
-```
-
-
-
-## Your first commit: Hello, World!
-
-For today, I want you to create a file called `02-assignment_<lastname>.Rmd` in your class directory. It should contain the following elements:
-
-1.  A sentence that says "Hello, World"
-2.  R output that summarizes one of the variables in the `sc_debt.Rds` dataset
-3.  R output that shows a scatterplot for two of the variables in the `sc_debt.Rds` dataset.
-
-Lucky for you this is is also your assignment! Submit it under assignments, using the format `02-assignment_<lastname>.Rmd`. All assignments should be turned in using this format. Since my last name is Doyle, I would use `02-assignment_doyle.Rmd` as my file name. Unless your name is also Doyle, you should use a different name.
-
-*Stretch Items*
-
-If you have extra time, you can do the following:
-
-1.  Calculate the average earnings for individuals at the most selective colleges, then compare that with individuals at the least selective colleges in the dataset.
-
-2.  Find a way to determine whether colleges with very high SAT scores tend to have higher or lower debt than colleges with low SAT scores.
-
-3.  Plot the relationship between SAT and debt. What do you see? Does this surprise you?
-
-4.  Now, provide separate plots for SAT and debt by control of the institution.
