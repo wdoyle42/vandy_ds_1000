@@ -46,6 +46,8 @@ glimpse(df)
 
 ## Filter, Select, Arrange
 
+Today, we'll pick 
+
 In exploring data, many times we want to look at smaller parts of the dataset. There are three commands we'll use today that help with this.
 
 \-`filter` selects only those cases or rows that meet some logical criteria.
