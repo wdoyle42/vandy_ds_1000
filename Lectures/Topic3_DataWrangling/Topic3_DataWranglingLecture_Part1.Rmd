@@ -20,7 +20,6 @@ output: html_document
 
 ## Data Wrangling?
 
-\centering
 ![We Need a Horse, Lasso](figs/Wrangler.png){scale=50%}
 
 *Data Wrangling:* The process of getting the data ready for analysis, including: accessing data, reformatting in appropriate ways (format, orientation), creating variables, recoding values, and selecting variables and/or observations of interest for analysis.
@@ -37,19 +36,16 @@ We want to do things that are understandable and sensible.  Always imagine that 
 
 Data wrangling in R gives us the ability to do this because we can document and explain the exact steps we are taking to organize the data. Using code to make changes means anyone and everyone can observe what we did. 
 
-\centering
 ![Don't Be This Guy](figs/Excel.png){width=50%}
 
 In contrast, if you make changes to your data in a spreadsheet like Excel or Google Sheets or Numbers it can be impossible for someone else to figure out what you did.  What variables did you rename, what transformations did you do, how did you recode values?  
 
 People using Excel for analysis have been identified as being (partially) responsible for what is widely believed to be a [failed global economic policy](https://www.washingtonpost.com/news/wonk/wp/2013/04/16/is-the-best-evidence-for-austerity-based-on-an-excel-spreadsheet-error/).  
 
-\centering
 ![Source of many, many errors: World Economy](figs/WashPoRR.png){width=50%}
 
 And using Excel for data entry has resulted in well-documented errors in [Medical Research](https://www.nature.com/articles/d41586-021-02211-4) due to "auto-correct" changing value names.
 
-\centering
 ![Source of many, many errors: Medical Research](figs/GeneExcel.png){width=50%}
 
 In fact, Dr. Jennifer Byrne - named a top 10 person in science in 2017 because of her data sleuthing in [2017](https://www.nature.com/immersive/d41586-017-07763-y/index.html) has developed an entire program to find and correct errors produced by data entry in Excel! Link [here](https://www.eurekalert.org/news-releases/810347).
@@ -64,12 +60,10 @@ When you start out (in this class) it is always a good idea to have a clean -- i
 
 If you are starting out with an empty workspace your R Studio should say the "Environment is empty" in the Environment tab. it is always a good idea to always start with an empty environment because the data manipulations we are doing will not be cumulative.  
 
-\centering
 ![Starting Out](figs/StartScreen.png){width=50%}
 
 To that end, when you quit RStudio, **DO NOT** save workspace image.  This will ensure that you are always starting with a clean and empty workspace which means that there is never a possibility of using "old" data in your analyses. If you are working on a larger project across several sessions it sometimes makes sense to save it, but for this class you should get in the practice of writing self-contained code that reads and wrangles the data you need to analyses every time rather than relying on earlier work.
 
-\centering
 ![DO NOT SAVE YOUR WORKSPACE WHEN YOU EXIT](figs/SaveEnvironment.png){width=25%}
 
 When starting out it can be easy to forget that R needs to be told where to look to find things!
@@ -79,7 +73,7 @@ When starting out it can be easy to forget that R needs to be told where to look
 
 3. In the Console window of RStudio figure out where R thinks it is by looking at the title bar or using `getwd` (get working directory)!
 
-```{r, echo=TRUE}
+```{r}
 getwd()
 ```
 If this is different than where your code and data is there will be trouble!
@@ -124,7 +118,7 @@ setwd()
 ```
 
 3. Now get that data!  One method is to use the Graphical User Interface (GUI) to select menus that will find and read in the data of interest.  If you are getting data from some other format (e.g., data saved in a basic text format (comma or tab delimted) or in another statistical package (e.g., STATA or SAS)) we want to `Import Dataset`.  
-\centering
+
 ![RStudio Starting Out](figs/GUIImport.png){width=50%}
 If you are loading in data that is already formatted in R then you go to the RStudio menu: `File > Open File...`.  (Note that this menu also has the `File > Import Dataset` option.) 
 
@@ -163,7 +157,7 @@ In the file named `MI2020_ExitPoll.Rdata` I have previously saved the entire 202
 
 Note that when we are `load`ing an `.Rdata` file we **do not** need to assign it to an object because the objects are already defined within the `.Rdata` object.  You can see this when you use the `objects` function to print to the console window the objects that are loaded into memory (which will also match the Global Environment list when we run the code chunk-by-chunk):
 
-```{r, echo=TRUE}
+```{r}
 load(file = "MI2020_ExitPoll.Rdata")
 objects()
 ```
@@ -172,26 +166,18 @@ Relatedly, because we are loading several objects at once the name of the file w
 
 NOTE: R will look for this file relative to where it is (as is given by `getwd`). Here I have created a `data` folder located within the current directory and telling R to look for my data in that folder!
 
-ASIDE: we can also combine this with the `url` function to let us read data in directly from the web. By using `url` we are letting R know that we are providing a url address to follow instead of a local directory structure. Instead of downloading the data and then loading it from your computer we could have also read it in directly from the course github page!
-
-```{r, echo=TRUE}
-df <- readRDS(file = url("https://github.com/wdoyle42/vandy_ds_1000/raw/main/Lectures/Lecture2_HelloWorld/sc_debt.Rds"))
-```
-
-NOTE:  it can be useful to access data from the web using this method, but the downside is that if someone changes/removes the data then bad things may happen.  As a result, we will often use the `url` function to initially read in some data and then save a local copy to work with. The exception is if the file is so large that storing it would create problems then sometimes we access the data and then wrangle it to extract the portions of the data needed for future analysis.
-
 We can also read in non-R files. For example, we can read in comma-delimited files (`read.csv`), tab-delimited files (`read.delim`), Excel-created files (`read.xls`, `read.xlsx`), and files from other statistical languages (e.g., `read.dta`, `read.sav`). Reading in non-R objects/data requires reading in the data and also assigning the data to a new R object.
 
 # Trouble with tibbles?
 
 - Data objects in `tidyverse` are called `tibbles`.  Why?  As with most things, it seems Twitter is to blame...
-\centering
+
 ![Tibble?](figs/Whytibble.png){width=50%}
 
 
 - `tibbles` can be thought of as a matrix with rows and columns and we can extract the dimensions of the data using the `dim` (dimensions) command where the output is a vector of length two consisting of the number of rows -- here `r dim(MI_final_small)[1]` and then the number of columns `r dim(MI_final_small)[2]`.
 
-```{r, echo=TRUE}
+```{r}
 dim(MI_final_small)
 ```
 
@@ -199,24 +185,24 @@ In most of the work that we will do in DSCI 1000 rows typically refer to observa
 
 We can use matrix indexing to examine/extract specific rows and columns of tibbles/dataframes.  To select the first three rows we would use:
 
-```{r, echo=TRUE}
+```{r}
 MI_final_small[1:3,]
 ```
 To select the first three columns...
 
-```{r, eval=FALSE}
+```{r}
 MI_final_small[,1:3]
 ```
 
 Selecting the first two rows and first four columns
 
-```{r, echo=TRUE}
+```{r}
 MI_final_small[1:2,1:4]
 ```
 
 Selecting a collection/combination of rows and all columns we would use:
 
-```{r, echo=TRUE}
+```{r}
 MI_final_small[c(1:2,45,100),]
 ```
 
@@ -239,14 +225,17 @@ To do our data wrangling we are going to wrangle the 2020 National Exit Poll fro
 - But not much has been cleaned up since then so lots of work to do! (Ugh...)
 
 # Exit Polls in US Elections
-\centering
+
+Exit polls are polls that are done on (or immediately before) elections in the United States.  They are used to help interpret the meaning of an election -- i.e., why voters voted the way they did, whether some types of voters were more likely to support one candidate over the  other, etc. -- but intelligent prognosticators do not use them to actually project who is going to win.  Put differently, they are used to help intepret an election, but they are not used to predict it (which is what voting data is used for).
+
 ![Filling Out an Exit Poll](figs/ExitPollImage.png){width=50%}
 
-\centering
+In class we are goign to focus on an Exit Poll from the National Election Pool for the state of Michigan.  Michigan is increasingly thought of as a ``swing state" that could be won by either a Democrat or a Republican in a presidential contest following is surprising support for President Trump in the 2016 presidential election.  Michigan is also a rather diverse state in terms of its population and interests and some have worked to identify groups of like-minded voters within the state.  (Note that we will also do this when we get to the "clustering" topic!)
+
 ![Why Michigan?](figs/MISwing.png){width=50%}
 
+The Exit Poll data we will analyze is based on the following questionaire that reports the precise questions that were asked, as well as the value labels associated with each response.  So while the data that we will read in will have responses that are coded as a "1" or "3" or "4", interpreting the meaning of those values requires comparing the values to the questions below.
 
-\centering
 ![2020 MI Exit Poll](figs/EPQuex.png){width=50%}
 
 #    Lots of interesting questions!
@@ -267,7 +256,7 @@ THINKING: Is any of it *causal*?  Can we determine what causes a voter to suppor
 
 Whenever we do anything using data we should first inspect our data to make sure it makes sense. The function `glimpse` gives us a quick summary by printing the first few observations of every variable to the screen.  Note that the presentation of the data is flipped (technically transposed) so that the columns are presented as rows.
 
-```{r, echo=TRUE}
+```{r}
 glimpse(MI_final_small)
 ```
 
@@ -287,7 +276,7 @@ NOTE: There are also `list` objects, but we will cover them when needed.
 
 A second way to get a sense of the data is to use the `summary` command which will report the quantiles for any integer or numeric variable, the count of every value for a factor variable, and a note if the variable is a character variable.  Unlike `glimpse` which gives you a rough approximation of how much the data may vary, `summary` quantifies the variation of each numeric variable in a bit more detail.
 
-```{r, echo=TRUE}
+```{r}
 summary(MI_final_small)
 ```
 
@@ -306,6 +295,15 @@ MI_final_small %>%
 
 Note that here we are printing creating a table that is printed to the console window and disappears.
 
+** _SELF-TEST:_ Can you create a tibble containing a table of vote choice?
+
+```{r}
+# INSERT CODE HERE
+```
+
+
+
+
 If we try to count several variables what R will do is to present the count within each ordered value.  So the following code will first `count` each value of `preschoice` and then count how that breaks down according to the values given in the variable `SEX`.
 
 ```{r}
@@ -315,17 +313,27 @@ MI_final_small %>%
 
 This is an important reminder to always inspect your data and then you often, if not always, need to wrangle data before doing analysis!
 
+
+** _SELF-TEST:_ How many Democrats and Republicans are in our sample?
+
+```{r}
+
+# INSERT CODE HERE
+
+```
+
 Note that `count` is not useful for many-valued (continuous) variables because each value is likely to occur only a small number of times.
 
 ```{r}
-MI_final_small %>% 
+MI_final %>% 
   count(WEIGHT)
 ```
 
 Here the `summary` function is more useful for describing the variation in our data.  In addition to summarizing the entire dataset we can also `select` a specific variable and use `summary`.
 
 ```{r}
-MI_final_small %>% 
+MI_final %>% 
+  select(WEIGHT) %>%
   summary(WEIGHT) 
 ```
 
@@ -359,13 +367,11 @@ MI_small %>%
 
 Note that I am piping through the `glimpse` to confirm that the code is doing what I think it is doing.  A large number of coding and analysis mistakes are caused by differences in what the data scientists *thinks* the data is relative to what the data *actually* is so it is usually a good ideal to confirm that you have done what you think you have done
 
-**Self-quiz**
+** _SELF-TEST:_ Create a new tibble called `MI_small_2` that contains the variables `EDUC18`, `PARTYID`, and `SEX`.
 
-Create a new tibble called `MI_small_2` that contains the variables `EDUC18`, `PARTY18`, and `SEX`.
+```{r}
 
-```{r, eval=FALSE}
-
-INSERT CODE HERE
+# INSERT CODE HERE
 
 ```
 
@@ -419,6 +425,16 @@ MI_small %>%
   glimpse()
 ```
 
+
+
+** _SELF-TEST:_ Sort the new tibble `MI_small_2` you created by education level and save the sorted data.
+
+```{r}
+
+# INSERT CODE HERE
+
+```
+
 We can also sort using multiple variables. If we arrange using several variables R will process them sequentially --- sort by the first variable, then sort again within each of the sorted variables according to the values of the second variable, and so on.  So if we wanted to sort by age by gender in ascending order we would use:
 
 ```{r}
@@ -431,7 +447,7 @@ So you can now see that the data is sorted by `AGE10` within each value of `SEX`
 
 As a test of what we have done so far, can you predict what the following code will produce?
 
-```{r, eval= FALSE}
+```{r}
 MI_small %>% 
   select(SEX,AGE10,PARTYID) %>%
   arrange(SEX, AGE10, desc(PARTYID)) %>%
@@ -439,10 +455,9 @@ MI_small %>%
 ```
 
 To be honest, we don't really do much with `arrange` other than if we are inspecting the data visually or if we are making the output a bit more sensible.  
-
 Recall that the `count` function produces a tibble that is sorted according to the values of the variable being counted.  This is not always sensible as we may want to sort the tibble according to the most-frequently occuring value in the data.  If we wanted to produce a table of values sorted in descending order so that the top row was the most frequently occurring value we could `arrange` after piping thru a `count`.^[Note that in this instance we could also use `arrange(-n)` to sort in descending order.  We use `desc` because it is slightly more generic (i.e., if we tried to use `arrange(-SEX)` above it would not work).]  
 
-```{r, eval= FALSE}
+```{r}
 MI_final_small %>% 
   count(preschoice) %>%
   arrange(desc(n))
@@ -496,8 +511,7 @@ So if we are considering condition A and condition B, filtering based on `&` wil
 - `(A & B) | C` means that either conditions A and B OR condition C is satisfied.
 - `A & (B | C)` means that condition A AND conditions B or C are satisfied.
 
-
-**SELF-TEST** So if A = self-identified Democrat, B = self-identified Republican, and C = self-identified Independent how would you interpret each of the conditions above in terms of which respondents would be filtered? 
+** _SELF-TEST:_ If A = self-identified Democrat, B = self-identified Republican, and C = self-identified Independent how would you interpret each of the conditions above in terms of which respondents would be filtered? 
 
 Let's see how to implement this in R. According to the values coded in the Michigan Exit Poll we see that:
 
@@ -526,13 +540,11 @@ Note that here we have dropped the `select` code because the point of our code i
 
 Notice the difference in the nature and dimensions of the resulting tibbles from these two code snippets.  The first code snippet produced a tibble with 17 observations and 3 columns -- it is a new data set we can analyze (if we had saved it!).  But the second code snippet is a tibble that consists only of 3 observations and 2 columns because it is counting the number of times that each of the 3 unique values occur among the filtered set of respondents.
 
-**TEST** Can you do the same for male respondents (i.e., `SEX==1`)?  What do you observe about the number and distribution of vote choice?
+**  _SELF-TEST:_ Replicate the analysis using male respondents (i.e., `SEX==1`)?  What do you observe about the number and distribution of vote choice?
 
 ```{r}
-MI_final_small %>%
-    filter(SEX == 1 & AGE10 == 1) %>%
-    count(preschoice) %>%
-    arrange(desc(n))
+
+# INSERT CODE HERE
 ```
 
 In addition to selecting cases for which both conditions are satisfied we can also select conditions for which either condition A or condition B is satisfied. If we want to focus on voters who voted for either Biden or Trump -- and ignore those who self-reported voting for some other candidate -- we can `filter` the data accordingly:
@@ -607,7 +619,7 @@ MI_prescount %>%
   filter(preschoice == "Joe Biden, the Democrat")
 ```
 
-** TEST ** How many chose Biden or Trump?
+** _SELF-TEST:_ Extract the number of respondents who chose either Biden or Trump.
 
 ```{r}
 
@@ -635,7 +647,7 @@ MI_final_small %>%
   count(Quality)
 ```
 
-So here we see based on the number of `NA` that nearly half of the respondents do not have a valid reply.  We can use the `drop_na` function to remove missing data _that R recognizes_. Note that the responses also contain an actual value for missing data, but we will deal with that later.
+So here we see based on the number of `NA` that nearly half of the respondents do not have a valid reply.  We can use the `drop_na` function to remove missing data _that R recognizes_ (more on this next lecture!). Note that the responses also contain an actual value for missing data, but we will deal with that later.
 
 If we want to drop all of the missing observations in `Quality` we can use the following -- note that `drop_na` is essentially applying a filter to remove missing data.
 

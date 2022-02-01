@@ -2,7 +2,7 @@
 title: "DSCI 1000 Topic 3: Data Wrangling"
 author: "Prof. Josh Clinton, Vanderbilt University"
 date: "`r Sys.Date()`"
-output: html_document
+output: pdf_document
 ---
 
 # 2020 MI Exit Poll
@@ -11,14 +11,8 @@ To do our data wrangling we are going to wrangle the 2020 National Exit Poll fro
 
 - We are going to use the actual data we got on Election Night!  
 
-\centering
-![Filling Out an Exit Poll](figs/ExitPollImage.png){width=50%}
+- But not much has been cleaned up since then so lots of work to do! (Ugh...). This is why the variables are sometimes unclear, there are extra value labels, etc.  Recall how we said that 80% of Data Science was data wrangling?  Well here is a gentle introduction to that working with relatively clean data.
 
-- To answer some of the same questions we were answering.
-
-- But not much has been cleaned up since then so lots of work to do! (Ugh...)
-
-\centering
 ![2020 MI Exit Poll](figs/EPQuex.png){width=50%}
 
 # Enough playing around, let's get going
@@ -29,7 +23,7 @@ Now we will use the tools to help explore patterns of voting in Michigan in the 
 
 - How large are the differences in opinion between groups of voters thought to be politically relevant?
 
-\alert{NOTE: This is exactly the kind of analysis that analysts do on Election Night (and thereafter).}
+NOTE: This is exactly the kind of analysis that analysts do on Election Night (and thereafter).
 
 - When doing data science you _always_ want to be question driven. There is a large amount of discretion in data science and well-defined questions help prevent you from pursuing spurious relationships. 
 
@@ -39,14 +33,11 @@ Now we will use the tools to help explore patterns of voting in Michigan in the 
 
 # Spurious Relationships
 
-\centering
 ![Undoubtedly True](figs/SpuriousCorrelation.png){width=50%}
-
 # Question: "Gender" Gap Among Younger Voters
 
 Of historical interest: is there a difference in how men and women vote?  [Here](https://pewrsr.ch/3kUITya) is some background information from the Non-Profit Pew Research Center looking into the relationship between Gender and partisanship.  Note that the relationship is a **correlation** it is not a causal relationship and it certainly does not reveal what it is about gender that may be related to differences in the willingness to self-identify as a Republican or Democrat.
 
-\centering
 ![Gender Gap in US Politics](figs/PewGG.png){width=50%}
 
 # Is this as easy as we think?  Of course not...
@@ -83,9 +74,10 @@ We are going to doing some abstract work to learn some tools and then apply what
 
 ```{r}
 library(tidyverse)
+
 MI_final_small <- read_rds("MI2020_ExitPoll_small.rds")
 
-# Not run, but if you want to see the full data as well as the "cleaned" smaller verion you can uncomment and run the following:
+# Not run, but if you want to see the full data as well as the "cleaned" smaller version you can uncomment and run the following:
 # load(file = "MI2020_ExitPoll.Rdata") 
 ```
 
@@ -149,12 +141,18 @@ Note how R recognizes the results of the mutation -- `SEX.chr` is a character va
 
 Note also that the `ifelse` command creates a variable with two values and the second value is associated with all values that are not associated with the first condition.  In this case this means that voters who report voting for a candidate other than Biden or Trump will be a `0` in both variables! As a result, the variables are not really capturing the number of voters who support Biden relative to Trump as voters who support third party candidates are also being included as 0's in both.
 
+![Question about Vote Choice](figs/PresQ.png)
+
+
 But we can be clever in how we use `ifelse` to deal with multiple values.  For example, if we want to keep every value of a variable except for one we can use the following syntax to say that if the condition is not met to simply use the existing value of the variable.  So if we wanted to recode a valid response of a question to indicate that the data is actually missing (`NA`) we could use:
 
 ```{r}
 MI_final_small %>%
   count(preschoice)
+```
   
+
+```{r}
 MI_final_small <- MI_final_small %>%
   mutate(preschoice=ifelse(preschoice=="Refused",NA,preschoice))
 
@@ -236,7 +234,11 @@ MI_final_small %>%
 
 Note the dimensions of the resulting tibble -- `1 x 2` (1 row and 2 columns) -- as compared to the results of `count` (which was a 2 x 3 tibble).  
 
-One important thing to always consider is whether your data has any missing data. Missing data in R is denoted by `NA` and it often requires special attention.  Consider, for example, responses to a question asking about the prevalence of racism in 2020.  As previously discussed, this question was only asked of half the sample.  If we take a look at the number of responses associated with each response we get the following:
+One important thing to always consider is whether your data has any missing data. Missing data in R is denoted by `NA` and it often requires special attention.  Consider, for example, responses to a question asking about the prevalence of racism in 2020.  As previously discussed, this question was only asked of half the sample.  
+
+![Question about Racism Asked of Half-Sample](figs/RaceQ.png)
+
+If we take a look at the number of responses associated with each response we get the following:
 
 ```{r}
 MI_final_small %>%
@@ -271,7 +273,7 @@ MI_final_small %>%
   summarize(AvgImpRacism = mean(RACISM_split, na.rm=TRUE))
 ```
 
-So now we have a mean, but we should be worried that the mean we just calculated is affected by the fact that the data coded respondents who skipped the question as having a value of 9.  So we need to recode them to be missing before taking the mean.  To do so we can use `mutate` and `ifelse` in a clever way.  Bascially we are going to use `mutate` and `ifelse` to recode values that should be coded as missing (i.e., `RACISM_split==9`) as missing (i.e., `NA`) and if the values are OK to keep the values as recorded (i.e., the value is the value of `RACISM_split`).
+So now we have a mean, but we should be worried that the mean we just calculated is affected by the fact that the data coded respondents who skipped the question as having a value of 9.  So we need to recode them to be missing before taking the mean.  To do so we can use `mutate` and `ifelse` in a clever way.  Basically we are going to use `mutate` and `ifelse` to recode values that should be coded as missing (i.e., `RACISM_split==9`) as missing (i.e., `NA`) and if the values are OK to keep the values as recorded (i.e., the value is the value of `RACISM_split`).
 
 So let's perform this mutation and then summarize. 
 
@@ -283,15 +285,15 @@ MI_final_small %>%
 
 Did it work?  You can tell that it did by looking at the fact that the resulting mean is now lower -- reflecting the fact that the values of `9` were removed. 
 
-** Test** How else could you confirm that the mutation worked?
+** _SELF-TEST:_ How else could you confirm that the mutation worked?
 
-```{r,eval = FALSE}
+```{r}
 # INSERT CODE
 ```
 
-** Push Yourself ** Using the code we covered, can you compare the opinions about racism between Democrats and Republicans?  What do you observe?
+** _SELF-TEST:_ Using the code we covered, can you compare the opinions about the importance/prevalence of racism in the U.S. between Democrats (`PARTYID==1`), Republicans (`PARTYID==2`), and Independents (`PARTYID==3`)?  What do you observe?
 
-```{r,eval = FALSE}
+```{r}
 # INSERT CODE
 ```
 
@@ -313,35 +315,31 @@ MaleU24 <- MI_final_small %>%
   mutate(PctBiden = round(PctBiden, digits=2))
 ```  
 
+Now the difference we are interested in is simply the difference in the two tibbles.  Note that this works because the tibbles are identical in terms of their content (each is a single value consisting of `PctBiden`).  
+
 ```{r}
 FemaleU24 - MaleU24
 ```
 
-**TEST** How does that compare to those who are above the age of 64? (i.e., those with AGE10 greater than or equal to `9`)
+** _SELF-TEST:_ How does this gap that compare to those who are above the age of 64? (i.e., those with AGE10 greater than or equal to `9`)
 
 ```{r}
-FemaleO64 <- MI_final_small %>%
-  filter(FEMALE==1 & AGE10 >= 9) %>%
-  summarize(PctBiden = mean(BidenVoter)) %>%
-  mutate(PctBiden = round(PctBiden, digits=2))
 
-MaleO64 <- MI_final_small %>%
-  filter(FEMALE==0 & AGE10 >= 9) %>%
-  summarize(PctBiden = mean(BidenVoter)) %>%
-  mutate(PctBiden = round(PctBiden, digits=2))
+# INSERT CODE HERE
 
-FemaleO64 - MaleO64
 ```  
 
 What do you conclude?  Which is a bigger effect: gender or age?  Are there reasons to be wary about this inference?
 
 # Other Comparisons?  What does this all mean?
 
-Try this out yourself! Using the value labels given by numeric codes on Questionnaire how does presidential support vary by education?  Is there an Education gap (`EDUC18`)? Or a racial gap (`QRACEAI`)? Or a Religion gap (`BRNAGAIN`)?
+Try this out yourself! Using the value labels given by numeric codes on survey, how does presidential support vary by education?  Is there an Education gap (`EDUC18`)? Or a racial gap (`QRACEAI`)? Or a Religion gap (`BRNAGAIN`)?
 
-Are there important intersectional differences -- differences by sex **and** education?
+Are there important inter-sectional differences -- differences by sex **and** education? Or sex **and** race?
 
 Stepping back, what does it even mean to look at at opinions by gender/age/race?  Are we predicting? Describing? Are we (explicitly/implicitly) suggesting that there is a _causal_ relationship or that the differences are related to other experiences/aspects?  If so, is it misleading to focus on demographics rather than underlying events?  (And if so, why do so many continue to do so?)
+
+NOTE: We will see another (better) way to do this using `group_by` when we get to conditional relationships.
 
 Finally:
 
