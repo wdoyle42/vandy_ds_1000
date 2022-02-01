@@ -2,8 +2,19 @@
 title: "DSCI 1000 Topic 3: Data Wrangling"
 author: "Prof. Josh Clinton, Vanderbilt University"
 date: "`r Sys.Date()`"
-output: pdf_document
+output: html_document
 ---
+
+
+# Learning Objectives
+
+- Working with R to create new variables and learning by summarizing.
+
+- Demographics as explanation? 
+
+- Functions: `mutate` , `ifelse` , `summarize`, `rename`, `count`
+
+- Application: 2020 National Election Poll Michigan Exit Poll 
 
 # 2020 MI Exit Poll
 
