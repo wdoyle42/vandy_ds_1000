@@ -2,9 +2,8 @@
 title: "DSCI 1000 Topic 3: Data Wrangling"
 author: "Prof. Josh Clinton, Vanderbilt University"
 date: "`r Sys.Date()`"
-output: html_document
+output: pdf_document
 ---
-
 
 # Learning Objectives
 
@@ -26,8 +25,6 @@ To do our data wrangling we are going to wrangle the 2020 National Exit Poll fro
 
 ![2020 MI Exit Poll](figs/EPQuex.png){width=50%}
 
-# Enough playing around, let's get going
-
 Now we will use the tools to help explore patterns of voting in Michigan in the 2020 presidential election.  
 
 - Which voters tended to support which candidate?  
@@ -42,34 +39,19 @@ NOTE: This is exactly the kind of analysis that analysts do on Election Night (a
 
 - Much of what we do in data science requires an argument: Why should I trust your data?  Why did you measure things the way you did? Do things change if I measure things differently? Or account for another potential explanation? 
 
-# Spurious Relationships
-
 ![Undoubtedly True](figs/SpuriousCorrelation.png){width=50%}
+
 # Question: "Gender" Gap Among Younger Voters
 
 Of historical interest: is there a difference in how men and women vote?  [Here](https://pewrsr.ch/3kUITya) is some background information from the Non-Profit Pew Research Center looking into the relationship between Gender and partisanship.  Note that the relationship is a **correlation** it is not a causal relationship and it certainly does not reveal what it is about gender that may be related to differences in the willingness to self-identify as a Republican or Democrat.
 
 ![Gender Gap in US Politics](figs/PewGG.png){width=50%}
 
-# Is this as easy as we think?  Of course not...
-
-So all we need to do is to compare males vs. females?!?
-
-But...
-
-- Relevance of gender vs. sex?  What _exactly_ are we interested in?
-
-- How measure?  Based on Voice? Self-Reported?
-
-- How ask?  Do we worry about politically contested response categories affecting who responds?
-
-- "Intersectional" comparisons? (by Age? And Race? And Ethnicity? And Religion? And...)
-
-#    Tasks Ahead
-
 Questions of Interest:
 
 - How does the support for Biden and Trump vary for younger males and females?
+
+
 
 - How does the "gender gap" vary by: age, race, and education?
 
@@ -80,6 +62,22 @@ To do this:
 2. Select the relevant data for analysis (`select`, `filter`)
 
 3. Summarize/quantify the difference (using `mean`)
+
+So all we need to do is to compare males vs. females?!?
+
+But...
+
+- Relevance of gender vs. sex?  What _exactly_ are we interested in?
+
+- How measure?  Based on Voice? Self-Reported?
+
+
+![Question about Sex](figs/SexQ.png)
+
+- How ask?  Do we worry about politically contested response categories affecting who responds?
+
+
+- "Intersectional" comparisons? (by Age? And Race? And Ethnicity? And Religion? And...)
 
 We are going to doing some abstract work to learn some tools and then apply what we need to answer the question.
 
@@ -162,6 +160,7 @@ MI_final_small %>%
   count(preschoice)
 ```
   
+So now recode this!
 
 ```{r}
 MI_final_small <- MI_final_small %>%
@@ -171,12 +170,25 @@ MI_final_small %>%
   count(preschoice)
 ```
 
-Or you can use conditionals to do recode several values! 
+Note that we can use the `ifelse` function in several clever ways.  First, we could do sequential mutations to do multiple recodings and R will process them in order.
+
+```{r}
+MI_final_small %>%
+  mutate(preschoice=ifelse(preschoice=="Another candidate",NA,preschoice),
+         preschoice=ifelse(preschoice=="Will/Did not vote for president",NA,preschoice),
+         preschoice=ifelse(preschoice=="Undecided/Don’t know",NA,preschoice)) %>%
+  drop_na(preschoice) %>%
+  count(preschoice)
+```
+
+Or you can use conditionals to do recode for several values all at once using the conditionals we learned about last time! 
 
 ```{r}
 MI_final_small <- MI_final_small %>%
-  mutate(preschoice=ifelse(preschoice=="Another candidate" | preschoice=="Will/Did not vote for president" | preschoice == "Will/Did not vote for president",NA,preschoice))
+  mutate(preschoice=ifelse(preschoice=="Another candidate" | preschoice=="Will/Did not vote for president" | preschoice == "Undecided/Don’t know",NA,preschoice))
 ```
+
+The `ifelse` command is a powerful function -- even though it seems like it is useful only for binary (i.e., two-valued) variables it actually has a wide range of applications.
 
 # Summarizing variables using `count`, `mutate` and `summarize` to Learn About the World
 
