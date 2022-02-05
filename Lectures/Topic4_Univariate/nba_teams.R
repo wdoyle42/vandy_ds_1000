@@ -1,31 +1,41 @@
 library(tidyverse)
-library(nbastatR) ## You'll need to get this library
+library(nbastatR)
 
-## To get nbastatR:
-## library(devtools) # need to get and install
-## install_github(abresler/nbastatR)
+
 
 Sys.setenv("VROOM_CONNECTION_SIZE" = 131072 * 2)
 
-games<-game_logs(seasons=2017:2019)
+games<-game_logs(seasons=2017:2021)
 
-game_summary<-games%>%
+
+game_summary<-
+  games%>%
   filter(typeSeason=="Regular Season")%>%
-  group_by(idGame,
-           yearSeason, 
-           dateGame,
-           idTeam,
-           nameTeam,
-           locationGame)%>% ## Data is player level, this groups at game level
+  group_by(idGame,yearSeason, dateGame,idTeam,nameTeam,locationGame)%>%
   summarize(tov=sum(tov),
             pts=sum(pts),
             treb=sum(treb),
+            oreb=sum(oreb),
+            dreb=sum(dreb),
+            fga=sum(fga),
+            ftm=sum(ftm),
             pctFG=mean(pctFG,na.rm=TRUE),
+            pctFT=mean(pctFT,na.rm=TRUE),
             teamrest=max(countDaysRestTeam),
             second_game=first(isB2BSecond),
-            pctFT=mean(pctFT,na.rm=TRUE),
             isWin=first(isWin))%>%
   mutate(ft_80=ifelse(pctFT>.8,1,0))%>%
+  group_by(idGame)%>%
+  mutate(game_treb=sum(treb),
+         game_oreb=sum(oreb),
+         game_dreb=sum(dreb)) %>% ## Game totals
+  ungroup()%>%
+  group_by(idGame,yearSeason, dateGame,idTeam,nameTeam,locationGame)%>%
+  mutate(opp_treb=game_treb-treb,
+         opp_dreb=game_dreb-dreb,
+         opp_oreb=game_oreb-oreb)%>%
+  mutate(oreb_pct=oreb/(oreb+opp_dreb))%>%
   ungroup()
+
 
 write_rds(game_summary,"game_summary.Rds")
