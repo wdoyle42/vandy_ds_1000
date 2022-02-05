@@ -29,14 +29,15 @@ nba<-readRDS("nba_players_2018.Rds")
 
 We're interested in the following questions:
 
--   Do certain colleges produce players that have more field goals? What about free throw percentage above a certain level? Are certain colleges in the east or the west more likely to produce higher scorers? How does this vary as a player has more seasons?
+-   Do certain colleges produce players that have more field goals? What about free throw percentage above a certain level? Does playing  in the east or the west conference produce higher scorers? How does this vary as a player has more seasons? Or as a player gets older?
 
 To answer these questions we need to look at the following variables:
 
 -   Field goals
--   Free throw percentage above .25
+-   Free throw percentage above
 -   Colleges
 -   Player seasons
+-   Player Age
 -   Region
 
 We're going to go through a pretty standard set of steps for each variable. First, examine some cases. Second, based on our examination, we'll try either a plot or a table. Once we've seen the plot or the table, we'll think a bit about ordering, and then choose an appropriate measure of central tendency, and maybe variation.
@@ -58,7 +59,7 @@ A categorical variables divides the sample up into a set of mutually exclusive a
 
 #### Categorical: ordered 
 
-an ordered categorical variable has-- you guessed it-- some kind of sensible order that can be applied. For instance, the educational attainment of an individual: high school diploma, associates degree, bachelor's degree, graduate degree-- is an ordered categorical variable.
+An ordered categorical variable has-- you guessed it-- some kind of sensible order that can be applied. For instance, the educational attainment of an individual: high school diploma, associates degree, bachelor's degree, graduate degree-- is an ordered categorical variable.
 
 Ordered categorical variables should be arranged in the order of the variable, with proportions or percentages associated with each order. The mode, or the category with the highest proportion, is a reasonable measure of central tendency, but with fewer than ten categories the analyst should generally just show the proportion in each category. 
 

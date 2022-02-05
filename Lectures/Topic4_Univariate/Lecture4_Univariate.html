@@ -192,14 +192,15 @@ pre code {
 <pre class="r"><code>nba&lt;-readRDS(&quot;nba_players_2018.Rds&quot;)</code></pre>
 <p>We’re interested in the following questions:</p>
 <ul>
-<li>Do certain colleges produce players that have more field goals? What about free throw percentage above a certain level? Are certain colleges in the east or the west more likely to produce higher scorers? How does this vary as a player has more seasons?</li>
+<li>Do certain colleges produce players that have more field goals? What about free throw percentage above a certain level? Does playing in the east or the west conference produce higher scorers? How does this vary as a player has more seasons? Or as a player gets older?</li>
 </ul>
 <p>To answer these questions we need to look at the following variables:</p>
 <ul>
 <li>Field goals</li>
-<li>Free throw percentage above .25</li>
+<li>Free throw percentage above</li>
 <li>Colleges</li>
 <li>Player seasons</li>
+<li>Player Age</li>
 <li>Region</li>
 </ul>
 <p>We’re going to go through a pretty standard set of steps for each variable. First, examine some cases. Second, based on our examination, we’ll try either a plot or a table. Once we’ve seen the plot or the table, we’ll think a bit about ordering, and then choose an appropriate measure of central tendency, and maybe variation.</p>
@@ -217,7 +218,7 @@ pre code {
 <p>A categorical variables divides the sample up into a set of mutually exclusive and exhaustive categories. Mutually exclusive means that each case can only be one, and exhaustive means that the categories cover every possible option. Categorical is sort of the “top” level classification for variables of this type. Within the broad classification of categorical there are multiple types of other variables.</p>
 <div id="categorical-ordered" class="section level4">
 <h4>Categorical: ordered</h4>
-<p>an ordered categorical variable has– you guessed it– some kind of sensible order that can be applied. For instance, the educational attainment of an individual: high school diploma, associates degree, bachelor’s degree, graduate degree– is an ordered categorical variable.</p>
+<p>An ordered categorical variable has– you guessed it– some kind of sensible order that can be applied. For instance, the educational attainment of an individual: high school diploma, associates degree, bachelor’s degree, graduate degree– is an ordered categorical variable.</p>
 <p>Ordered categorical variables should be arranged in the order of the variable, with proportions or percentages associated with each order. The mode, or the category with the highest proportion, is a reasonable measure of central tendency, but with fewer than ten categories the analyst should generally just show the proportion in each category.</p>
 <div id="categorical-ordered-binary" class="section level5">
 <h5>Categorical: ordered, binary</h5>
