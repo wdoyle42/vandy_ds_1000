@@ -1,0 +1,190 @@
+---
+title: "Lecture 1. Data Science?"
+author: "Josh Clinton & Will Doyle"
+output: beamer_presentation
+fontsize: 10pt
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Today's Agenda
+
+1. Meet the Instructor(s):
+- Prof. Clinton: _josh.clinton@vanderbilt.edu_
+- Prof. Doyle: _w.doyle@vanderbilt.edu_
+- Jennifer Barnes (TA): _jennifer.n.barnes@vanderbilt.edu_
+
+Course Email: _vu.dsci1000@gmail.com_
+
+2. Course Motivation & Objectives
+- Content: Critical Thinking, Analysis, Presentation
+
+- Skills: Computing and Analysis using R
+
+# Too Much Information? (even in 2017...)
+\includegraphics[height=\textheight]{figs/DOMODataPerMinute2017.png}
+
+# Course Motivation via ``Tweets"
+-  "It is a capital mistake to theorize before one has data." Sherlock Holmes
+
+-  "Torture the data, and it will confess to anything." Ronald Coase, Nobel Prize Laureate in Economics 
+
+- “Here’s an open secret of the big data world: all data is dirty. All of it.” Meredith Broussard, _Artificial Unintelligence: How Computers Misunderstand the World_
+
+- “Big Data processes codify the past. They do not invent the future.” Cathy O'Neil, _Weapons of Math Destruction: How Big Data Increases Inequality and Threatens Democracy_
+
+# Course Motivation
+
+Data are more prevalent than ever!
+
+But does quantification equal precision? Or knowledge? Or understanding?
+
+- Numbers without context are meaningless.
+
+- _How_ is data collected? What is actually being _measured_?
+
+- What might be wrong/misleading/misinterpreted?
+
+- Theory-driven? Data-Driven?
+
+Data-driven decisions and conclusions require multiple skills...
+...and such skills are in high demand.
+
+# What is "Data Science"?
+
+- No agreed upon definition.
+
+- Set of skills: statistics, programming, communication, critical-thinking.
+
+# Everyone is doing it?
+\centering
+\includegraphics[scale=.25]{figs/DataScienceVCompProgramming.png}
+
+# Everyone is doing it?
+\centering
+\includegraphics[scale=.4]{figs/GoogleFight.png}
+
+# Everyone is doing it?
+\centering
+\includegraphics[scale=.4]{figs/GoogleFightStatistics.png}
+
+# For nearly everything!
+
+# Is Shakespeare by Shakespeare?
+\centering
+\includegraphics[scale=.25]{figs/ShakespeareAuthor.png}
+
+# Predict Elections...
+\centering
+\includegraphics[scale=.25]{figs/Silver.png}
+
+# ...by using Twitter "sentiment"?
+\centering
+\includegraphics[scale=.5]{figs/TwitterPredict.png}
+
+# Perform "Technical" Analysis of stock markets...
+\centering
+\includegraphics[scale=.5]{figs/TechAnalysis.png}
+
+# ...by using past trends "predict" future market conditions?
+\centering
+\includegraphics[scale=.5]{figs/ScaryParallel.png}
+
+# Identify markers for Breast Cancer Risk?
+\centering
+\includegraphics[scale=.25]{figs/BRCA.png}
+
+# And the causes(s) of autism?
+\centering
+\includegraphics[scale=.5]{figs/WakefieldLancet.png}
+
+# Name the 1400 people most likely to cause or experience gun violence in Chicago?
+\centering
+\includegraphics[scale=.25]{figs/PredictingPolicing.png}
+
+# Spread misinformation?
+\centering
+\includegraphics[scale=.5]{figs/Trump2020ElectionMath.png}
+
+# Confuse the Public?
+\centering
+\includegraphics[scale=.5]{figs/HowTheEconomyIsDoingNYT.png}
+
+# (Unintentionally?) Create Inequality?
+\centering
+\includegraphics[scale=.35]{figs/WritingStyle.png}
+
+# What we will do...
+
+- How to think about data. (What are we doing and what can we do with data?)
+
+- Work with data in a modern, widely-used, statistical programming language.
+
+- How to analyze?  How to present? [Reproducible!]
+
+- Empower you to collect, and analyze new data to describe and understand the world
+
+# What we will NOT do...
+
+- Talk (too much) about any one topic.
+
+- Provide a comprehensive understanding of any subject.
+
+- Cover the latest and greatest Data Science tools and methods (but `tidyverse`,`ggplot`,`tidymodels`)
+
+# What does "Introduction" mean?
+
+- This is not "Foundations"...
+
+- Give you experience in running code (copy, paste, \& tweak)
+
+- Not going through every function in detail...
+
+- Or the math that justifies what we are doing and why...
+
+- Focus on intuition and motivation.
+
+# Some of what we will talk about:
+
+- Predicting elections in the United States using polls
+
+- Looking at why some movies may make more money than others
+
+- Predicting college admission and enrollment decisions
+
+- Identifying "clusters" of voters (unsupervised learning)
+
+- Analyzing twitter data (sentiment analysis)
+
+- Predicting who wrote contested documents (Textual Forensics)
+
+# How to succeed:
+
+Before Class
+
+- Download the lecture notes (and data) prior to class.
+
+- Put in a separate folder and see if you can load the data and knit the code. (Libraries?)
+
+- Review the lecture notes to get a sense of where we are going. Figure out where you get lost in the notes.
+
+\pause
+During Class:
+
+- During class (if not before), try to predict what each code chunk will do before you run it.  
+
+- During class (and after), ask questions about points of confusion.  If you have a question so do others!  
+
+\pause
+After Class:
+
+- Tweak the code to do something similar, but different.  Can you do figure out how to use the code to do something different?
+
+- Understand that you will not "think in code" -- your goal is to give yourself tools to get the right answer.
+
+# You Can Do This
+
+\centering
+\includegraphics[scale=.45]{figs/SuccessBaby.png}

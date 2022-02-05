@@ -1,7 +1,0 @@
----
-title: "Guided Exercise 3 Walkthrough"
-author: "Will Doyle"
-date: "11/16/2021"
-output: html_document
----
-
