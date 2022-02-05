@@ -27,6 +27,8 @@ Here's the data:
 nba<-readRDS("nba_players_2018.Rds")
 ```
 
+Here's the codebook for this data: [NBA Player Data Codebook](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Topic4_Univariate/nba_players_2018.html)
+
 We're interested in the following questions:
 
 -   Do certain colleges produce players that have more field goals? What about free throw percentage above a certain level? Does playing  in the east or the west conference produce higher scorers? How does this vary as a player has more seasons? Or as a player gets older?
@@ -34,7 +36,7 @@ We're interested in the following questions:
 To answer these questions we need to look at the following variables:
 
 -   Field goals
--   Free throw percentage above
+-   Free throw percentage 
 -   Colleges
 -   Player seasons
 -   Player Age
