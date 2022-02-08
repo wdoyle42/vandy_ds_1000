@@ -3,27 +3,23 @@ title: "Univariate Descriptives and Uncertainty"
 author: "Will Doyle"
 date: "9/16/2021"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ## Uncertainty in Univariate Statistics
 
-When we calculate a summary statistic in univariate statistics, we're making a statement 
-about what we can expect to see in other situations. If I say that the average height of a cedar tree is 75 feet, that
-gives an expectation for the average height we might calculate for any given sample of cedar trees. However,
-there's more information that we need to communicate. It's not just the summary measure-- it's also our level of uncertainty around that summary measure. Sure, the average height might be 75 feet, but does that mean in every sample we ever collect we're always
-going to see an average of 75 feet? 
+When we calculate a summary statistic in univariate statistics, we're making a statement about what we can expect to see in other situations. If I say that the average height of a cedar tree is 75 feet, that gives an expectation for the average height we might calculate for any given sample of cedar trees. However, there's more information that we need to communicate. It's not just the summary measure-- it's also our level of uncertainty around that summary measure. Sure, the average height might be 75 feet, but does that mean in every sample we ever collect we're always going to see an average of 75 feet?
 
-## Motivation for Today: How much do turnovers matter? 
+## Motivation for Today: How much do turnovers matter?
 
-We're going to work with a different dataset covering every NBA game played in the seasons 2016-17 to 2018-19. I'm interested in whether winning teams have higher or lower values of turnovers, and whether winning teams tend to more often make over 80 percent of their free throws. 
+We're going to work with a different dataset covering every NBA game played in the seasons 2016-17 to 2020-21. I'm interested in whether winning teams have higher or lower values of turnovers, and whether winning teams tend to get to the foul line more often.
 
 ```{r}
 library(tidyverse)
 library(tidymodels)
+library(modelr)
 ```
-
 
 ## The Data
 
@@ -32,249 +28,247 @@ gms<-read_rds("game_summary.Rds")
 gms
 ```
 
+The data for today is game by team summary data. [Codebook here](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture4Univariate/game_summary_codebook.html). It includes information for each team for every game played from 2017 to 2019.
+
+In his book "Basketball on Paper" Dean Oliver identified the "four factors" to winning basketball:
+
+-   Higher Field Goal Percentage
+-   Lower Turnovers
+-   Higher Offensive Rebounds
+-   Get to the foul line frequently
+
+Today we're going to look at turnovers. A turnover in basketball is when a team is on offense, but instead of taking a shot and either making it or missing, the team hands the ball over to the defense. A turnover can occur because of a steal, an intercepted pass, losing the ball, a violation (ie traveling) or an offensive foul.
+
+We're interested in knowing about how turnovers (`tov_pct`) are different between game winners (`isWin`).
+
+## Continuous Variables: Point Estimates
+
+Let's start by calculating average turnovers for winning and losing teams in 2017.
+
 ```{r}
-gms%>%
-  ggplot(aes(x=teamrest))+
-  geom_histogram()
-```
-
-
-The data for today is game by team summary data. [Codebook here](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture4Univariate/game_summary_codebook.html). It includes information for each team for every game played from 2017 to 2019. We're interested in knowing about how turnovers `tov` are different between game winners `isWin`.
-
-## Continuous Variables: Point Estimates 
-```{r}
-gms%>%
+tov_pct_summary<-
+  gms%>%
   filter(yearSeason==2017)%>%
   group_by(isWin)%>%
-  summarize(mean(tov))
+  summarize(mean_tov_pct=mean(tov_pct))
+
+tov_pct_summary
+
 ```
 
-It looks like there's a fairly substantial difference-- winning teams turned the ball over an average of 12.9 times, while losing teams turned it over an average of 13.8 times. One way to summarize this is that winning teams in general had one less turnover per game than losing teams. 
+It looks like there's a fairly substantial difference-- winning teams turned the ball over on average in about `r round(100*tov_pct_summary$mean_tov_pct[2],2)` percent of possessions, while losing teams turned it over an average of `r round(100*tov_pct_summary$mean_tov_pct[1],2)` percent of the time.
 
-What if we take these results and decide that these will apply in other seasons? We could say something like: "Winning teams over the course of a season will turn the ball over 12.9 times, and losing teams 13.8 times, period." Well let's look and see:
+*Quick Exercise: Calculate average free throw attempts for winning and losing teams in 2017*
+
+What if we take these results and decide that these will apply in other seasons? We could say something like: "Winning teams over the course of a season will turn the ball over t `r round(100*tov_pct_summary$mean_tov_pct[2],2)` percent of the time, and losing teams `r round(100*tov_pct_summary$mean_tov_pct[1],2)` percent of the time, period." Well, let's look and see: did the same result apply in 2018 and 2019?
 
 ```{r}
 gms%>%
   filter(yearSeason==2018)%>%
   group_by(isWin)%>%
-  summarize(mean(tov))
+  summarize(mean(tov_pct))
 
 gms%>%
   filter(yearSeason==2019)%>%
   group_by(isWin)%>%
-  summarize(mean(tov))
+  summarize(mean(tov_pct))
 ```
 
-So, no, that's not right. In other seasons winning teams turned the ball over less, but it's not as simple as just saying it will always be the two numbers we calculated from the 2017 data. 
+So, no, that's not right. In other seasons winning teams turned the ball over less, but it's not as simple as just saying it will always be the two numbers we calculated from the 2017 data.
 
-What we'd like to be able to do is make a more general statement, not just about a given season but about what we can expect in general. To do that we need to provide some kind of range of uncertainty: what range of turnovers can we expect to see from both winning and losing teams? To generate this range of uncertainty we're going to use some key insights from probability theory and statistics that help us generate estimates of uncertainty. 
+What we'd like to be able to do is make a more general statement, not just about a given season but about what we can expect in general. To do that we need to provide some kind of range of uncertainty: what range of turnovers can we expect to see from both winning and losing teams? To generate this range of uncertainty we're going to use some key insights from probability theory and statistics that help us generate estimates of uncertainty.
 
-*Quick exercise: Are winning teams in 2017 more likely to make more than 80 percent of their free throws?*
+*Quick exercise: Are winning teams in 2017 more likely to make more free throw attempts than their opponents?*
+
+## Sampling
+
+We're going to start by building up a range of uncertainty from the data we already have. We'll do this by sampling from the data itself. I'll start by using `count` to get the sample size of this data. 
+
+```{r}
+sample_size<-gms%>%
+  filter(yearSeason==2017)%>%
+  count()%>%
+  as_vector()
+```
+
+Whenever we do something that involves randomn numbers, it's a good idea to use `set.seed` to put our random number generators in the same state. This SHOULD mean that we get the same random numbers drawn each time we run the code. 
+
+```{r}
+set.seed(20210207)
+```
+
+Now let's generate a sample from our dataset. 
+
+```{r}
+gms%>%
+  filter(yearSeason==2017)%>% ## Filter to just 2017
+  sample_n(size=sample_size, replace = TRUE) %>% ## Sample size is as set above
+  group_by(isWin)%>% ## Group by win/lose
+  summarize(mean(tov_pct)) ## calculate mean
+```
+
+Notice the line: `sample_n(size=sample_size, replace = TRUE)`. That's doing something kind of unusual: it's taking the dataset, then sampling from within it, but creating a new dataset of the same size (`sample_size` is set to be the same size as the data in the lines above). Why in the world would I do this? What this does is to create a sample of data that's based on our own data, but isn't precisely the same. The difference boils down to some elements if the data being repeated.
 
 ```{r}
 gms%>%
   filter(yearSeason==2017)%>%
-  group_by(isWin)%>%
-  summarize(mean(ft_80))
+  sample_n(size=sample_size, replace = TRUE)%>%
+  group_by(idGame,nameTeam)%>%
+  mutate(replicates=n())%>%
+  arrange(-replicates,idGame,nameTeam)%>%
+  select(idGame,yearSeason,dateGame,nameTeam,replicates)
 ```
 
+See how some games/teams are repeated multiple times?
 
-## Sampling
+Let's do that again and see what it does to our summary numbers:
 
-We're going to start by building up a range of uncertainty from the data we already have. We'll do this by sampling from the data itself. 
-
-Let's just take very small sample of games-- 100 games-- and calculate turnovers for winners and losers.  
-```{r}
-set.seed(210916)
-
-sample_size<-100
-
-gms%>%
-  filter(yearSeason==2017)%>% ## Filter to just 2017
-  sample_n(size=sample_size) %>% ## Sample size is as set above
-  group_by(isWin)%>% ## Group by win/lose
-  summarize(mean(tov)) ## calculate mean
-```
-
-## And again:
 ```{r}
 gms%>%
   filter(yearSeason==2017)%>% ## Filter to just 2017
-  sample_n(size=sample_size) %>% ## Sample size is as set above
+  sample_n(size=sample_size,replace = TRUE) %>% ## Sample size is as set above
   group_by(isWin)%>% ## Group by win/lose
-  summarize(mean(tov)) ## calculate mean
+  summarize(mean(tov_pct)) ## calculate mean
 ```
- Sometimes we can get samples where the winning team turned the ball over more! These resamples on their own don't appear to be particularly useful, but what would happen if we calculated a bunch (technical term) of them? 
- 
- I can continue this process of sampling and generating values many times using a loop. The code below resamples from the data 10,000 times, each time calculating the mean turnovers for winners and losers in a sample of size 100. It then adds those two means to a growing list, using the bind_rows function. 
- 
- 
-## Warning: the code below will take a little while to run  
+
+It changes a bit each time, dependent on which random resample (or replicate) we use. These replicates are called bootstrap replicates, and we can use specific code to generate them.
+
+```{r}
+gms%>%
+  filter(yearSeason==2017)%>%
+  resample_bootstrap()%>%
+  as_tibble()%>%
+  group_by(isWin)%>% ## Group by win/lose
+  summarize(mean(tov_pct)) ## calculate mea
+```
+
+I can continue this process of sampling and generating values many times using a loop. The code below resamples from the data 10,000 times, each time calculating the mean turnovers for winners and losers in a sample of size 100. It then adds those two means to a growing list, using the bind_rows function.
+
+## Warning: the code below will take a little while to run
+
 ```{r}
 gms_tov_rs<-NULL ##  Create a NULL variable: will fill this in later
 
-for (i in 1:10000){ # Repeat the steps below 10,000 times
+for (i in 1:1000){ # Repeat the steps below 10,000 times
   gms_tov_rs<-gms%>% ## Create a dataset called gms_tov_rs (rs=resampled)
   filter(yearSeason==2017)%>%  ## Just 2017
-  sample_n(size=sample_size) %>% ## Sample 100 games
+  resample_bootstrap()%>%
+  as_tibble()%>%
   group_by(isWin)%>% ## Group by won or lost
-  summarize(mean_tov=mean(tov))%>% ## Calculate mean turnovers for winners and losers
+  summarize(mean_tov_pct=mean(tov_pct))%>% ## Calculate mean turnovers for winners and losers
     bind_rows(gms_tov_rs) ## add this result to the existing dataset
 }
 ```
 
-Now I have a dataset that is built up from a bunch of small resamples from the data, with average turnovers for winners and losers in each small sample. Let's see what these look like. 
+Now I have a dataset that is built up from a bunch of resamples from the data, with average turnovers for winners and losers in each sample. Let's see what these look like.
 
 ```{r}
 gms_tov_rs
 ```
 
-This is a dataset that's just a bunch of means. We can calculate the mean of all of these means and see what it looks like: 
+This is a dataset that's just a bunch of means. We can calculate the mean of all of these means and see what it looks like:
 
 ```{r}
 gms_tov_rs%>%
   group_by(isWin)%>%
-  summarise(mean_of_means=mean(mean_tov))
+  summarise(mean_of_means=mean(mean_tov_pct))
 ```
 
-How does this "mean of means"  compare with the actual?
+How does this "mean of means" compare with the actual?
 
 ```{r}
 gms%>%
   filter(yearSeason==2017)%>%
   group_by(isWin)%>%
-  summarize(mean(tov))
+  summarize(mean(tov_pct))
 ```
 
-Pretty similar! It's what we would expect, really, but it's super important. If we repeatedly sample from a dataset, our summary measures of a sufficiently large number of repeated samples will converge on the true value of the measure from the dataset. 
+Pretty similar! It's what we would expect, really, but it's super important. If we repeatedly sample from a dataset, our summary measures of a sufficiently large number of repeated samples will converge on the true value of the measure from the dataset.
 
-
-*Quick Exercise: Repeat the above, but do it for Pct of Free Throws above .8*
-
-```{r}
-gms_ft_80_rs<-NULL ##  Create a NULL variable: will fill this in later
-
-for (i in 1:10000){ # Repeat the steps below 10,000 times
-  gms_ft_80_rs<-gms%>% ## Create a dataset called gms_tov_rs (rs=resampled)
-  filter(yearSeason==2017)%>%  ## Just 2017
-  sample_n(size=sample_size) %>% ## Sample 100 games
-  group_by(isWin)%>% ## Group by won or lost
-  summarize(mean_ft80=mean(ft_80))%>% ## Calculate mean turnovers for winners and losers
-    bind_rows(gms_ft_80_rs) ## add this result to the existing dataset
-}
-```
-
+*Quick Exercise: Repeat the above, but do it for free throw attempts. 
 
 ## Distribution of Resampled Means
 
-That's fine, but the other thing is that the *distribution* of those repeated samples will tell us about what we can expect to see in other, out of sample data that's generated by the same process. 
+That's fine, but the other thing is that the *distribution* of those repeated samples will tell us about what we can expect to see in other, out of sample data that's generated by the same process.
 
 Let's take a look at the distribution of turnovers for game winners:
+
 ```{r}
 gms_tov_rs%>%
   filter(isWin)%>%
-  ggplot(aes(x=mean_tov,fill=isWin))+
+  ggplot(aes(x=mean_tov_pct,fill=isWin))+
   geom_density(alpha=.3)+
-  geom_vline(xintercept =12.9)
+  geom_vline(xintercept =.138)
 ```
 
-We can see that the mean of this distribution is centered right on the mean of the actual data, and it goes from about 11 to about 15. This is different than the minimum and maximum of the overall sample, which goes from `r gms%>%filter(yearSeason==2017,isWin)%>%summarize(min(tov))` to `r gms%>%filter(yearSeason==2017,isWin)%>%summarize(max(tov))`. 
+We can see that the mean of this distribution is centered right on the mean of the actual data, and it goes from about 11 to about 15. This is different than the minimum and maximum of the overall sample, which goes from 
+`r gms_tov_rs%>%filter(isWin)%>%summarize(min(mean_tov_pct))` to
+`r gms_tov_rs%>%filter(isWin)%>%summarize(min(mean_tov_pct))`.
 
+
+We can use the function `fivenum` to provide a summary of this distribution.
 ```{r}
 gms_tov_rs%>%
   filter(isWin)%>%
-  summarize(value=fivenum(mean_tov))%>% ## Five number summary: described below
+  summarize(value=fivenum(mean_tov_pct))%>% ## Five number summary: described below
   mutate(measure=c("Min","25th percentile","Median","75th percentile","Max"))%>%
   select(measure, value)
 ```
 
-So what this tells us is that the minimum turnovers for winners in all of the samples we drew was 11.2, the maximum was about 15  and the median was 12.9. 
 
 And for game losers:
 
 ```{r}
 gms_tov_rs%>%
   filter(!isWin)%>%
-  ggplot(aes(x=mean_tov,fill=isWin))+
+  ggplot(aes(x=mean_tov_pct,fill=isWin))+
   geom_density(alpha=.3,fill="lightblue")+
-  geom_vline(xintercept =13.8)
+  geom_vline(xintercept =.146)
 ```
-
 
 ```{r}
 gms_tov_rs%>%
   filter(!isWin)%>%
-  summarize(value=fivenum(mean_tov))%>%
+  summarize(value=fivenum(mean_tov_pct))%>%
     mutate(measure=c("Min","25th percentile","Median","75th percentile","Max"))%>%
   select(measure, value)
 ```
 
-For game losers, minimum turnovers for winners in all of the samples we drew was 11.6, the maximum was about 16.5 (!!) and the median was 13.8. 
-
-*Quick Exercise: Calculate the same summary, but do it for Pct of Free Throws above .8*
 
 
-```{r}
-gms_ft_80_rs%>%
-  filter(isWin)%>%
-  summarize(value=fivenum(mean_ft80))%>% ## Five number summary: described below
-  mutate(measure=c("Min","25th percentile","Median","75th percentile","Max"))%>%
-  select(measure, value)
-```
-
-
-```{r}
-gms_ft_80_rs%>%
-  filter(!isWin)%>%
-  summarize(value=fivenum(mean_ft80))%>% ## Five number summary: described below
-  mutate(measure=c("Min","25th percentile","Median","75th percentile","Max"))%>%
-  select(measure, value)
-```
-
+*Quick Exercise: Calculate the same summary, but do it for free throw attempts.*
 
 ## So What? Using Percentiles of the Resampled Distribution
 
-Now we can make some statements about uncertainty. Based on this what we can say is that in other seasons, we would expect that turnover for game winners will be in a certain range, and the same for game losers. What range? Well it depends on the level of risk you're willing to take as an analyst. Academics (a cautious bunch to be sure) usually use the middle 95 percent of the distribution: 
-So for game winners:
+Now we can make some statements about uncertainty. Based on this what we can say is that in other seasons, we would expect that turnover for game winners will be in a certain range, and the same for game losers. What range? Well it depends on the level of risk you're willing to take as an analyst. Academics (a cautious bunch to be sure) usually use the middle 95 percent of the distribution: So for game winners:
 
 ```{r}
 gms_tov_rs%>%
   filter(isWin)%>%
-  summarize(pct_025=quantile(mean_tov,.025),
-            pct_975=quantile(mean_tov,.975))
+  summarize(pct_025=quantile(mean_tov_pct,.025),
+            pct_975=quantile(mean_tov_pct,.975))
 
 ```
 
-```{r}
-gms_ft_80_rs%>%
-  filter(isWin)%>%
-  summarize(pct_025=quantile(mean_ft80,.025),
-            pct_975=quantile(mean_ft80,.975))
-```
+This tells us we can expect that game winners in future seasons will turn the ball over in the range specified above. 
 
+What about for game losers? How often will they be expected to turn the ball over?
 
-This tells us we can expect that game winners in future seasons will turn the ball over between about 12 and 14 times.
-
-And for game losers
 ```{r}
 gms_tov_rs%>%
-  filter(!isWin)%>%
-  summarize(pct_025=quantile(mean_tov,.025),
-            pct_975=quantile(mean_tov,.975))
+group_by(isWin)%>%
+  summarize(pct_025=quantile(mean_tov_pct,.025),
+            pct_975=quantile(mean_tov_pct,.975))
 ```
 
-This tells us that we can expect that game losers in future seasons will turn the ball over between ... 12.7 and 14.9 times. 
 
-Don't be disappointed! It just turns out that if we want to make accurate statements about out of sample data, we need to reflect our uncertainty. 
-
-Let's check to see if our expectations are borne out in future seasons:
-
+Let's check to see if our expectations are borne out in future seasons, by calculating the actual values of turnover percentage for those subseqeuent seasons. 
 
 ```{r}
 gms%>%
   filter(yearSeason==2018)%>%
   group_by(isWin)%>%
-  summarize(mean(tov))
+  summarize(mean(tov_pct))
 ```
 
 
@@ -282,86 +276,81 @@ gms%>%
 gms%>%
   filter(yearSeason==2019)%>%
   group_by(isWin)%>%
-  summarize(mean(tov))
+  summarize(mean(tov_pct))
 ```
 
-So, our intervals for both winners and losers did include the values in future seasons. 
+While our ranges are close, they're not exact-- we can see values outside the range for subsequent seasons. 
 
 ## Other intervals-- the tradeoff between a "precise" interval and risk
 
-You may be underwhelmed at this point, because the 95 percent range is a big range of possible turnover values. We can use narrower intervals-- it just raises the risk of being wrong. Let's try the middle 50 percent. 
+You may be underwhelmed at this point, because the 95 percent range is a big range of possible turnover values. We can use narrower intervals-- it just raises the risk of being wrong. Let's try the middle 50 percent.
 
 ```{r}
 gms_tov_rs%>%
   group_by(isWin)%>%
-  summarize(pct_25=quantile(mean_tov,.25),
-            pct_75=quantile(mean_tov,.75))
+  summarize(pct_25=quantile(mean_tov_pct,.25),
+            pct_75=quantile(mean_tov_pct,.75))
 ```
 
+Now let's compare that middle 50% with the actual values in 2018 and 2019.
 
-Okay, now we're saying that winners will have between 12.6 and 13.3 turnovers. Is that right?
+```{r}
+gms%>%
+  filter(yearSeason==2018)%>%
+  group_by(isWin)%>%
+  summarize(mean(tov_pct))
+
+gms%>%
+  filter(yearSeason==2019)%>%
+  group_by(isWin)%>%
+  summarize(mean(tov_pct))
+```
+
+Let's just keep going and try the middle 10%, and compare that with the values in  2018 and 2019. 
+
+```{r}
+gms_tov_rs%>%
+  group_by(isWin)%>%
+  summarize(pct_45=quantile(mean_tov_pct,.45),
+            pct_55=quantile(mean_tov_pct,.55))
+```
 
 ```{r}
 gms%>%
   filter(yearSeason==2018)%>%
   group_by(isWin)%>%
   summarize(mean(tov))
-```
 
-```{r}
 gms%>%
   filter(yearSeason==2019)%>%
   group_by(isWin)%>%
   summarize(mean(tov))
 ```
 
-Yes, this checks out for subsequent seasons. What about a really narrow interval-- the middle 10 percent? 
 
-```{r}
-gms_tov_rs%>%
-  group_by(isWin)%>%
-  summarize(pct_45=quantile(mean_tov,.45),
-            pct_55=quantile(mean_tov,.55))
-```
+It turns out that the way this method works is that for an interval of a certain range, the calculated interval will include the true value of the measure in the same percent *of repeated samples*. We can think of eac    h season as a repeated sample, so the middle 95 percent of this range will include the true value in 95 percent of seasons. When we call this a confidence interval, we're saying we have confidence in the approach, not the particular values we calculated.
 
-```{r}
-gms%>%
-  filter(yearSeason==2018)%>%
-  group_by(isWin)%>%
-  summarize(mean(tov))
-```
-
-In 2018, winning teams turned the ball over 13.3 times, on average. That's above the range we gave! If we used a 10 percent interval we'd be wrong. Similarly, in 2018 losing teams turned the ball over 14.1 times, again below our interval. 
-```{r}
-gms%>%
-  filter(yearSeason==2019)%>%
-  group_by(isWin)%>%
-  summarize(mean(tov))
-```
-
-In 2019, winning teams turned the ball over 13.1 times, on average. That's below the range we gave! If we used a 10 percent interval we'd be wrong, again. 
-
-It turns out that the way this method works is that for an interval of a certain range, the calculated interval will include the true value of the measure in the same percent *of repeated samples*. We can think of each season as a repeated sample, so the middle 95 percent of this range will include the true value in 95 percent of seasons. When we call this a confidence interval, we're saying we have confidence in the approach, not the particular values we calculated. 
-
-The tradeoff here is between providing a narrow range of values vs. the probability of being correct. We can give a very narrow interval for what we would expect to see in out of sample data, but we're going to be wrong-- a lot. We can give a very wide interval, but the information isn't going to be useful to decisionmakers. This is one of the key tradeoffs in applied data analysis, and there's no single answer to the question: what interval should I use? Academic work has settled on the 95 percent interval, but there's no real theoretical justification for this. 
+The tradeoff here is between providing a narrow range of values vs. the probability of being correct. We can give a very narrow interval for what we would expect to see in out of sample data, but we're going to be wrong-- a lot. We can give a very wide interval, but the information isn't going to be useful to decisionmakers. This is one of the key tradeoffs in applied data analysis, and there's no single answer to the question: what interval should I use? Academic work has settled on the 95 percent interval, but there's no real theoretical justification for this.
 
 ## Empirical Bootstrap
 
 What we just did is called the [empirical bootstrap](https://ocw.mit.edu/courses/mathematics/18-05-introduction-to-probability-and-statistics-spring-2014/readings/MIT18_05S14_Reading24.pdf). It's massively useful, because it can be applied for any summary measure of the data: median, percentiles, and measures like regression coefficients. Here is the summary of steps for the empirical bootstrap:
 
-- Decide on the summary measure to be used for the variable (it doesn't have to be the mean)
-- Calculate the summary measure on a small subsample (called the bootstrap sample) of the data
-- Repeat step 2 many times (how many? Start with 1000, but more is better.) Compile the estimates. 
-- Calculate the percentiles of the bootstrap distribution from the previous step. 
-- Describe your uncertainty using those percentiles.
+-   Decide on the summary measure to be used for the variable (it doesn't have to be the mean)
+-   Calculate the summary measure on a resampled version of the data-- this is called the bootstrap replicate.
+-   Repeat step 2 many times (how many? Start with 1000, but more is better.) Compile the estimates.
+-   Calculate the percentiles of the bootstrap distribution from the previous step.
+-   Describe your uncertainty using those percentiles. d
+
+*Quick Exercise: Does the 95 percent interval for free throws attempted for winning and losing teams include the values for subsequent seasons?*
 
 
+## What's wrong with this particular application
 
-*Quick Exercise: Does 50 percent interval for free throws percent above 80 include the values for subsequent seasons?*
+The idea here is that the bootstrap confidence interval applies to data drawn from the *exact same* data generating process. Usually that's in reference to new samples drawn from an infinitely large population. In this case, it's just subsequent seasons. But the NBA changes! In particular, the rules and the way the rules are enforced change over time, so it's not quite accurate to think of this as the exact same data generating process. Even still, in the absence of another way to think about uncertainty, the empirical bootstrap gives us a really good way to quantify how uncertain we really are. 
 
 
-
-## Calculating Bootstraps Using Rsample
+## Appendix: Calculating Bootstraps Using Rsample
 
 We can undertake the steps above using R's built-in capabilities. Below I create a dataset that's structured for bootstrap resampling:
 
@@ -369,17 +358,16 @@ We can undertake the steps above using R's built-in capabilities. Below I create
 boot_2017<-bootstraps(gms%>%filter(yearSeason==2017),times = 10000)
 ```
 
-This is what's called a "splits" data structure. It splits the data into two parts: one part will be used in the analysis, one part will be held out. For reasons that escape me, the command only allows the data to be split 90/10, with 90 percent held out for analysis and 10 percent for assessment.  
+This is what's called a "splits" data structure. It splits the data into two parts: one part will be used in the analysis, one part will be held out. For reasons that escape me, the command only allows the data to be split 90/10, with 90 percent held out for analysis and 10 percent for assessment.
 
 The function below takes the data (in split format), samples each element down to the specified sample size (100 in our case) and then pulls the turnover variable `tov`. It then returns a dataset that includes just the mean of the specified variable, in this case `tov`.
+
 ```{r}
-sample_size=100
 
 calc_tov_mean_winners <- function(split){
   dat <- assessment(split) %>% ## create an object called dat from each "split" of the data
     filter(isWin)%>% ## filter just for winners
-    sample_n(size=sample_size)%>% ## Sample the split down to 100
-    pull(tov) ## pull just turnovers
+    pull(tov_pct) ## pull just turnovers
 
   # Put it in this tidy format to use int_pctl
   return(tibble( ## return a tibble
@@ -390,8 +378,7 @@ calc_tov_mean_winners <- function(split){
 calc_tov_mean_losers <- function(split){
   dat <- assessment(split) %>% ## create an object called dat from each "split" of the data
     filter(!isWin)%>% ## filter just for losers
-    sample_n(size=sample_size)%>% ## Sample the split down to 100
-    pull(tov) ## pull just turnovers
+    pull(tov_pct) ## pull just turnovers
 
   # Put it in this tidy format to use int_pctl
   return(tibble( ## return a tibble
@@ -427,10 +414,3 @@ results_winners%>%
   geom_density()
 
 ```
-
-
-## What's wrong with this particular application
-
-The idea here is that the bootstrap confidence interval applies to data drawn from the *exact same* data generating process. Usually that's in reference to new samples drawn from an infinitely large population. In this case, it's just subsequent seasons. But the NBA changes! In particular, the rules and the way the rules are enforced change over time, so it's not quite accurate to think of this as the exact same data generating process. 
-
-

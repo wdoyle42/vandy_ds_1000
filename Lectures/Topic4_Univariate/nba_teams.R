@@ -19,6 +19,7 @@ game_summary<-
             dreb=sum(dreb),
             fga=sum(fga),
             ftm=sum(ftm),
+            fta=sum(fta),
             pctFG=mean(pctFG,na.rm=TRUE),
             pctFT=mean(pctFT,na.rm=TRUE),
             teamrest=max(countDaysRestTeam),
@@ -35,6 +36,7 @@ game_summary<-
          opp_dreb=game_dreb-dreb,
          opp_oreb=game_oreb-oreb)%>%
   mutate(oreb_pct=oreb/(oreb+opp_dreb))%>%
+  mutate(tov_pct=tov/(fga+oreb))%>%
   ungroup()
 
 
