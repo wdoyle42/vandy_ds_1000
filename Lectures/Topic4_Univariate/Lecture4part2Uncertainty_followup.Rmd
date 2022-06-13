@@ -1,5 +1,5 @@
 ---
-title: "Univariate Descriptives and Uncertainty"
+title: "Univariate Descriptives and Uncertainty, Part 2"
 author: "Will Doyle"
 date: "9/16/2021"
 output:
@@ -9,21 +9,16 @@ output:
 
 ## Uncertainty in Univariate Statistics
 
-When we calculate a summary statistic in univariate statistics, we're making a statement 
-about what we can expect to see in other situations. If I say that the average height of a cedar tree is 75 feet, that
-gives an expectation for the average height we might calculate for any given sample of cedar trees. However,
-there's more information that we need to communicate. It's not just the summary measure-- it's also our level of uncertainty around that summary measure. Sure, the average height might be 75 feet, but does that mean in every sample we ever collect we're always
-going to see an average of 75 feet? 
+When we calculate a summary statistic in univariate statistics, we're making a statementabout what we can expect to see in other situations. If I say that the average height of a cedar tree is 75 feet, that gives an expectation for the average height we might calculate for any given sample of cedar trees. However, there's more information that we need to communicate. It's not just the summary measure-- it's also our level of uncertainty around that summary measure. Sure, the average height might be 75 feet, but does that mean in every sample we ever collect we're always going to see an average of 75 feet? 
 
 ## Motivation for Today: How much do turnovers matter? 
 
 We're going to work with a different dataset covering every NBA game played in the seasons 2016-17 to 2018-19. I'm interested in whether winning teams have higher or lower values of turnovers, and whether winning teams tend to more often make over 80 percent of their free throws. 
 
-```{r}
+```{r, message=FALSE}
 library(tidyverse)
 library(tidymodels)
 ```
-
 
 ## The Data
 
@@ -32,14 +27,35 @@ gms<-read_rds("game_summary.Rds")
 gms
 ```
 
-```{r}
+
+
+The data for today is game by team summary data for every game played from 2017 to 2019. The codebook for this dataset is as follows:
+
+| Name         |                                          Description |
+|--------------|-----------------------------------------------------:|
+| idGame       |                                       Unique game id |
+| yearSeason   | Which season? NBA uses ending year so 2016-17 = 2017 |
+| dateGame     |                                     Date of the game |
+| idTeam       |                                       Unique team id |
+| nameTeam     |                                            Team Name |
+| locationGame |                        Game location, H=Home, A=Away |
+| tov          |                                      Total turnovers |
+| pts          |                                         Total points |
+| treb         |                                       Total rebounds |
+| pctFG        |                                Field Goal Percentage |
+| teamrest     |               How many days since last game for team |
+| pctFT        |                                Free throw percentage |
+| isWin        |                                   Won? TRUE or FALSE |
+| ft_80        |      Team scored more than 80 percent of free throws |
+
+We're interested in knowing about how turnovers `tov` are different between game winners `isWin`.
+
+```{r,message=FALSE}
 gms%>%
   ggplot(aes(x=teamrest))+
   geom_histogram()
 ```
 
-
-The data for today is game by team summary data. [Codebook here](https://raw.githack.com/wdoyle42/vandy_ds_1000/main/Lectures/Lecture4Univariate/game_summary_codebook.html). It includes information for each team for every game played from 2017 to 2019. We're interested in knowing about how turnovers `tov` are different between game winners `isWin`.
 
 ## Continuous Variables: Point Estimates 
 ```{r}
@@ -69,7 +85,7 @@ So, no, that's not right. In other seasons winning teams turned the ball over le
 
 What we'd like to be able to do is make a more general statement, not just about a given season but about what we can expect in general. To do that we need to provide some kind of range of uncertainty: what range of turnovers can we expect to see from both winning and losing teams? To generate this range of uncertainty we're going to use some key insights from probability theory and statistics that help us generate estimates of uncertainty. 
 
-*Quick exercise: Are winning teams in 2017 more likely to make more than 80 percent of their free throws?*
+*Quick exercise*  Are winning teams in 2017 more likely to make more than 80 percent of their free throws?*
 
 ```{r}
 gms%>%
@@ -83,7 +99,8 @@ gms%>%
 
 We're going to start by building up a range of uncertainty from the data we already have. We'll do this by sampling from the data itself. 
 
-Let's just take very small sample of games-- 100 games-- and calculate turnovers for winners and losers.  
+Let's just take very small sample of games-- 100 games-- and calculate turnovers for winners and losers.  We are going to `set.seed` to ensure that we get the same/similar answers everytime we run the "random number" generator.
+
 ```{r}
 set.seed(210916)
 
@@ -104,7 +121,8 @@ gms%>%
   group_by(isWin)%>% ## Group by win/lose
   summarize(mean(tov)) ## calculate mean
 ```
- Sometimes we can get samples where the winning team turned the ball over more! These resamples on their own don't appear to be particularly useful, but what would happen if we calculated a bunch (technical term) of them? 
+
+Sometimes we can get samples where the winning team turned the ball over more! These resamples on their own don't appear to be particularly useful, but what would happen if we calculated a bunch (technical term) of them? 
  
  I can continue this process of sampling and generating values many times using a loop. The code below resamples from the data 10,000 times, each time calculating the mean turnovers for winners and losers in a sample of size 100. It then adds those two means to a growing list, using the bind_rows function. 
  
@@ -113,7 +131,7 @@ gms%>%
 ```{r}
 gms_tov_rs<-NULL ##  Create a NULL variable: will fill this in later
 
-for (i in 1:10000){ # Repeat the steps below 10,000 times
+for (i in 1:1000){ # Repeat the steps below 1000 times
   gms_tov_rs<-gms%>% ## Create a dataset called gms_tov_rs (rs=resampled)
   filter(yearSeason==2017)%>%  ## Just 2017
   sample_n(size=sample_size) %>% ## Sample 100 games
@@ -149,12 +167,17 @@ gms%>%
 Pretty similar! It's what we would expect, really, but it's super important. If we repeatedly sample from a dataset, our summary measures of a sufficiently large number of repeated samples will converge on the true value of the measure from the dataset. 
 
 
-*Quick Exercise: Repeat the above, but do it for Pct of Free Throws above .8*
+*Quick Exercise* Repeat the above, but do it for Pct of Free Throws above .8.
+
+```{r}
+# INSERT CODE HERE
+```
+
 
 ```{r}
 gms_ft_80_rs<-NULL ##  Create a NULL variable: will fill this in later
 
-for (i in 1:10000){ # Repeat the steps below 10,000 times
+for (i in 1:1000){ # Repeat the steps below 10,000 times
   gms_ft_80_rs<-gms%>% ## Create a dataset called gms_tov_rs (rs=resampled)
   filter(yearSeason==2017)%>%  ## Just 2017
   sample_n(size=sample_size) %>% ## Sample 100 games
@@ -211,8 +234,11 @@ gms_tov_rs%>%
 
 For game losers, minimum turnovers for winners in all of the samples we drew was 11.6, the maximum was about 16.5 (!!) and the median was 13.8. 
 
-*Quick Exercise: Calculate the same summary, but do it for Pct of Free Throws above .8*
+*Quick Exercise*  Calculate the same summary, but do it for Pct of Free Throws above .8.
 
+```{r}
+# INSERT CODE HERE
+```
 
 ```{r}
 gms_ft_80_rs%>%
@@ -230,7 +256,6 @@ gms_ft_80_rs%>%
   mutate(measure=c("Min","25th percentile","Median","75th percentile","Max"))%>%
   select(measure, value)
 ```
-
 
 ## So What? Using Percentiles of the Resampled Distribution
 
@@ -298,7 +323,6 @@ gms_tov_rs%>%
             pct_75=quantile(mean_tov,.75))
 ```
 
-
 Okay, now we're saying that winners will have between 12.6 and 13.3 turnovers. Is that right?
 
 ```{r}
@@ -355,17 +379,13 @@ What we just did is called the [empirical bootstrap](https://ocw.mit.edu/courses
 - Calculate the percentiles of the bootstrap distribution from the previous step. 
 - Describe your uncertainty using those percentiles.
 
-
-
-*Quick Exercise: Does 50 percent interval for free throws percent above 80 include the values for subsequent seasons?*
-
+*Quick Exercise* Does 50 percent interval for free throws percent above 80 include the values for subsequent seasons?*
 
 ```{r}
 gms_ft_80_rs%>%
   group_by(isWin)%>%
  summarize(pct_25=quantile(mean_ft80,.25),
            pct_75=quantile(mean_ft80,.75))
-
 ```
 
 The middle 50% of this distribution is between .36 and .46. 
@@ -375,7 +395,6 @@ And in the actual subsequent seasons
 gms%>%
   filter(yearSeason==2018)%>%
   summarize(mean(ft_80))
-
 ```
 
 Yep, that checks out. And in 2019?
@@ -384,7 +403,6 @@ Yep, that checks out. And in 2019?
 gms%>%
   filter(yearSeason==2019)%>%
   summarize(mean(ft_80))
-
 ```
 
 Again, yes but just barely. 
@@ -402,15 +420,14 @@ bs_prop<-gms%>%
   
   boot_2017<-mc_cv(gms%>%filter(yearSeason==2017),
                    prop=1-bs_prop,
-                   times = 10000)
+                   times = 1000)
 ```
 
 This is what's called a "splits" data structure. It splits the data into two parts: one part will be used in the analysis, one part will be held out. For reasons that escape me, the command only allows the data to be split 90/10, with 90 percent held out for analysis and 10 percent for assessment.  
 
 The function below takes the data (in split format), samples each element down to the specified sample size (100 in our case) and then pulls the turnover variable `tov`. It then returns a dataset that includes just the mean of the specified variable, in this case `tov`.
+
 ```{r}
-
-
 calc_tov_mean_winners <- function(split){
   dat <- assessment(split) %>% ## create an object called dat from each "split" of the data
     filter(isWin)%>% ## filter just for winners
@@ -438,7 +455,7 @@ calc_tov_mean_losers <- function(split){
 boot_2017$splits[[1]]%>%
   assessment()%>%
   filter(isWin)%>%
-  sample_n(size=sample_size)
+  sample_n(size=sample_size, replace=TRUE)
 ```
 
 
@@ -471,15 +488,11 @@ results_losers%>%
   summarize(pct_025=quantile(estimate,.025),
             pct_075=quantile(estimate,.975))
 
-
 results_losers%>%
   select(tov_mean)%>%
   unnest(cols=tov_mean)%>%
   ggplot(aes(x=estimate))+
   geom_density()
-
-
-
 ```
 
 
